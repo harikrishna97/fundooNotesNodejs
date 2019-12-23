@@ -41,7 +41,7 @@ class NodeMailerClass {
     var mailOptions = {
       from: `${process.env.EMAIL}`,
       to: email,
-      subject: 'Reset Password',
+      subject: 'Verification',
       // text: `Hi, Hari Please Find Bellow Link To reset Your PassWord, Link is valid for 2 hours only.`,
       html: token + `>Click me here</a> </p>`
 

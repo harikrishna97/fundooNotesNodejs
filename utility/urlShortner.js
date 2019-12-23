@@ -8,7 +8,7 @@ class UrlShortnerClass{
      urlShortner(resData,longUrl,callback){
 
        const urlCode= shortid.generate(longUrl);
-       const shortUrl='http://localhost:4000/userVerification/'+urlCode;
+       const shortUrl='http://localhost:4000/userVerify/'+urlCode;
         // console.log('shortUrl :: ',shortUrl);
         const verifyObject={}
         verifyObject.longUrl=longUrl;

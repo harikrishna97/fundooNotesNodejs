@@ -21,14 +21,14 @@ const model=require('../app.js/model/user')
 const bcrypt = require('bcryptjs');
 // const userObject=require('../app.js/model/user')
 const modelClassObject=new model.ModelClass
-
+const utilityClassObject=require('../utility/commonUtility')
 class ServiceClass{
 
-     hashFunction(password){
-        const salt=bcrypt.genSaltSync(10)
-        var hashPassword=bcrypt.hashSync(password,salt)
-        return hashPassword;
-    }
+    //  hashFunction(password){
+    //     const salt=bcrypt.genSaltSync(10)
+    //     var hashPassword=bcrypt.hashSync(password,salt)
+    //     return hashPassword;
+    // }
     /**
      * @description:registration API to create new User or register user 
      * @param {*} registrationData 
@@ -177,7 +177,7 @@ class ServiceClass{
         try{
             return new Promise((resolve,reject)=>{
                 modelClassObject.updateData({'_id':resetPasswordData._id},
-            {$set:{'password':this.hashFunction(resetPasswordData.password)}})
+            {$set:{'password':utilityClassObject.hashFunction(resetPasswordData.password)}})
                 .then(data=>{
                     console.log('DATa in sesetPass',data);
                     
@@ -234,8 +234,7 @@ class ServiceClass{
     userVerificationInService(userVerificationData){
         try{
             return new Promise((resolve,reject)=>{
-                modelClassObject.updateData({'_id':userVerificationData._id},
-            {'isVerified':true})
+                modelClassObject.updateData({'_id':userVerificationData._id},{$set:{'isVerified':true}})
                 .then(data=>{
                     console.log('DATa in userverifivcation in service',data);
                     

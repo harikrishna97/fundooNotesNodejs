@@ -21,7 +21,8 @@
 const express=require('express')
 const controllerClassObject=require('../controller/user')
 const tokenObject=require('../utility/tokenVerification')
-
+const model=require('../app.js/model/user')
+const modelClassObject=new model.ModelClass
 const routes=express.Router()
 
 routes.post('/registration',controllerClassObject.registration);
@@ -29,7 +30,27 @@ routes.post('/login',controllerClassObject.login);
 routes.get('/getAllUser',controllerClassObject.getAllUserInController);
 routes.post('/forgetPassword',controllerClassObject.forgetPasswordInController);
 routes.post('/resetPassword',tokenObject.tokenVerification,controllerClassObject.resetPasswordInController);
-routes.post('/userVerification/:url',tokenObject.userVerification,controllerClassObject.userVerificatonInController);
+
+
+routes.get('/userVerify/:url',(req,res)=>{
+    modelClassObject.findOne({"urlCode":req.params.url},(err,data)=>{
+        if(err){
+            return res.status(404).send('Invalid Url')
+        }else if(data==null){
+
+            return res.status(400).send('Invalid Url')
+            
+        }else{
+            
+            return res.redirect(data.longUrl)
+        }
+    })
+})
+
+// routes.post('/userVerification/:token',tokenObject.userVerification,controllerClassObject.userVerificatonInController);
+routes.post('/userVerification/:token',tokenObject.tokenVerification,controllerClassObject.userVerificatonInController);
+
+
 
 // http://localhost:4000/userVerification/nMkyu3H4
 

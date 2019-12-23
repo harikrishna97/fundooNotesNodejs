@@ -14,8 +14,6 @@
  *  @since           : 04-12-2019
  *
  ******************************************************************************/
-
-
 const jwt=require('jsonwebtoken')
 require('dotenv/config')
 const model=require('../app.js/model/user')
@@ -73,12 +71,14 @@ module.exports={
                                 next()
                             }
                         })
-                    }else{
+                    }else if(token == null){
 
-                        return res.json({
+                        res.json({
                             success:false,
                             message:'invalid User'
                         })
+
+                        return res.status(501).send(res)
                     }
 
                 }catch(err){
@@ -91,8 +91,8 @@ module.exports={
     },
     tokenVerification(req,res,next){
        
-        var token=req.headers.token;
-        console.log('Token In Token Verification :: ',req.headers.token);
+        var token=req.params.token||req.headers.token;
+        console.log('Token In Token Verification :: ',req.params.token);
         
         try{
             if(token){
@@ -110,20 +110,17 @@ module.exports={
                         next()
                     }
                 })
-            }else{
+            }else if(token == null || token == undefined){
 
-                return res.json({
+                return res.status(501).send( res.json({
                     success:false,
                     message:'invalid User'
-                })
+                }))
             }
-
         }catch(err){
             console.log(err);
             return err
-            
         }
     }
-
 }
     

@@ -1,7 +1,7 @@
-let mongoose = require("mongoose");
+// let mongoose = require("mongoose");
 
 // let user = require('../app.js/model/user');
-const Credentials=require('./testing.json')
+const Credentials=require('../json/testing.json')
 let chai = require('chai');
 let chaiHttp = require('chai-http');
 let server = require('../server');

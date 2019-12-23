@@ -135,7 +135,8 @@ class ModelClass{
     updateData(updateData,dataToBeUpadted){
         console.log("===>",updateData);    
         return new Promise((resolve,reject)=>{
-            user.findOneAndUpdate(updateData,dataToBeUpadted)
+            user.findOneAndUpdate(updateData,dataToBeUpadted,{ new: true,
+                upsert: true })
             .then(data=>{
                 console.log('in data');
                 

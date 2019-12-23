@@ -1,7 +1,7 @@
-let mongoose = require("mongoose");
+// let mongoose = require("mongoose");
 
 // let user = require('../app.js/model/user');
-const Credentials=require('./testing.json')
+const Credentials=require('../json/testing.json')
 let chai = require('chai');
 let chaiHttp = require('chai-http');
 let server = require('../server');
@@ -10,7 +10,7 @@ let should = chai.should();
 
 chai.use(chaiHttp);
     
-console.log(' Credentials :: ',Credentials);
+// console.log(' Credentials :: ',Credentials);
   describe('RESET PASSWORD API TEST CASES', () => {
 
      //Positive test case
@@ -23,10 +23,26 @@ console.log(' Credentials :: ',Credentials);
                 res.should.have.status(200);
                 res.body.should.be.a('object');       
             done();
+            console.log('Response in reset test',res.body);
+            
            
           });
     })
 
+    it('it should return invalid token', (done) => {
+      chai.request(server)
+          .post('/resetPassword')
+          // .set('token',Credentials.resetWithToken[1])
+          .send(Credentials.resetPassword[0])
+          .end((err, res) => {
+                res.should.have.status(501);
+                res.body.should.be.a('object');       
+            done();
+            console.log('Response in reset test',res.body);
+            
+           
+          });
+    })
 
     // it('it should return password cannot be null/invalid password', (done) => {
     //     chai.request(server)
