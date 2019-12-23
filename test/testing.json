@@ -1,0 +1,90 @@
+{
+"login":[
+
+    {
+        "email":"adhokshaj108@gmail.com",
+        "password":"adhokshaj123"
+    },
+    {
+        "email":"adhokshaj10@gmail.com",
+        "password":"adhokshaj123"
+    },
+    {
+        "email":"adhokshaj108@gmail.com",
+        "password":"adhokshaj23"
+    },
+    {
+        "email":"",
+        "password":"adhokshaj23"
+    },
+    {
+        "email":"adhokshaj108@gmail.com",
+        "password":""
+    }
+
+],
+
+"forgetPassword":[
+    {
+        "email":"adhokshaj108@gmail.com"
+    },
+    {
+        "email":"hfdhfd@gmail.com"
+    },
+    {
+        "email":"hdfkjh"
+    },
+    {
+        "email":""
+    }
+
+],
+
+"registration":[
+    {
+        
+        "lastName":"Borase",
+        "email":"abcd@gmail.com",
+        "password":"abc123"
+    },
+    {
+        "firstName":"Ram",
+        "lastName":"Borase",
+        "email":"",
+        "password":"ram123"
+    },
+    
+    {
+        "firstName":"Ram",
+        "lastName":"Borase",
+        "email":"ram@gmail.com",
+        "password":""
+    },
+    
+    {
+        "firstName":"Ram",
+        
+        "email":"ram@gmail.com",
+        "password":""
+    }
+    
+],
+
+"resetPassword":[
+    {
+        "password":"adhokshaj123"
+    },
+    {
+        "password":"asd"
+    }
+],
+
+"resetWithToken":[
+    {
+        "token":"dfkdfdkjasfhj.jaoofoo.ijuriero"
+    }
+]
+
+
+
+}
