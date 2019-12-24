@@ -23,6 +23,7 @@ const service=require('../services/user');
 const tokenGenerator=require('../utility/tokenGeneration')
 // const tokenGenerator=require('../../utility/tokenGeneration')
 const nodeMailer=require('../utility/sendMail')
+const dotenv = require('dotenv/config');
 const nodeMailerObject=new nodeMailer.NodeMailerClass;
 // const user=new User()
 
@@ -82,7 +83,8 @@ class ControllerClass{
                             }
                             var token=tokenGenerator.tokenGeneration(payload);
                             console.log('Generator Token in ForgetPass Is :: '+token);
-                            var longUrl='http://localhost:4000/userVerification/'+token;
+                            // var longUrl='http://localhost:4000/userVerification/'+token;
+                            var longUrl=`${process.env.USER_VERIFICATION_URL}`+token;
                             urlShortnerClassObject.urlShortner(resData,longUrl,(err,data)=>{ 
                                 if(err){
                                     response.success=false
@@ -104,7 +106,8 @@ class ControllerClass{
             }    
         }catch(err){
             console.log(err);
-            return err;  
+            // return err;
+            return res.status(500).send(err);  
         }    
     }
 
@@ -137,13 +140,8 @@ class ControllerClass{
                 response.success=false,
                 response.message=err
                 return res.status(400).send(response);
-
             })
         })
-
-
-        
-
     }
     /**
      * @description:login API to login user Using Callback 
@@ -198,7 +196,7 @@ class ControllerClass{
             }    
         }catch(err){
             console.log(err);
-            return err;
+            return res.status(500).send(err);
         }    
      }
      
@@ -260,9 +258,10 @@ forgetPasswordInController(req,res){
              serviceClassObject.forgetPasswordInService(forgetPasswordData,(err,data)=>{
                 if(err){
                     console.log("ERROR in controller :: "+err);
-                    
+                    var response = {};
+
                     response.success = false;
-                    response.error = errors;
+                    response.error = 'Invalid Email';
                     return res.status(422).send(response);
                 }else if(data!=null){
 
@@ -274,7 +273,10 @@ forgetPasswordInController(req,res){
                     }
                     var token=tokenGenerator.tokenGeneration(payload);
                     console.log('Generator Token in ForgetPass Is :: '+token);
-                    var longUrl='http://localhost:8080/#/resetPassword/'+token;
+                    // var longUrl='http://localhost:8080/#/resetPassword/'+token;
+                    
+                     var longUrl=`${process.env.RESET_PASSWORD_URL}`+token;
+                        console.log(longUrl);
 
                     //nodemailer
                     nodeMailerObject.sendMailUsingNodeMailer(forgetPasswordData.email,longUrl);
@@ -286,13 +288,14 @@ forgetPasswordInController(req,res){
                     var response = {};
                     response.success = false;
                     response.message = 'Invalid Email';
+                    return res.status(400).send(response)
                }
             });     
          
         }    
     }catch(err){
         console.log(err);
-        return err;
+        return res.status(500).send(err)
         
     } 
  }
@@ -346,7 +349,7 @@ forgetPasswordInController(req,res){
             }    
     }catch(err){
         console.log(err);
-        return err;    
+        return res.status(500).send(err);   
     }
  }
 }

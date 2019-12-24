@@ -23,8 +23,10 @@ const dotenv = require('dotenv/config');
 // var cors = require('cors');
 const database=require('./config/database.service');
 const DatabaseClassObject= new database.DatabaseClass;
+// var winston = require('./config/winston');
 
 //create express app
+
 const app=express();
 
 // app.use(cors());
@@ -33,8 +35,6 @@ const app=express();
 app.use(bodyParser.urlencoded({extended:true}))
 app.use(bodyParser.json())
 app.use(validator());
-
-//define a simple route
 app.use('/',routes);
 
  var port =`${process.env.PORT}`;
@@ -43,10 +43,7 @@ app.use('/',routes);
 //     res.json({msg: 'This is CORS-enabled for all origins!'})
 //   })
 
-/**@description calling connect method of */
-DatabaseClassObject.connect()
-
-// //error Handler
+//error Handler
 app.use((err,req,res,next)=>{
     if(err.name=='ValidationError'){
         var valErrors=[];
@@ -58,6 +55,7 @@ app.use((err,req,res,next)=>{
   
 // listen for request
 app.listen(port,()=>{
+    DatabaseClassObject.connect()
     console.log('Server is Listening on port '+port+' ..');
     
 })

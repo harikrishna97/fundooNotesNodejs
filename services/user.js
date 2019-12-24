@@ -204,8 +204,7 @@ class ServiceClass{
      * @param {*} callback 
      */
     urlShortnerService(resData,verifyObject,callback){
-            console.log(' urlshortner Data',resData);
-            
+            console.log(' urlshortner Data',resData);            
             const dataObject= {'email':resData.email}
             modelClassObject.findOne(dataObject,(err,data)=>{
 
@@ -214,7 +213,10 @@ class ServiceClass{
             }
             else if(data!=null){
                 // const dataObjectId={'_id':resData._id};
-                 modelClassObject.updateData({'email':resData.email},{'longUrl':verifyObject.longUrl,'shortUrl':verifyObject.shortUrl,'urlCode':verifyObject.urlCode})                                               
+                 modelClassObject.updateData({'email':resData.email},
+                 {'longUrl':verifyObject.longUrl,
+                 'shortUrl':verifyObject.shortUrl,
+                 'urlCode':verifyObject.urlCode})                                               
                 .then(data=>{
 
                     callback(null,data)

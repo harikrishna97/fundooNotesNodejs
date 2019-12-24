@@ -22,7 +22,9 @@ const express=require('express')
 const controllerClassObject=require('../controller/user')
 const tokenObject=require('../utility/tokenVerification')
 const model=require('../app.js/model/user')
+const noteControllerClassObject=require('../controller/note')
 const modelClassObject=new model.ModelClass
+
 const routes=express.Router()
 
 routes.post('/registration',controllerClassObject.registration);
@@ -32,7 +34,7 @@ routes.post('/forgetPassword',controllerClassObject.forgetPasswordInController);
 routes.post('/resetPassword',tokenObject.tokenVerification,controllerClassObject.resetPasswordInController);
 
 
-routes.get('/userVerify/:url',(req,res)=>{
+routes.get('/userVerify/:url',(req,res)=>{//localhost:4000
     modelClassObject.findOne({"urlCode":req.params.url},(err,data)=>{
         if(err){
             return res.status(404).send('Invalid Url')
@@ -46,12 +48,12 @@ routes.get('/userVerify/:url',(req,res)=>{
         }
     })
 })
-
-// routes.post('/userVerification/:token',tokenObject.userVerification,controllerClassObject.userVerificatonInController);
 routes.post('/userVerification/:token',tokenObject.tokenVerification,controllerClassObject.userVerificatonInController);
+// routes.post('/userVerification/:token',tokenObject.userVerification,controllerClassObject.userVerificatonInController);
+routes.post('/createNewNote',noteControllerClassObject.createNoteIncontroller);
 
-
-
-// http://localhost:4000/userVerification/nMkyu3H4
+routes.get('/getAllNotes',noteControllerClassObject.getAllNotesIncontroller)
+routes.post('/editNote',noteControllerClassObject.editNoteIncontroller)
+routes.post('/removeNote',noteControllerClassObject.removeNoteIncontroller)
 
 module.exports = routes;
