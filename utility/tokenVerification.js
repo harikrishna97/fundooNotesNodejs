@@ -18,10 +18,10 @@ const jwt=require('jsonwebtoken')
 require('dotenv/config')
 const model=require('../app.js/model/user')
 const modelClassObject=new model.ModelClass;
-
+const redis=require('redis')
 var secretKey=`${process.env.SECRET_KEY}`;
 // console.log('SECRETKey,',secretKey );
-const a=10;
+const client = redis.createClient(`${process.env.REDIS_PORT}`);
 
 module.exports={
 
@@ -107,7 +107,34 @@ module.exports={
                         req.decoded=data
                         // req.body['data'] = data
                         console.log('Encoded Token :: '+JSON.stringify(req.decoded));
-                        next()
+                        // console.log('DECODED TOEKN ID ::',req.decoded._id);
+                        console.log('DECODED TOEKN ID ::',data._id);
+
+                        const forgetToken=req.url.split('/').includes('resetPassword')
+                        const registrationToken=req.url.split('/').includes('userVerification')
+                        var redisData;
+                        if(forgetToken==true){
+                            redisData="forgetToken";
+                        }else if(registrationToken==true){
+                            redisData="registrationToken";
+                        }
+                        console.log('REdisdata :: ',redisData);                        
+                        console.log('EQ>PARAMS TOken Verification For REDIS ::',req.url);
+                        
+                        client.get(redisData+data._id, (err, reply)=>{
+                            // reply is null when the key is missing
+                            console.log('Reply from forget Token',reply);
+                            if(token===reply){
+                                console.log('TOKEN is same');
+                                next()
+                            }else{
+                                console.log('Token is Not same');
+                                return res.status(401).send( res.json({
+                                    success:false,
+                                    message:'invalid Url'
+                                }))       
+                            }
+                        }) 
                     }
                 })
             }else if(token == null || token == undefined){

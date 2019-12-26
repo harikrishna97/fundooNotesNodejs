@@ -19,24 +19,31 @@
  *
  ******************************************************************************/
 const mongoose=require('mongoose');
+const Schema=mongoose.Schema;
 
-
-var NoteSchema=new mongoose.Schema(
+var NoteSchema=new Schema(
     {   
         title:{
             type:String,
             required:true,
             trim:true
         },
-        content:{
+        description:{
             type:String,
             required:true
         },
-        // userId:{
+        userId:{
+            type:Schema.Types.ObjectId,
+            ref: 'User',
+            // required:true,
+            // trim:true,
+        },
+        // noteId:{
         //     type:String,
         //     required:true,
-        //     trim:true,
+        //     trim:true
         // },
+
         // color:{
         //     type:String,
 
@@ -59,7 +66,7 @@ var NoteSchema=new mongoose.Schema(
                 {
                     userId:createData.userId,
                     title:createData.title,
-                    content:createData.content,
+                    description:createData.description,
                 }
             )
             /** @description save() methods are used to update document into a collection.
@@ -90,10 +97,12 @@ var NoteSchema=new mongoose.Schema(
             })  
         }
 
+        
+
         updateNote(updateData,dataToBeUpadted){
             // console.log("===>",updateData);    
             return new Promise((resolve,reject)=>{
-                note.findOneAndUpdate(updateData,dataToBeUpadted,{ new: true})
+                note.findByIdAndUpdate(updateData,dataToBeUpadted,{ new: true})
                 .then(data=>{
                     // console.log('in data');  
                     resolve(data);
@@ -102,9 +111,7 @@ var NoteSchema=new mongoose.Schema(
                     // console.log('in err',err);   
                     reject(err)
                 })
-
             })
-
         }
 
         deleteNote(deleteData){
@@ -116,9 +123,23 @@ var NoteSchema=new mongoose.Schema(
                 .catch(err=>{
                     reject(err)
                 })
-
             })   
         }
+        findOne(findData){
+          return new Promise((resolve,reject)=>{
+                note.findOne(findData)
+                .then(data=>{
+                    console.log('DAta in find One :: ',data);  
+                    resolve(data)
+                })
+                .catch(err=>{
+                    console.log('err in find One :: ',err);  
+
+                })
+            })
+        }
+            
     }   
 
+    
 module.exports=new ModelClass;

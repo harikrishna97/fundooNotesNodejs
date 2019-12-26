@@ -30,6 +30,8 @@ const nodeMailerObject=new nodeMailer.NodeMailerClass;
 const urlShortnerClassObject=require('../utility/urlShortner')
 const serviceClassObject=new service.ServiceClass
 // console.log("in controller");
+const redis=require('redis')
+const client = redis.createClient(`${process.env.REDIS_PORT}`);
 
 class ControllerClass{
 
@@ -71,7 +73,7 @@ class ControllerClass{
                     if(err){
                         console.log('Something Went wrong in controller..'+err);
                         response.success = false;
-                        response.error = errors[0].msg;
+                        response.error = err;
                         return res.status(422).send(response)   
                     }
                     else {
@@ -82,15 +84,18 @@ class ControllerClass{
                                 'email':resData.email
                             }
                             var token=tokenGenerator.tokenGeneration(payload);
-                            console.log('Generator Token in ForgetPass Is :: '+token);
+                            console.log('Generator Token in registration Is :: '+token);
+                            console.log('RESDATA_ID','registrationToken'+resData._id);
+                            
                             // var longUrl='http://localhost:4000/userVerification/'+token;
                             var longUrl=`${process.env.USER_VERIFICATION_URL}`+token;
+                            client.set('registrationToken'+resData._id,token,'EX', 60 * 60 * 24)
                             urlShortnerClassObject.urlShortner(resData,longUrl,(err,data)=>{ 
                                 if(err){
                                     response.success=false
-                                    response.message=err;
                                     response.data=resData;
-                                    console.log("--->",response);
+                                     response.message=err;
+                                   console.log("--->",response);
                                     return res.status(200).send(response)
                                 }else{
                                     console.log('HI');
@@ -186,6 +191,8 @@ class ControllerClass{
                         console.log('PayLoad Is :: '+JSON.stringify(payload));
                         var token=tokenGenerator.tokenGeneration(payload);
                         console.log('Generated token is'+token);
+                        client.set('loginToken'+resData._id,token,'EX', 60 * 60 * 24)
+
                         let response={}
                             response.success=true
                             response.message='Login Successful...'
@@ -274,7 +281,8 @@ forgetPasswordInController(req,res){
                     var token=tokenGenerator.tokenGeneration(payload);
                     console.log('Generator Token in ForgetPass Is :: '+token);
                     // var longUrl='http://localhost:8080/#/resetPassword/'+token;
-                    
+                    client.set('forgetToken'+data._id,token,'EX', 60 * 60 * 24)
+
                      var longUrl=`${process.env.RESET_PASSWORD_URL}`+token;
                         console.log(longUrl);
 

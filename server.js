@@ -25,6 +25,12 @@ const database=require('./config/database.service');
 const DatabaseClassObject= new database.DatabaseClass;
 // var winston = require('./config/winston');
 
+const redis=require('redis')
+
+const REDIS_PORT=`${process.env.REDIS_PORT}`||6379
+
+const client = redis.createClient(REDIS_PORT);
+
 //create express app
 
 const app=express();
