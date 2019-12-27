@@ -24,6 +24,7 @@ const model=require('../app.js/model/user')
 const noteControllerClassObject=require('../controller/note')
 // const upload=require('../fileUpload/fileUpload')
 // const singleUpload=upload.single('image')
+
 const modelClassObject=new model.ModelClass
 
 const routes=express.Router()
@@ -48,10 +49,31 @@ routes.get('/userVerify/:url',(req,res)=>{//localhost:4000
 routes.post('/userVerification/:token',tokenObject.tokenVerification,controllerClassObject.userVerificatonInController);
 // routes.post('/userVerification/:token',tokenObject.userVerification,controllerClassObject.userVerificatonInController);
 routes.post('/createNewNote',noteControllerClassObject.createNoteIncontroller);
-
 routes.get('/getAllNotes',noteControllerClassObject.getAllNotesIncontroller)
 routes.post('/editNote',noteControllerClassObject.editNoteIncontroller)
 routes.post('/removeNote',noteControllerClassObject.removeNoteIncontroller)
+// routes.get('/getAllNotesById',noteControllerClassObject.getAllNotesByIdIncontroller)
+routes.post('/imageUpload', controllerClassObject.imageUploadInController)
+
+// routes.post('/imageUpload', function(req, res) {
+
+//   singleUpload(req, res, function(err) {
+
+//     if (err) {
+//       return res.status(422).send({errors: [{title: 'File Upload Error', detail: err.message}] });
+//     }
+//     console.log('FileUrl :::',req.file.location);
+//     // noteControllerClassObject.saveImageUrlInController(req,res);
+//     console.log('FileUrl :::',req.file.location);
+//     return res.json({'imageUrl': req.file.location});
+//   });
+// });
+
+
+module.exports = routes;
+
+
+
 
 // //image uploads
 // routes.post('/imageUpload',)
@@ -67,4 +89,21 @@ routes.post('/removeNote',noteControllerClassObject.removeNoteIncontroller)
 //     }
 // })
 
-module.exports = routes;
+// module.exports = routes;
+
+// const ProfileController = require('../profile/controller');
+// const { profileImage } = require('../services/s3'); 
+
+// //  const routes = (app) => {
+// //     const apiRoutes = express.Router();
+
+//     apiRoutes.use('/profile', profileRoutes);
+//     profileRoutes.post('/',profileImage.single('image'), ProfileController.saveProfile);
+
+//     app.use('/api', apiRoutes);
+
+//  }
+
+// module.exports = routes
+
+// routes.post('/imageUpload',upload.single('image')) 

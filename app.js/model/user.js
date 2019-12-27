@@ -60,6 +60,9 @@ var UserSchema=new mongoose.Schema(
         type:String,
         default:null
     },
+    imageUrl:{
+        type:String
+    },
     saltSecret:String,
 },
 {timestamps:true});
@@ -135,8 +138,7 @@ class ModelClass{
     updateData(updateData,dataToBeUpadted){
         console.log("===>",updateData);    
         return new Promise((resolve,reject)=>{
-            user.findOneAndUpdate(updateData,dataToBeUpadted,{ new: true,
-                upsert: true })
+            user.findOneAndUpdate(updateData,dataToBeUpadted,{new: true})
             .then(data=>{
                 console.log('in data');
                 

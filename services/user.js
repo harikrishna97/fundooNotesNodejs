@@ -24,11 +24,7 @@ const modelClassObject=new model.ModelClass
 const utilityClassObject=require('../utility/commonUtility')
 class ServiceClass{
 
-    //  hashFunction(password){
-    //     const salt=bcrypt.genSaltSync(10)
-    //     var hashPassword=bcrypt.hashSync(password,salt)
-    //     return hashPassword;
-    // }
+    
     /**
      * @description:registration API to create new User or register user 
      * @param {*} registrationData 
@@ -252,6 +248,24 @@ class ServiceClass{
             return err;     
         }
     }
+
+    /**
+     * description : It saves aws generator image in database for user Profile
+     * @param {*} imageData 
+     */
+    imageUploadInService(imageData){
+        return new Promise((resolve,reject)=>{
+
+            modelClassObject.updateData({'email':imageData.email},{'imageUrl':imageData.imageUrl})
+            .then(data=>{
+                resolve(data)
+            })
+            .catch(err=>{
+                reject(err)
+            })
+        })
+    }
+
 }
 module.exports={
     ServiceClass

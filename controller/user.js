@@ -21,15 +21,13 @@
  
 const service=require('../services/user');
 const tokenGenerator=require('../utility/tokenGeneration')
-// const tokenGenerator=require('../../utility/tokenGeneration')
 const nodeMailer=require('../utility/sendMail')
 const dotenv = require('dotenv/config');
-const nodeMailerObject=new nodeMailer.NodeMailerClass;
-// const user=new User()
-
+const upload = require('../services/s3');
+const singleUpload = upload.single('image');
 const urlShortnerClassObject=require('../utility/urlShortner')
+const nodeMailerObject=new nodeMailer.NodeMailerClass;
 const serviceClassObject=new service.ServiceClass
-// console.log("in controller");
 const redis=require('redis')
 const client = redis.createClient(`${process.env.REDIS_PORT}`);
 
@@ -237,76 +235,76 @@ class ControllerClass{
     })
 }
 
-/**
- * @description Forget Password API for user's to change forget password
- * @param {*} req 
- * @param {*} res 
- */
-forgetPasswordInController(req,res){
-    try{
-        req.checkBody('email', 'Email id should not be empty').notEmpty();
-        req.checkBody('email', 'Please enter valid email id.').isEmail();
+    /**
+     * @description Forget Password API for user's to change forget password
+     * @param {*} req 
+     * @param {*} res 
+     */
+    forgetPasswordInController(req,res){
+        try{
+            req.checkBody('email', 'Email id should not be empty').notEmpty();
+            req.checkBody('email', 'Please enter valid email id.').isEmail();
 
-        var errors = req.validationErrors();
+            var errors = req.validationErrors();
 
-        var response = {};
+            var response = {};
 
-        if(errors)
-        {
-            response.success = false;
-            response.error = errors;
-            return res.status(422).send(response);
-        }
-        else{
-            var forgetPasswordData={}
-            forgetPasswordData.email=req.body.email
-            console.log('email in controller :: '+forgetPasswordData.email);
+            if(errors)
+            {
+                response.success = false;
+                response.error = errors;
+                return res.status(422).send(response);
+            }
+            else{
+                var forgetPasswordData={}
+                forgetPasswordData.email=req.body.email
+                console.log('email in controller :: '+forgetPasswordData.email);
+                
+                serviceClassObject.forgetPasswordInService(forgetPasswordData,(err,data)=>{
+                    if(err){
+                        console.log("ERROR in controller :: "+err);
+                        var response = {};
+
+                        response.success = false;
+                        response.error = 'Invalid Email';
+                        return res.status(422).send(response);
+                    }else if(data!=null){
+
+                        var payload={
+
+                            '_id':data._id,
+                            'email':forgetPasswordData.email
+
+                        }
+                        var token=tokenGenerator.tokenGeneration(payload);
+                        console.log('Generator Token in ForgetPass Is :: '+token);
+                        // var longUrl='http://localhost:8080/#/resetPassword/'+token;
+                        client.set('forgetToken'+data._id,token,'EX', 60 * 60 * 24)
+
+                        var longUrl=`${process.env.RESET_PASSWORD_URL}`+token;
+                            console.log(longUrl);
+
+                        //nodemailer
+                        nodeMailerObject.sendMailUsingNodeMailer(forgetPasswordData.email,longUrl);
+                        var response = {};
+                        response.success=true,
+                        response.message='Password reset link has been send to your email id :: '+data.email
+                    return res.status(200).send(response)
+                    }else{
+                        var response = {};
+                        response.success = false;
+                        response.message = 'Invalid Email';
+                        return res.status(400).send(response)
+                }
+                });     
             
-             serviceClassObject.forgetPasswordInService(forgetPasswordData,(err,data)=>{
-                if(err){
-                    console.log("ERROR in controller :: "+err);
-                    var response = {};
-
-                    response.success = false;
-                    response.error = 'Invalid Email';
-                    return res.status(422).send(response);
-                }else if(data!=null){
-
-                    var payload={
-
-                        '_id':data._id,
-                        'email':forgetPasswordData.email
-
-                    }
-                    var token=tokenGenerator.tokenGeneration(payload);
-                    console.log('Generator Token in ForgetPass Is :: '+token);
-                    // var longUrl='http://localhost:8080/#/resetPassword/'+token;
-                    client.set('forgetToken'+data._id,token,'EX', 60 * 60 * 24)
-
-                     var longUrl=`${process.env.RESET_PASSWORD_URL}`+token;
-                        console.log(longUrl);
-
-                    //nodemailer
-                    nodeMailerObject.sendMailUsingNodeMailer(forgetPasswordData.email,longUrl);
-                    var response = {};
-                    response.success=true,
-                    response.message='Password reset link has been send to your email id :: '+data.email
-                   return res.status(200).send(response)
-                }else{
-                    var response = {};
-                    response.success = false;
-                    response.message = 'Invalid Email';
-                    return res.status(400).send(response)
-               }
-            });     
-         
-        }    
-    }catch(err){
-        console.log(err);
-        return res.status(500).send(err)
-        
-    } 
- }
+            }    
+        }catch(err){
+            console.log(err);
+            return res.status(500).send(err)
+            
+        } 
+    }
 
 /**
  * @description:API to reset Usr's Password
@@ -360,5 +358,44 @@ forgetPasswordInController(req,res){
         return res.status(500).send(err);   
     }
  }
+
+ /**
+  * @description:API to create imageUrl using S3 Bucket And save Url in Database
+  * @param {*} req 
+  * @param {*} res 
+  */
+ imageUploadInController(req, res) {
+
+    singleUpload(req, res, function(err) {
+  
+      if (err) {
+        return res.status(422).send({errors: [{title: 'File Upload Error', detail: err.message}] });
+      }
+      console.log('FileUrl :::',req.file.location);
+
+      const imageData={}
+      imageData.email='adhokshaj108@gmail.com'//req.body.email;
+      imageData.imageUrl=req.file.location;
+      const response={}
+      serviceClassObject.imageUploadInService(imageData)
+      .then(data=>{
+          console.log('DATA in controller response :: ',data);
+          
+        response.success=true,
+        response.message='Image Url saved SuccessFully..'
+        response.ImageUrl=data.imageUrl;
+        return res.status(200).send(response)
+      })
+      .catch(err=>{
+        response.success=false,
+        response.error=err
+        return res.status(400).send(response);
+      })
+    //   console.log('FileUrl :::',req.file.location);
+    //   return res.json({'imageUrl': req.file.location});
+    });
+}
+
+
 }
 module.exports= new ControllerClass();

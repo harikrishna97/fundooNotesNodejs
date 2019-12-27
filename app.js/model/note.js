@@ -38,33 +38,57 @@ var NoteSchema=new Schema(
             // required:true,
             // trim:true,
         },
-        // noteId:{
-        //     type:String,
-        //     required:true,
-        //     trim:true
-        // },
+        email:{
+            type:String
+        },
+        remainder:{
+            type:Date
+        },
+        isArchive:{
+            type:Boolean
+        },
+         color:{
+            type:String,
 
-        // color:{
-        //     type:String,
+        },
+        isPinned:{
+            type:Boolean
 
-        // },
+        },
+        isTrash:{
+            type:Boolean
+        },
+        label:{
+            type:Array
+        },
+        collaborator:{
+            type:String
+        }
+        // // noteId:{
+        // //     type:String,
+        // //     required:true,
+        // //     trim:true
+        // // },
+
+       
         // image:{
         //     type:String
             
         // },
-        // isArchive:{
-
-        // }
-
-
-    })
+        
+ },
+ {timestamps:true})
     var note=mongoose.model('Note',NoteSchema);
     class ModelClass{   
 
+        /**
+         * @description: create to new note and save to database
+         * @param {*} createData 
+         */
         createNote(createData){
             let noteData=new note(
                 {
-                    userId:createData.userId,
+                    email:createData.email,
                     title:createData.title,
                     description:createData.description,
                 }
@@ -82,7 +106,9 @@ var NoteSchema=new Schema(
             })                               
         }
 
-
+        /**
+         * @description : read All notes From database
+         */
         readNotes(){
             return new Promise((resolve,reject)=>{
                 note.find({}).then(data=>{
@@ -96,9 +122,12 @@ var NoteSchema=new Schema(
                 })
             })  
         }
-
         
-
+        /**
+         * @descriptioon : update Function to update Note to database
+         * @param {*} updateData 
+         * @param {*} dataToBeUpadted 
+         */
         updateNote(updateData,dataToBeUpadted){
             // console.log("===>",updateData);    
             return new Promise((resolve,reject)=>{
@@ -114,6 +143,10 @@ var NoteSchema=new Schema(
             })
         }
 
+        /**
+         * @description: Function to delete note from database 
+         * @param {*} deleteData 
+         */
         deleteNote(deleteData){
             return new Promise((resolve,reject)=>{
                 note.findOneAndRemove(deleteData)
@@ -125,6 +158,10 @@ var NoteSchema=new Schema(
                 })
             })   
         }
+        /**
+         * @description : find function to find note from database
+         * @param {*} findData 
+         */
         findOne(findData){
           return new Promise((resolve,reject)=>{
                 note.findOne(findData)
@@ -133,12 +170,13 @@ var NoteSchema=new Schema(
                     resolve(data)
                 })
                 .catch(err=>{
+                    reject(err)
                     console.log('err in find One :: ',err);  
 
                 })
             })
         }
-            
+        
     }   
 
     

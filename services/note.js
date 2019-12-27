@@ -30,6 +30,18 @@ class ServiceClass {
         })
     }
 
+    // getAllNotesByIdInService(getAllNoteData){
+    //     return new Promise((resolve,reject)=>{
+    //         modelClassObject.findAllNotesById({'userId':getAllNoteData.userId})
+    //         .then(data=>{
+    //             resolve(data)
+    //         })
+    //         .catch(err=>{
+    //             reject(err)
+    //         })
+    //     })
+    // }
+
     editNoteInService(editData){
         return new Promise((resolve,reject)=>{
 
