@@ -15,21 +15,15 @@
  *  @since           : 018-12-2019
  *
  ******************************************************************************/
+require("dotenv").config();
 const express=require('express');
 const bodyParser=require('body-parser');
 const validator = require('express-validator');
 const routes=require('./routes/routes')
-const dotenv = require('dotenv/config');
 // var cors = require('cors');
 const database=require('./config/database.service');
 const DatabaseClassObject= new database.DatabaseClass;
-// var winston = require('./config/winston');
-
-const redis=require('redis')
-
-const REDIS_PORT=`${process.env.REDIS_PORT}`||6379
-
-const client = redis.createClient(REDIS_PORT);
+var winston = require('./config/winston');
 
 //create express app
 
@@ -43,7 +37,8 @@ app.use(bodyParser.json())
 app.use(validator());
 app.use('/',routes);
 
- var port =`${process.env.PORT}`;
+ var port =process.env.PORT;
+ 
 
 //  app.get('/', function (req, res) {
 //     res.json({msg: 'This is CORS-enabled for all origins!'})
@@ -55,7 +50,6 @@ app.use((err,req,res,next)=>{
         var valErrors=[];
         Object.keys(err.errors).forEach(key=>valErrors.push(err.errors[key].message));
         res.status(422).send(valErrors)
-       
     }
 });
   

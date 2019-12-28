@@ -1,6 +1,6 @@
 const serviceClassObject=require('../services/note')
-const upload = require('../services/s3');
-const singleUpload = upload.single('image');
+// const upload = require('../services/s3');
+// const singleUpload = upload.single('image');
 
 // const saveImageUrlInController = upload.single('image');
 
@@ -9,6 +9,7 @@ class ControllerClass {
     createNoteIncontroller(req,res){
         // try{
         req.checkBody('email', 'email should not be empty.').notEmpty();
+        req.checkBody('email', 'email should not be empty.').isEmail();
         req.checkBody('title', 'title should not be empty.').notEmpty();
         req.checkBody('description', 'description should not be empty.').notEmpty();
         var errors = req.validationErrors();
@@ -34,12 +35,15 @@ class ControllerClass {
             createNoteData.email=req.body.email;
             createNoteData.title=req.body.title;
             createNoteData.description=req.body.description;
+            console.log('In Create Note',createNoteData);
         
 
             //  new Promise((resolve,reject)=>{
                 const response={}
                 serviceClassObject.createNoteInService(createNoteData)
                 .then(data=>{
+                    console.log('In Create Note data ',data);
+
                     // resolve(data);
                     response.success=true;
                     response.message='Note Successfully created';
@@ -47,6 +51,8 @@ class ControllerClass {
                     return res.status(200).send(response);
                 })
                 .catch(err=>{
+                    console.log('In Create Note data ',err);
+
                     // reject(err);
                     response.success=true;
                     response.message=' Error while creating Note';
@@ -88,7 +94,6 @@ class ControllerClass {
         req.checkBody('_id', 'NoteID should not be empty.').notEmpty();
         req.checkBody('description', 'description should not be empty.').notEmpty();
         req.checkBody('title', 'title should not be empty.').notEmpty();
-    console.log('3849343');
 
         var errors = req.validationErrors();
         var response = {};
@@ -131,7 +136,7 @@ class ControllerClass {
     }
 
     removeNoteIncontroller(req,res){
-        req.checkBody('userId', 'userId name should not be empty.').notEmpty();
+        req.checkBody('_id', 'NoteId  should not be empty.').notEmpty();
         var errors = req.validationErrors();
         var response = {};
         if(errors)
@@ -145,12 +150,12 @@ class ControllerClass {
             console.log('REquest in Controller',req.body);
             
             const removeData={}
-            removeData.userId=req.body.userId;
+            removeData._id=req.body._id;
             
             new Promise((resolve, reject)=>{
                 serviceClassObject.removeNoteInService(removeData)
                 .then(data=>{
-                    console.log('Data in EDIT Controller',data);
+                    console.log('Data in remove Controller',data);
                     
                     const response={}
                     response.success=true;
@@ -164,8 +169,12 @@ class ControllerClass {
 
                     const response={}
                     response.success=false;
-                    response.error=err;
-                    reject(data)
+                    if(err==null){
+                        response.error='Invalid NoteId';
+                    }else{
+                        response.error=err;
+                    }
+                    reject(err)
 
                     // response.data=err;
                     return res.status(400).send(response);

@@ -39,7 +39,8 @@ var NoteSchema=new Schema(
             // trim:true,
         },
         email:{
-            type:String
+            type:String,
+            required:true
         },
         remainder:{
             type:Date
@@ -151,7 +152,14 @@ var NoteSchema=new Schema(
             return new Promise((resolve,reject)=>{
                 note.findOneAndRemove(deleteData)
                 .then(data=>{
-                    resolve(data)
+                    console.log('Data in delete note',data);
+                    
+                    if(data!=null){
+                        resolve(data)
+                    }else if(data==null){
+                        reject(data)
+                    }
+                   
                 })
                 .catch(err=>{
                     reject(err)

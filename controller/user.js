@@ -22,14 +22,15 @@
 const service=require('../services/user');
 const tokenGenerator=require('../utility/tokenGeneration')
 const nodeMailer=require('../utility/sendMail')
-const dotenv = require('dotenv/config');
+require('dotenv').config();
 const upload = require('../services/s3');
 const singleUpload = upload.single('image');
 const urlShortnerClassObject=require('../utility/urlShortner')
 const nodeMailerObject=new nodeMailer.NodeMailerClass;
 const serviceClassObject=new service.ServiceClass
 const redis=require('redis')
-const client = redis.createClient(`${process.env.REDIS_PORT}`);
+const client = redis.createClient(process.env.REDIS_PORT);
+// const client = redis.createClient();
 
 class ControllerClass{
 

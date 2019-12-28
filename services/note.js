@@ -7,6 +7,8 @@ class ServiceClass {
         return new Promise((resolve,reject)=>{
             modelClassObject.createNote(createData)
             .then(data=>{
+                console.log('in service');
+                
                 resolve(data);
             })
             .catch(err=>{
@@ -67,7 +69,7 @@ class ServiceClass {
 
     removeNoteInService(removeNote){
         return new Promise((resolve,reject)=>{
-            const deleteData={'userId':removeNote.userId}
+            const deleteData={'_id':removeNote._id}
             
             modelClassObject.deleteNote(deleteData)
             .then(data=>{
