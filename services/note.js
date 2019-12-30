@@ -20,9 +20,10 @@ class ServiceClass {
 
     }
 
-    getAllNotesInService({}){
+    getAllNotesInService(){
         return new Promise((resolve,reject)=>{
-            modelClassObject.readNotes({})
+            // const readNotesData={'eamil':getAllNoteData.email}
+            modelClassObject.readNotes()
             .then(data=>{
                 resolve(data)
             })

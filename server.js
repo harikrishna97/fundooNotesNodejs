@@ -23,7 +23,6 @@ const routes=require('./routes/routes')
 // var cors = require('cors');
 const database=require('./config/database.service');
 const DatabaseClassObject= new database.DatabaseClass;
-var winston = require('./config/winston');
 
 //create express app
 
@@ -44,20 +43,13 @@ app.use('/',routes);
 //     res.json({msg: 'This is CORS-enabled for all origins!'})
 //   })
 
-//error Handler
-app.use((err,req,res,next)=>{
-    if(err.name=='ValidationError'){
-        var valErrors=[];
-        Object.keys(err.errors).forEach(key=>valErrors.push(err.errors[key].message));
-        res.status(422).send(valErrors)
-    }
-});
+
   
 // listen for request
 app.listen(port,()=>{
     DatabaseClassObject.connect()
-    console.log('Server is Listening on port '+port+' ..');
     
+    console.log('Server is Listening on port '+port+' ..');
 })
 
 module.exports=app

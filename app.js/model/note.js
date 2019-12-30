@@ -112,12 +112,12 @@ var NoteSchema=new Schema(
          */
         readNotes(){
             return new Promise((resolve,reject)=>{
-                note.find({}).then(data=>{
-                    console.log("in found DAta",data);
+                note.find().then(data=>{
+                    console.log("in found DAta",JSON.stringify(data));
                 resolve(data);    
                 })
                 .catch(err=>{
-                    console.log('error in read notes :: 86',err);
+                    console.log('error in read notes :: 120',err);
                     
                     reject(err)
                 })

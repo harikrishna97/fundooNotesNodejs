@@ -52,7 +52,6 @@ routes.post('/createNewNote',noteControllerClassObject.createNoteIncontroller);
 routes.get('/getAllNotes',noteControllerClassObject.getAllNotesIncontroller)
 routes.post('/editNote',noteControllerClassObject.editNoteIncontroller)
 routes.post('/removeNote',noteControllerClassObject.removeNoteIncontroller)
-// routes.get('/getAllNotesById',noteControllerClassObject.getAllNotesByIdIncontroller)
 routes.post('/imageUpload', controllerClassObject.imageUploadInController)
 
 // routes.post('/imageUpload', function(req, res) {

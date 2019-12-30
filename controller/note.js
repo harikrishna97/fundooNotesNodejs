@@ -5,7 +5,8 @@ const serviceClassObject=require('../services/note')
 // const saveImageUrlInController = upload.single('image');
 
 class ControllerClass {
-
+    
+      
     createNoteIncontroller(req,res){
         // try{
         req.checkBody('email', 'email should not be empty.').notEmpty();
@@ -24,13 +25,6 @@ class ControllerClass {
         
             console.log('REquest in Controller',req.body);
             
-            // Validate request
-            // if(!req.body.description) {
-            //     return res.status(400).send({
-            //         message: "Note description can not be empty"
-            //     });
-            // }
-
             const createNoteData={}
             createNoteData.email=req.body.email;
             createNoteData.title=req.body.title;
@@ -69,8 +63,11 @@ class ControllerClass {
     }
 
     getAllNotesIncontroller(req,res){
-
-        serviceClassObject.getAllNotesInService({})
+        // req.checkBody('email', 'UserId should not be empty.').notEmpty();
+        // req.checkBody('email', 'UserId is invalid..').isEmail();
+            // const getAllNoteData={}
+            // getAllNoteData.email=req.body.email;
+        serviceClassObject.getAllNotesInService()
         .then(data=>{
             const response={}
             response.success=true;

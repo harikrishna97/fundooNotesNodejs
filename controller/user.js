@@ -1,20 +1,20 @@
 /******************************************************************************
- *  Execution       :   1. default node              cmd> node server.js 
+ *  @Execution       :   1. default node              cmd> node server.js 
  *                      2. if nodemon installed   cmd> nodemon server.js
  * 
- *  Purpose         : Fundoo-Notes APP backend server
+ *  @Purpose         : Fundoo-Notes APP backend server
  * 
  *  @description    : Controllers process incoming requests, handle user input
  *                    and interactions, and execute appropriate application logic
 
  * 
- *  @file              : user.controller.js
+ *  @file              : user.js
  *  @overview      :  Controllers process incoming requests, handle user input
  *                    and interactions, and execute appropriate application logic
  *  @module        : 
  *  @author         : Shailesh Borase
- *  @version        : npm -3.5.2  node v8.10.0 
- *  @since           : 04-12-2019
+ *  @version        : npm -3.5.2  node v13.5.0 
+ *  @since           : 25-12-2019
  *
  ******************************************************************************/
 
@@ -121,8 +121,6 @@ class ControllerClass{
      * @param {*} res 
      */
     userVerificatonInController(req,res){
-
-
         var userVerificationData={}
         userVerificationData._id=req.decoded._id
             console.log("----->",userVerificationData);
@@ -190,7 +188,7 @@ class ControllerClass{
                         console.log('PayLoad Is :: '+JSON.stringify(payload));
                         var token=tokenGenerator.tokenGeneration(payload);
                         console.log('Generated token is'+token);
-                        client.set('loginToken'+resData._id,token,'EX', 60 * 60 * 24)
+                        client.set('loginToken'+data._id,token,'EX', 60 * 60 * 24)
 
                         let response={}
                             response.success=true
@@ -265,7 +263,6 @@ class ControllerClass{
                     if(err){
                         console.log("ERROR in controller :: "+err);
                         var response = {};
-
                         response.success = false;
                         response.error = 'Invalid Email';
                         return res.status(422).send(response);
@@ -375,7 +372,8 @@ class ControllerClass{
       console.log('FileUrl :::',req.file.location);
 
       const imageData={}
-      imageData.email='adhokshaj108@gmail.com'//req.body.email;
+    //   imageData.email='adhokshaj108@gmail.com'
+      imageData.email=req.body.email;
       imageData.imageUrl=req.file.location;
       const response={}
       serviceClassObject.imageUploadInService(imageData)
