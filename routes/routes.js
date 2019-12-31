@@ -22,6 +22,7 @@ const controllerClassObject=require('../controller/user')
 const tokenObject=require('../utility/tokenVerification')
 const model=require('../app.js/model/user')
 const noteControllerClassObject=require('../controller/note')
+const labelControllerClassObject=require('../controller/label')
 // const upload=require('../fileUpload/fileUpload')
 // const singleUpload=upload.single('image')
 
@@ -48,25 +49,31 @@ routes.get('/userVerify/:url',(req,res)=>{//localhost:4000
 })
 routes.post('/userVerification/:token',tokenObject.tokenVerification,controllerClassObject.userVerificatonInController);
 // routes.post('/userVerification/:token',tokenObject.userVerification,controllerClassObject.userVerificatonInController);
+
 routes.post('/createNewNote',noteControllerClassObject.createNoteIncontroller);
 routes.get('/getAllNotes',noteControllerClassObject.getAllNotesIncontroller)
 routes.post('/editNote',noteControllerClassObject.editNoteIncontroller)
 routes.post('/removeNote',noteControllerClassObject.removeNoteIncontroller)
 routes.post('/imageUpload', controllerClassObject.imageUploadInController)
+routes.post('/addRemainder',noteControllerClassObject.addRemainderInController)
+routes.post('/removeRemainder',noteControllerClassObject.removeRemainderInController)
+routes.post('/archiveNote',noteControllerClassObject.archiveNoteInController)
+routes.post('/removeArchiveNote',noteControllerClassObject.removeArchiveNoteInController)
+routes.post('/pinNote',noteControllerClassObject.pinNoteInController)
+routes.post('/trashNote',noteControllerClassObject.trashNoteInController)
 
-// routes.post('/imageUpload', function(req, res) {
 
-//   singleUpload(req, res, function(err) {
+routes.post('/createNewLabel',labelControllerClassObject.createLabelIncontroller)
+routes.get('/getAllLabels',labelControllerClassObject.getAllLabelsIncontroller)
+routes.post('/editLabel',labelControllerClassObject.editLabelIncontroller)
+routes.post('/removeLabel',labelControllerClassObject.removeLabelIncontroller)
 
-//     if (err) {
-//       return res.status(422).send({errors: [{title: 'File Upload Error', detail: err.message}] });
-//     }
-//     console.log('FileUrl :::',req.file.location);
-//     // noteControllerClassObject.saveImageUrlInController(req,res);
-//     console.log('FileUrl :::',req.file.location);
-//     return res.json({'imageUrl': req.file.location});
-//   });
-// });
+
+
+
+
+
+
 
 
 module.exports = routes;
@@ -74,35 +81,3 @@ module.exports = routes;
 
 
 
-// //image uploads
-// routes.post('/imageUpload',)
-
-// singleUpload(re,res,(err,data)=>{
-//     if(data){
-
-//         return res.json({'imageUrl': req.file.location});
-
-//     }else{
-//         return res.status(422).send({errors: [{title: 'File Upload Error', detail: err.message}] });
-
-//     }
-// })
-
-// module.exports = routes;
-
-// const ProfileController = require('../profile/controller');
-// const { profileImage } = require('../services/s3'); 
-
-// //  const routes = (app) => {
-// //     const apiRoutes = express.Router();
-
-//     apiRoutes.use('/profile', profileRoutes);
-//     profileRoutes.post('/',profileImage.single('image'), ProfileController.saveProfile);
-
-//     app.use('/api', apiRoutes);
-
-//  }
-
-// module.exports = routes
-
-// routes.post('/imageUpload',upload.single('image')) 

@@ -9,103 +9,51 @@
  *                    application. Model objects retrieve and store model state 
  *                    in the persistance store like a database. Model class holds
  *                    data in public properties. 
- *  @file              : user.js
+ *  @file              : label.js
  *  @overview      :  Model objects retrieve and store model state 
  *                    in the persistance store like a database.
  *  @module        : 
  *  @author         : Shailesh Borase
  *  @version        : npm -3.5.2  node v13.3.0 
- *  @since           : 18-12-2019
+ *  @since           : 31-12-2019
  *
  ******************************************************************************/
 const mongoose=require('mongoose');
 const Schema=mongoose.Schema;
 
-var NoteSchema=new Schema(
+var LabelSchema=new Schema(
     {   
-        title:{
+        
+        label:{
             type:String,
-            required:true,
-            trim:true
-        },
-        description:{
-            type:String,
-            required:true
+            default:null
         },
         userId:{
-            type:Schema.Types.ObjectId,
-            ref: 'User',
-            // required:true,
-            // trim:true,
-        },
-        email:{
-            type:String,
-            required:true
-        },
-        remainder:{
-            type:String,
-            default:null
-        },
-        isArchive:{
-            type:Boolean,
-            default:false
-        },
-         color:{
-            type:String,
-            default:null
-
-        },
-        isPinned:{
-            type:Boolean,
-            default:false
-
-        },
-        isTrash:{
-            type:Boolean,
-            default:false
-        },
-        label:{
-            type:Array,
-            default:null
-        },
-        collaborator:{
-            type:String,
-            default:null
+            type:String
         }
-        // // noteId:{
-        // //     type:String,
-        // //     required:true,
-        // //     trim:true
-        // // },
-
-       
-        // image:{
-        //     type:String
-            
-        // },
         
  },
  {timestamps:true})
-    var note=mongoose.model('Note',NoteSchema);
+    var label=mongoose.model('Label',LabelSchema);
     class ModelClass{   
 
         /**
-         * @description: create to new note and save to database
+         * @description: create to new Label and save to database
          * @param {*} createData 
          */
-        createNote(createData){
-            let noteData=new note(
+        createLabel(createData){
+            let labelData=new label(
                 {
-                    email:createData.email,
-                    title:createData.title,
-                    description:createData.description,
+                    userId:createData.userId,
+                    label:createData.label,
+                    
                 }
             )
             /** @description save() methods are used to update document into a collection.
                             save() method replaces the existing document with the document
                             passed in save() method.*/ 
             return new Promise((resolve,reject)=>{
-                noteData.save().then(data=>{
+                labelData.save().then(data=>{
                     resolve(data)
                 })
                 .catch(err=>{
@@ -117,14 +65,14 @@ var NoteSchema=new Schema(
         /**
          * @description : read All notes From database
          */
-        readNotes(){
+        readLabels(){
             return new Promise((resolve,reject)=>{
-                note.find().then(data=>{
+                label.find().then(data=>{
                     console.log("in found DAta",JSON.stringify(data));
                 resolve(data);    
                 })
                 .catch(err=>{
-                    console.log('error in read notes :: 120',err);
+                    console.log('error in read label :: ',err);
                     
                     reject(err)
                 })
@@ -132,16 +80,16 @@ var NoteSchema=new Schema(
         }
         
         /**
-         * @descriptioon : update Function to update Note to database
+         * @descriptioon : update Function to update label to database
          * @param {*} updateData 
          * @param {*} dataToBeUpadted 
          */
-        updateNote(updateData,dataToBeUpadted){
+        updateLabel(updateData,dataToBeUpadted){
             console.log("===>",updateData);    
             return new Promise((resolve,reject)=>{
                 console.log('In Promise');
                 
-                note.findByIdAndUpdate(updateData,dataToBeUpadted,{ new: true})
+                label.findByIdAndUpdate(updateData,dataToBeUpadted,{ new: true})
                 .then(data=>{
                     console.log('in data');  
                     resolve(data);
@@ -154,14 +102,14 @@ var NoteSchema=new Schema(
         }
 
         /**
-         * @description: Function to delete note from database 
+         * @description: Function to delete label from database 
          * @param {*} deleteData 
          */
-        deleteNote(deleteData){
+        deleteLabel(deleteData){
             return new Promise((resolve,reject)=>{
-                note.findOneAndRemove(deleteData)
+                label.findOneAndRemove(deleteData)
                 .then(data=>{
-                    console.log('Data in delete note',data);
+                    console.log('Data in delete label',data);
                     
                     if(data!=null){
                         resolve(data)
@@ -176,12 +124,12 @@ var NoteSchema=new Schema(
             })   
         }
         /**
-         * @description : find function to find note from database
+         * @description : find function to find label from database
          * @param {*} findData 
          */
         findOne(findData){
           return new Promise((resolve,reject)=>{
-                note.findOne(findData)
+                label.findOne(findData)
                 .then(data=>{
                     console.log('DAta in find One :: ',data);  
                     resolve(data)
@@ -198,5 +146,5 @@ var NoteSchema=new Schema(
         
     }   
 
-    
-module.exports=new ModelClass;
+
+    module.exports=new ModelClass;
