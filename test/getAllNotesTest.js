@@ -13,8 +13,9 @@ console.log(' Credentials :: ',Credentials.getAllNotes[0]);
 
      it('it should return All Notes', (done) => {
       chai.request(server)
-          .get('/getAllNotes')
-          .send(Credentials.getAllNotes[0])
+          .get('/note/:userId')
+          .set('userId',getAllNotes[0])
+          .send()
           .end((err, res) => {
                 res.should.have.status(200);
                 res.body.should.be.a('object');

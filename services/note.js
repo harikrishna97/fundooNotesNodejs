@@ -25,7 +25,7 @@ class ServiceClass {
      * 
      * @param {*} createData 
      */
-    createNoteInService(createData){
+    createNote(createData){
         return new Promise((resolve,reject)=>{
             modelClassObject.createNote(createData)
             .then(data=>{
@@ -42,10 +42,10 @@ class ServiceClass {
 
     }
 
-    getAllNotesInService(){
+    getAllNotes(getAllNotesData){
         return new Promise((resolve,reject)=>{
             // const readNotesData={'eamil':getAllNoteData.email}
-            modelClassObject.readNotes()
+            modelClassObject.readNotes({'userId':getAllNotesData.userId})
             .then(data=>{
                 resolve(data)
             })
@@ -55,34 +55,24 @@ class ServiceClass {
         })
     }
 
-    // getAllNotesByIdInService(getAllNoteData){
-    //     return new Promise((resolve,reject)=>{
-    //         modelClassObject.findAllNotesById({'userId':getAllNoteData.userId})
-    //         .then(data=>{
-    //             resolve(data)
-    //         })
-    //         .catch(err=>{
-    //             reject(err)
-    //         })
-    //     })
-    // }
+    
 
-    editNoteInService(editData){
+    editNote(editData){
         return new Promise((resolve,reject)=>{
 
-            modelClassObject.findOne({'_id':editData._id})
-            .then(data=>{
-                modelClassObject.updateNote({'_id':editData._id},{'title':editData.title,'description':editData.description})
+            // modelClassObject.findOne({'_id':editData._id})
+            // .then(data=>{
+                modelClassObject.updateNote({'userId':editData.userId,'noteIs':editData.noteId},{'title':editData.title,'description':editData.description})
                 .then(data=>{
                     resolve(data)
                 })
                 .catch(err=>{
                     reject(err)
                 })
-            })
-            .catch(err=>{
-                reject(err)
-            })
+            // })
+            // .catch(err=>{
+                // reject(err)
+            // })
                 // const updatedata={'_id':editData._id}
                 // const dataToBeUpdated={'title':editData.title,'description':editData.description}
                 
@@ -92,11 +82,11 @@ class ServiceClass {
      * 
      * @param {*} removeNote 
      */
-    removeNoteInService(removeNote){
+    removeNote(removeNote){
         return new Promise((resolve,reject)=>{
-            const deleteData={'_id':removeNote._id}
-            
-            modelClassObject.deleteNote(deleteData)
+            const deleteData={'noteId':removeNote._id}
+            //call find method here and then update note
+            modelClassObject.updateNote({'noteId':removeNote.noteId},{'isTrash':true})
             .then(data=>{
                 resolve(data)
             })

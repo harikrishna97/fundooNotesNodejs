@@ -33,14 +33,16 @@ var NoteSchema=new Schema(
             required:true
         },
         userId:{
-            type:Schema.Types.ObjectId,
-            ref: 'User',
+            type:String,
+            required:true
+            // type:Schema.Types.ObjectId,
+            // ref: 'User',
             // required:true,
             // trim:true,
         },
         email:{
             type:String,
-            required:true
+            // required:true
         },
         remainder:{
             type:String,
@@ -96,7 +98,7 @@ var NoteSchema=new Schema(
         createNote(createData){
             let noteData=new note(
                 {
-                    email:createData.email,
+                    userId:createData.userId,
                     title:createData.title,
                     description:createData.description,
                 }
@@ -117,9 +119,9 @@ var NoteSchema=new Schema(
         /**
          * @description : read All notes From database
          */
-        readNotes(){
+        readNotes(getData){
             return new Promise((resolve,reject)=>{
-                note.find().then(data=>{
+                note.find(getData).then(data=>{
                     console.log("in found DAta",JSON.stringify(data));
                 resolve(data);    
                 })
@@ -140,11 +142,16 @@ var NoteSchema=new Schema(
             console.log("===>",updateData);    
             return new Promise((resolve,reject)=>{
                 console.log('In Promise');
-                
+                //useFind both Id's
                 note.findByIdAndUpdate(updateData,dataToBeUpadted,{ new: true})
                 .then(data=>{
-                    console.log('in data');  
-                    resolve(data);
+                    console.log('in data',data);  
+                    if(data!=null){
+                        resolve(data);
+                    }else{
+                        reject('invalid Id')
+                    }
+                   
                 })
                 .catch(err=>{
                     console.log('in err',err);   

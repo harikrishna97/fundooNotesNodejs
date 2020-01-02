@@ -50,11 +50,15 @@ routes.get('/userVerify/:url',(req,res)=>{//localhost:4000
 routes.post('/userVerification/:token',tokenObject.tokenVerification,controllerClassObject.userVerificatonInController);
 // routes.post('/userVerification/:token',tokenObject.userVerification,controllerClassObject.userVerificatonInController);
 
-routes.post('/createNewNote',noteControllerClassObject.createNoteIncontroller);
-routes.get('/getAllNotes',noteControllerClassObject.getAllNotesIncontroller)
-routes.post('/editNote',noteControllerClassObject.editNoteIncontroller)
-routes.post('/removeNote',noteControllerClassObject.removeNoteIncontroller)
-routes.post('/imageUpload', controllerClassObject.imageUploadInController)
+routes.post('/note/:token',tokenObject.tokenVerification,noteControllerClassObject.createNote);
+routes.get('/note/:token',tokenObject.tokenVerification,noteControllerClassObject.getAllNotes)
+routes.put('/note/:token/:noteId',tokenObject.tokenVerification,noteControllerClassObject.editNote)
+routes.delete('/note/:token/:noteId',tokenObject.tokenVerification,noteControllerClassObject.removeNote)
+
+routes.put('/imageUpload/:token',tokenObject.tokenVerification, controllerClassObject.imageUploadInController)
+
+
+
 routes.post('/addRemainder',noteControllerClassObject.addRemainderInController)
 routes.post('/removeRemainder',noteControllerClassObject.removeRemainderInController)
 routes.post('/archiveNote',noteControllerClassObject.archiveNoteInController)

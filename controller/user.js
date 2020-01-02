@@ -18,18 +18,19 @@
  *
  ******************************************************************************/
 
- 
-const service=require('../services/user');
-const tokenGenerator=require('../utility/tokenGeneration')
-const nodeMailer=require('../utility/sendMail')
 require('dotenv').config();
-const upload = require('../services/s3');
-const singleUpload = upload.single('image');
-const urlShortnerClassObject=require('../utility/urlShortner')
-const nodeMailerObject=new nodeMailer.NodeMailerClass;
-const serviceClassObject=new service.ServiceClass
-const redis=require('redis')
-const client = redis.createClient(process.env.REDIS_PORT);
+
+const 
+     service = require('../services/user'),
+     tokenGenerator=require('../utility/tokenGeneration'),
+     nodeMailer=require('../utility/sendMail'),
+     upload = require('../services/s3'),
+ singleUpload = upload.single('image'),
+ urlShortnerClassObject=require('../utility/urlShortner'),
+ nodeMailerObject=new nodeMailer.NodeMailerClass,
+ serviceClassObject=new service.ServiceClass,
+ redis=require('redis'),
+ client = redis.createClient(process.env.REDIS_PORT);
 // const client = redis.createClient();
 
 class ControllerClass{
@@ -188,7 +189,7 @@ class ControllerClass{
                         console.log('PayLoad Is :: '+JSON.stringify(payload));
                         var token=tokenGenerator.tokenGeneration(payload);
                         console.log('Generated token is'+token);
-                        client.set('loginToken'+data._id,token,'EX', 60 * 60 * 24)
+                        client.set(data._id,token,'EX', 60 * 60 * 24)
 
                         let response={}
                             response.success=true
@@ -382,7 +383,7 @@ class ControllerClass{
           
         response.success=true,
         response.message='Image Url saved SuccessFully..'
-        response.ImageUrl=data.imageUrl;
+        // response.ImageUrl=data.imageUrl;
         return res.status(200).send(response)
       })
       .catch(err=>{
