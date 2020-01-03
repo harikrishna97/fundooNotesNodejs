@@ -28,15 +28,15 @@ module.exports={
     
     tokenVerification(req,res,next){
        
-        var token=req.params.token||req.headers.token;
-        console.log('Token In Token Verification :: ',req.params.token);
+        var token=req.headers.token||req.params.token;
+        console.log('Token In Token Verification :: ',req.headers.token);
         
         try{
             if(token){
                 jwt.verify(token,secretKey,(err,data)=>{
                     if(err){
-
-                        return res.json({
+                        // return res.status(400).send(err);
+                        return res.status(400).send({
                             success:false,
                             message:'invalid token'
                         })
@@ -79,10 +79,15 @@ module.exports={
                 })
             }else if(token == null || token == undefined){
 
-                return res.status(501).send( res.json({
+                return res.status(400).send( res.json({
                     success:false,
                     message:'invalid User'
                 }))
+            }else{
+                return res.status(400).send( {
+                    success:false,
+                    message:'invalid User'
+                })
             }
         }catch(err){
             console.log(err);

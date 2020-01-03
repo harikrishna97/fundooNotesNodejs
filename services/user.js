@@ -109,27 +109,7 @@ class ServiceClass{
             return err;   
         }    
     }
-    /**
-    * @description:function get All Users information from database
-    * @param:{}
-    * 
-    */ 
-    getAllUserInService(){
-        try{
-            return new Promise((reject,resolve)=>{
-                modelClassObject.findAll({}).then(data=>{
-                    resolve(data)
-                })
-                .catch(err=>{
-                    reject(err)
-                })       
-             })
-        }catch(err){
-            console.log(err);
-            return err;      
-        }    
-    }
-
+   
     
     /**
      * @description:API to for forget password
@@ -230,7 +210,7 @@ class ServiceClass{
      * @param {*} userVerificationData 
      */
     userVerificationInService(userVerificationData){
-        try{
+        
             return new Promise((resolve,reject)=>{
                 modelClassObject.updateData({'_id':userVerificationData._id},{$set:{'isVerified':true}})
                 .then(data=>{
@@ -243,29 +223,29 @@ class ServiceClass{
                     reject(err);
                 });
             });
-        }catch(err){
-            console.log(err);
-            return err;     
-        }
+        
     }
 
     /**
      * description : It saves aws generator image in database for user Profile
      * @param {*} imageData 
      */
-    imageUploadInService(imageData){
+    imageUpload(imageData){
         return new Promise((resolve,reject)=>{
 
-            modelClassObject.updateData({'email':imageData.email},{'imageUrl':imageData.imageUrl})
+            modelClassObject.updateData({'_id':imageData.userId},{'imageUrl':imageData.imageUrl})
             .then(data=>{
-                resolve(data)
+                if(data!==null){
+                    resolve(data)
+                }else{
+                    reject('Invalid Id')
+                } 
             })
             .catch(err=>{
                 reject(err)
             })
         })
     }
-
 }
 module.exports={
     ServiceClass

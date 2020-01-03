@@ -74,17 +74,6 @@ var NoteSchema=new Schema(
             type:String,
             default:null
         }
-        // // noteId:{
-        // //     type:String,
-        // //     required:true,
-        // //     trim:true
-        // // },
-
-       
-        // image:{
-        //     type:String
-            
-        // },
         
  },
  {timestamps:true})
@@ -119,11 +108,18 @@ var NoteSchema=new Schema(
         /**
          * @description : read All notes From database
          */
-        readNotes(getData){
+        readNotes(findData){
             return new Promise((resolve,reject)=>{
-                note.find(getData).then(data=>{
+                note.find(findData).then(data=>{
                     console.log("in found DAta",JSON.stringify(data));
-                resolve(data);    
+                    if(data!==null){
+                        resolve(data);    
+                    }else{
+                        console.log(' readnotes null ',data);
+                        
+                        reject(data);
+                    }
+                
                 })
                 .catch(err=>{
                     console.log('error in read notes :: 120',err);
@@ -149,7 +145,7 @@ var NoteSchema=new Schema(
                     if(data!=null){
                         resolve(data);
                     }else{
-                        reject('invalid Id')
+                        reject('invalid NoteId')
                     }
                    
                 })

@@ -87,24 +87,7 @@ UserSchema.pre('save',function (next){
 });
 var user=mongoose.model('User',UserSchema);
 class ModelClass{     
-     /**
-     * @description:function get All Users information 
-     * @param:no params
-     * @returns:{*} data or err
-     */ 
-    findAll(){
-       return new Promise((reject,resolve)=>{
-            user.find({}).then(data=>{
-                console.log("in found DAta",data);
-                
-                resolve(data);
-
-            })
-            .catch(err=>{
-                reject(err)
-            })
-        })       
-    }
+     
      /**
       * @description: findOne() method returns only one document that satisfies 
       *               the criteria entered. If the criteria entered matches for more 
@@ -193,7 +176,24 @@ class ModelClass{
     //         }
     //     })
     // }
-
+    // /**
+    //  * @description:function get All Users information 
+    //  * @param:no params
+    //  * @returns:{*} data or err
+    //  */ 
+    // findAll(){
+    //     return new Promise((reject,resolve)=>{
+    //          user.find({}).then(data=>{
+    //              console.log("in found DAta",data);
+                 
+    //              resolve(data);
+ 
+    //          })
+    //          .catch(err=>{
+    //              reject(err)
+    //          })
+    //      })       
+    //  }
 module.exports={
     ModelClass,
     user

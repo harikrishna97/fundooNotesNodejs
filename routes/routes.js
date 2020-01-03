@@ -23,16 +23,14 @@ const tokenObject=require('../utility/tokenVerification')
 const model=require('../app.js/model/user')
 const noteControllerClassObject=require('../controller/note')
 const labelControllerClassObject=require('../controller/label')
-// const upload=require('../fileUpload/fileUpload')
-// const singleUpload=upload.single('image')
+
 
 const modelClassObject=new model.ModelClass
 
 const routes=express.Router()
 
-routes.post('/registration',controllerClassObject.registration);
+routes.post('/user',controllerClassObject.registration);
 routes.post('/login',controllerClassObject.login);
-routes.get('/getAllUser',controllerClassObject.getAllUserInController);
 routes.post('/forgetPassword',controllerClassObject.forgetPasswordInController);
 routes.post('/resetPassword/:token',tokenObject.tokenVerification,controllerClassObject.resetPasswordInController);
 
@@ -50,27 +48,35 @@ routes.get('/userVerify/:url',(req,res)=>{//localhost:4000
 routes.post('/userVerification/:token',tokenObject.tokenVerification,controllerClassObject.userVerificatonInController);
 // routes.post('/userVerification/:token',tokenObject.userVerification,controllerClassObject.userVerificatonInController);
 
-routes.post('/note/:token',tokenObject.tokenVerification,noteControllerClassObject.createNote);
-routes.get('/note/:token',tokenObject.tokenVerification,noteControllerClassObject.getAllNotes)
-routes.put('/note/:token/:noteId',tokenObject.tokenVerification,noteControllerClassObject.editNote)
-routes.delete('/note/:token/:noteId',tokenObject.tokenVerification,noteControllerClassObject.removeNote)
-
-routes.put('/imageUpload/:token',tokenObject.tokenVerification, controllerClassObject.imageUploadInController)
-
+routes.post('/note/',tokenObject.tokenVerification,noteControllerClassObject.createNote);
+routes.get('/note',tokenObject.tokenVerification,noteControllerClassObject.getAllNotes)
+routes.put('/note/:noteId',tokenObject.tokenVerification,noteControllerClassObject.editNote)
+routes.delete('/note/:noteId',tokenObject.tokenVerification,noteControllerClassObject.removeNote)
+routes.put('/imageUpload',tokenObject.tokenVerification,controllerClassObject.imageUpload)
 
 
-routes.post('/addRemainder',noteControllerClassObject.addRemainderInController)
-routes.post('/removeRemainder',noteControllerClassObject.removeRemainderInController)
-routes.post('/archiveNote',noteControllerClassObject.archiveNoteInController)
-routes.post('/removeArchiveNote',noteControllerClassObject.removeArchiveNoteInController)
-routes.post('/pinNote',noteControllerClassObject.pinNoteInController)
-routes.post('/trashNote',noteControllerClassObject.trashNoteInController)
+
+routes.post('/remainder',tokenObject.tokenVerification,noteControllerClassObject.addRemainder)
+routes.delete('/remainder',tokenObject.tokenVerification,noteControllerClassObject.removeRemainderInController)
+routes.put('/archive',tokenObject.tokenVerification,noteControllerClassObject.archiveNoteInController)
+routes.put('/pinned',tokenObject.tokenVerification,noteControllerClassObject.pinNoteInController)
+routes.put('/trash',tokenObject.tokenVerification,noteControllerClassObject.trashNoteInController)
 
 
-routes.post('/createNewLabel',labelControllerClassObject.createLabelIncontroller)
-routes.get('/getAllLabels',labelControllerClassObject.getAllLabelsIncontroller)
-routes.post('/editLabel',labelControllerClassObject.editLabelIncontroller)
-routes.post('/removeLabel',labelControllerClassObject.removeLabelIncontroller)
+
+
+
+
+
+
+
+
+
+
+routes.post('/label',tokenObject.tokenVerification,labelControllerClassObject.createLabelIncontroller)
+routes.get('/label',tokenObject.tokenVerification,labelControllerClassObject.getAllLabelsIncontroller)
+routes.put('/label',tokenObject.tokenVerification,labelControllerClassObject.editLabelIncontroller)
+routes.delete('/label',tokenObject.tokenVerification,labelControllerClassObject.removeLabelIncontroller)
 
 
 

@@ -1,0 +1,165 @@
+{
+
+    "createNewNote":[
+        {
+            "title":"myTestingNote1",
+            "description":"This is my Testing Note 1 "
+        },
+        {
+            
+            "title":"",
+            "description":"This is my Testing Note 1 "
+        },
+        {
+            
+            "title":"myTestingNote1",
+            "description":""
+        },
+        {
+            
+            "title":null,
+            "description":"description is.."
+        },
+        { 
+            "title":"myTestingNote1",
+            "description":null
+        },
+        {
+           
+            "description":"This is my Testing Note "
+        },
+        {
+            
+            "title":"myTestingNote1"
+           
+        }
+    ],
+    "createNoteToken":[
+        {
+            "token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZTBlZTMzZjY5M2E4ZDI0ZWZhYmE4YmEiLCJlbWFpbCI6ImFkaG9rc2hhajEwOEBnbWFpbC5jb20iLCJpYXQiOjE1NzgwMzQxOTAsImV4cCI6MTU3ODEyMDU5MH0.Ogr0btmI_SVP9crPtZXk4S0csd8yc5XsN4H5umtAY_M"
+        },
+        {
+            "token":"eyJfaWQiOiI1ZTBlZTMzZjY5M2E4ZDI0ZWZhYmE4YmEiLCJlbWFpbCI6ImFkaG9rc2hhajEwOEBnbWFpbC5jb20iLCJpYXQiOjE1NzgwMzQxOTAsImV4cCI6MTU3ODEyMDU5MH0.Ogr0btmI_SVP9crPtZXk4S0csd8yc5XsN4H5umtAY_M"
+        },
+        {
+            "token":""
+        },
+        {
+            "token":null
+        },
+        {
+            
+        }
+    ],
+
+    "editNote":[
+       
+        {
+            
+            "title":"myEditedTestingNote",
+            "description":"This is my Edited Testing Note  "
+        },
+        {
+            
+            "title":"",
+            "description":"This is my Edited Testing Note  "
+        },
+        {
+            
+            "title":null,
+            "description":"This is my Edited Testing Note  "
+        },
+        {
+            
+            
+            "description":"This is my Edited Testing Note  "
+        },
+        {
+            
+            "title":"myEditedTestingNote",
+            "description":""
+        },
+        {
+            
+            "title":"myEditedTestingNote",
+            "description":null
+        },
+        {
+            
+            "title":"myEditedTestingNote"
+            
+        }
+    ],
+    "noteId":[
+
+        {
+            "noteId":"5e0f1b59d1544a5da08fc031"
+        },
+        {
+             "noteId":"5e0f1b59d1544a5da08f"
+        },
+        {
+            "noteId":""
+        },
+        {
+            "noteId":null
+        },
+        {
+            
+        }
+       
+    ],
+
+
+    "removeNote":[
+        {
+            "_id":"5e06fbb0f14f6420bfa928e4"
+        },
+        {
+            "_id":""
+        },
+        {
+            "_id":null
+        },
+        {
+            
+        },
+        {
+            "_id":"InvalidNoteId"
+        }
+    ],
+    "Token":[
+        {
+            "token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZTBlZTMzZjY5M2E4ZDI0ZWZhYmE4YmEiLCJlbWFpbCI6ImFkaG9rc2hhajEwOEBnbWFpbC5jb20iLCJpYXQiOjE1NzgwMzQxOTAsImV4cCI6MTU3ODEyMDU5MH0.Ogr0btmI_SVP9crPtZXk4S0csd8yc5XsN4H5umtAY_M"
+        },
+        {
+            "token":"eyJfaWQiOiI1ZTBlZTMzZjY5M2E4ZDI0ZWZhYmE4YmEiLCJlbWFpbCI6ImFkaG9rc2hhajEwOEBnbWFpbC5jb20iLCJpYXQiOjE1NzgwMzQxOTAsImV4cCI6MTU3ODEyMDU5MH0.Ogr0btmI_SVP9crPtZXk4S0csd8yc5XsN4H5umtAY_M"
+        },
+        {
+            "token":""
+        },
+        {
+            "token":null
+        },
+        {
+            
+        }
+    ],
+    "getAllNotesToken":[
+        {
+            "token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZTBlZTMzZjY5M2E4ZDI0ZWZhYmE4YmEiLCJlbWFpbCI6ImFkaG9rc2hhajEwOEBnbWFpbC5jb20iLCJpYXQiOjE1NzgwMzQxOTAsImV4cCI6MTU3ODEyMDU5MH0.Ogr0btmI_SVP9crPtZXk4S0csd8yc5XsN4H5umtAY_M"
+        },
+        {
+            "token":"eyJfaWQiOiI1ZTBlZTMzZjY5M2E4ZDI0ZWZhYmE4YmEiLCJlbWFpbCI6ImFkaG9rc2hhajEwOEBnbWFpbC5jb20iLCJpYXQiOjE1NzgwMzQxOTAsImV4cCI6MTU3ODEyMDU5MH0.Ogr0btmI_SVP9crPtZXk4S0csd8yc5XsN4H5umtAY_M"
+        },
+        {
+            "token":""
+        },
+        {
+            "token":null
+        },
+        {
+            
+        }
+    ]
+}

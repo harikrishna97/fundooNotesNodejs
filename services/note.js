@@ -17,9 +17,11 @@
  *
  ******************************************************************************/
 
-const modelClassObject=require('../app.js/model/note')
-
-
+const 
+    modelClassObject=require('../app.js/model/note'),
+    // cron = require("node-cron"),
+    nodeMailer=require('../utility/sendMail'),
+    nodeMailerObject=new nodeMailer.NodeMailerClass;
 class ServiceClass {
     /**
      * 
@@ -60,19 +62,25 @@ class ServiceClass {
     editNote(editData){
         return new Promise((resolve,reject)=>{
 
-            // modelClassObject.findOne({'_id':editData._id})
-            // .then(data=>{
-                modelClassObject.updateNote({'userId':editData.userId,'noteIs':editData.noteId},{'title':editData.title,'description':editData.description})
-                .then(data=>{
-                    resolve(data)
-                })
-                .catch(err=>{
-                    reject(err)
-                })
-            // })
-            // .catch(err=>{
-                // reject(err)
-            // })
+            modelClassObject.findOne({'userId':editData.userId})
+            .then(data=>{
+                if(data!==null){
+                    modelClassObject.updateNote({'_id':editData.noteId},{'title':editData.title,'description':editData.description})
+                    .then(data=>{
+                        console.log('null id',data);
+                        
+                        resolve(data)
+                    })
+                    .catch(err=>{
+                        reject(err)
+                    })
+                }else{
+                    reject('invalid UserId')
+                }    
+            })
+            .catch(err=>{
+                reject(err)
+            })
                 // const updatedata={'_id':editData._id}
                 // const dataToBeUpdated={'title':editData.title,'description':editData.description}
                 
@@ -86,13 +94,20 @@ class ServiceClass {
         return new Promise((resolve,reject)=>{
             const deleteData={'noteId':removeNote._id}
             //call find method here and then update note
-            modelClassObject.updateNote({'noteId':removeNote.noteId},{'isTrash':true})
+            modelClassObject.findOne({'userId':removeNote.userId})
             .then(data=>{
-                resolve(data)
-            })
-            .catch(err=>{
-                reject(err)
-            })
+                if(data!==null){
+                    modelClassObject.updateNote({'_id':removeNote.noteId},{'isTrash':true})
+                    .then(data=>{
+                        resolve(data)
+                    })
+                    .catch(err=>{
+                        reject(err)
+                    })
+                }else{
+                    reject('invalid UserId')
+                } 
+            })       
         })
 
     }
@@ -100,7 +115,7 @@ class ServiceClass {
      * @description API to add remainder in a given note
      * @param {*} remainderData 
      */
-    addRemainderInService(remainderData){
+    addRemainder(remainderData){
     console.log('Remainder Dat in service',JSON.stringify(remainderData));
 
         return new Promise((resolve,reject)=>{
@@ -195,10 +210,24 @@ class ServiceClass {
             .catch(err=>{
                 reject(err)
             })
+        })
+    }
+
+    notificationSystem(){
+
+        // sending emails at periodic intervals
+        cron.schedule("* * * * Wednesday", function(){
+        console.log("---------------------");
+        console.log("Running Cron Job");
+        //nodemailer
+        nodeMailerObject.sendMailUsingNodeMailer(email,url);
 
         })
 
+
     }
+
+
 }
 
 module.exports=new ServiceClass;

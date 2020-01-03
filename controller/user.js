@@ -132,7 +132,7 @@ class ControllerClass{
                 console.log('DATAAA',data);
                 const response={}
                 response.success=true,
-                response.message=data
+                response.message='User verification successful..'
                 return res.status(200).send(response)
 
             })
@@ -194,7 +194,7 @@ class ControllerClass{
                         let response={}
                             response.success=true
                             response.message='Login Successful...'
-                            response.token=token;
+                            // response.token=token;
                             return res.status(200).send(response);
                     }
                 })
@@ -205,35 +205,7 @@ class ControllerClass{
         }    
      }
      
-     /**
-      * @description:API to get All Users information
-      * @param {*} req 
-      * @param {*} res 
-      */
-    getAllUserInController(req,res){
-        var response={}
-        console.log("in controller");
-
-        return new Promise((resolve,reject)=>{
-            console.log("calling service");
-            
-            serviceClassObject.getAllUserInService(req)
-            
-        .then(data=>{
-            console.log("gfhfy-->",data)
-            response.success=true,
-            response.Data=data
-            return res.status(200).send(response)
-        })
-        .catch(err=>{
-            response.success=false,
-            response.Error=err
-            return res.status(400).send(response);
-
-        })
-
-    })
-}
+     
 
     /**
      * @description Forget Password API for user's to change forget password
@@ -363,7 +335,7 @@ class ControllerClass{
   * @param {*} req 
   * @param {*} res 
   */
- imageUploadInController(req, res) {
+ imageUpload(req, res) {
 
     singleUpload(req, res, function(err) {
   
@@ -374,10 +346,13 @@ class ControllerClass{
 
       const imageData={}
     //   imageData.email='adhokshaj108@gmail.com'
-      imageData.email=req.body.email;
-      imageData.imageUrl=req.file.location;
+        imageData.userId=req.decoded._id;
+        console.log('REQ.Id',req.decoded._id);
+        
+        // imageData.email=req.body.email;
+        imageData.imageUrl=req.file.location;
       const response={}
-      serviceClassObject.imageUploadInService(imageData)
+      serviceClassObject.imageUpload(imageData)
       .then(data=>{
           console.log('DATA in controller response :: ',data);
           

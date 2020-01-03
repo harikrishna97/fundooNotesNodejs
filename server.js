@@ -43,8 +43,17 @@ app.use('/',routes);
 //     res.json({msg: 'This is CORS-enabled for all origins!'})
 //   })
 
+var cron = require('node-cron');
+ 
+var task = cron.schedule('* 1 * * * *', () => {
+  console.log('stoped task');
+}, {
+//   
+timezone:true,'timezone':'America/Indiana/Indianapolis'
+});
+ 
+task.start();
 
-  
 // listen for request
 app.listen(port,()=>{
     DatabaseClassObject.connect()
