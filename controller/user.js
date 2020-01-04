@@ -189,12 +189,12 @@ class ControllerClass{
                         console.log('PayLoad Is :: '+JSON.stringify(payload));
                         var token=tokenGenerator.tokenGeneration(payload);
                         console.log('Generated token is'+token);
-                        client.set(data._id,token,'EX', 60 * 60 * 24)
+                        client.set(data._id,token)//'EX', 60 * 60 * 24)
 
                         let response={}
                             response.success=true
                             response.message='Login Successful...'
-                            // response.token=token;
+                            response.token=token;
                             return res.status(200).send(response);
                     }
                 })
@@ -366,8 +366,6 @@ class ControllerClass{
         response.error=err
         return res.status(400).send(response);
       })
-    //   console.log('FileUrl :::',req.file.location);
-    //   return res.json({'imageUrl': req.file.location});
     });
 }
 

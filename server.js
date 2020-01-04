@@ -23,7 +23,8 @@ const routes=require('./routes/routes')
 // var cors = require('cors');
 const database=require('./config/database.service');
 const DatabaseClassObject= new database.DatabaseClass;
-
+const cron=require('node-cron')
+const serviceClassObject=require('./services/note')
 //create express app
 
 const app=express();
@@ -43,16 +44,22 @@ app.use('/',routes);
 //     res.json({msg: 'This is CORS-enabled for all origins!'})
 //   })
 
-var cron = require('node-cron');
- 
-var task = cron.schedule('* 1 * * * *', () => {
-  console.log('stoped task');
-}, {
-//   
-timezone:true,'timezone':'America/Indiana/Indianapolis'
-});
- 
-task.start();
+
+//Node-cron schedular to schedule remainders
+cron.schedule("* * * * *", () => {
+  console.log(`I'm a node-cron schedular, running on every minute..`);
+  serviceClassObject.notificationServiceForRemainder()
+  .then(data=>{
+    if(data!==null){
+      // console.log('Remainder For :: \nTitle :: '+data[0].title+'\nDescription :: '+data[0].description)
+      // console.log('remainders :: ',data);
+      data.forEach(element => console.log('remainder :: ',element));
+
+      
+
+    }
+  })
+  });
 
 // listen for request
 app.listen(port,()=>{

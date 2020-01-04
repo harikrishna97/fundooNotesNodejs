@@ -45,7 +45,7 @@ var NoteSchema=new Schema(
             // required:true
         },
         remainder:{
-            type:String,
+            type:Date,
             default:null
         },
         isArchive:{
@@ -55,12 +55,10 @@ var NoteSchema=new Schema(
          color:{
             type:String,
             default:null
-
         },
         isPinned:{
             type:Boolean,
             default:false
-
         },
         isTrash:{
             type:Boolean,
@@ -73,13 +71,11 @@ var NoteSchema=new Schema(
         collaborator:{
             type:String,
             default:null
-        }
-        
+        }        
  },
  {timestamps:true})
     var note=mongoose.model('Note',NoteSchema);
     class ModelClass{   
-
         /**
          * @description: create to new note and save to database
          * @param {*} createData 
@@ -104,26 +100,23 @@ var NoteSchema=new Schema(
                 })
             })                               
         }
-
         /**
          * @description : read All notes From database
          */
-        readNotes(findData){
+        readNotes(findData,filterData){
             return new Promise((resolve,reject)=>{
-                note.find(findData).then(data=>{
-                    console.log("in found DAta",JSON.stringify(data));
+                note.find(findData,filterData)
+                .then(data=>{
+                    // console.log("in found DAta",JSON.stringify(data));
                     if(data!==null){
-                        resolve(data);    
+                        resolve(data.reverse());    
                     }else{
-                        console.log(' readnotes null ',data);
-                        
+                        // console.log(' readnotes null ',data);                       
                         reject(data);
-                    }
-                
+                    }              
                 })
                 .catch(err=>{
-                    console.log('error in read notes :: 120',err);
-                    
+                    // console.log('error in read notes :: 120',err);                  
                     reject(err)
                 })
             })  
@@ -141,7 +134,7 @@ var NoteSchema=new Schema(
                 //useFind both Id's
                 note.findByIdAndUpdate(updateData,dataToBeUpadted,{ new: true})
                 .then(data=>{
-                    console.log('in data',data);  
+                    // console.log('in data',data);  
                     if(data!=null){
                         resolve(data);
                     }else{
@@ -150,7 +143,7 @@ var NoteSchema=new Schema(
                    
                 })
                 .catch(err=>{
-                    console.log('in err',err);   
+                    // console.log('in err',err);   
                     reject(err)
                 })
             })
@@ -197,9 +190,6 @@ var NoteSchema=new Schema(
             })
         }
         
-
-        
     }   
-
     
 module.exports=new ModelClass;

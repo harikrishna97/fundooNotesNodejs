@@ -277,12 +277,10 @@ class ControllerClass {
      */
     addRemainder(req,res){
         try{
-            req.checkBody('noteId', 'NoteId  should not be empty.').notEmpty();
-            req.checkBody('remainder', 'Remainder  should not be empty.').notEmpty();
-     
-            
+            // req.checkBody('noteId', 'NoteId  should not be empty.').notEmpty();
+            req.checkBody('remainder', 'Remainder  should not be empty.').notEmpty();            
             const remainderData={}
-            remainderData.noteId=req.body.noteId;
+            remainderData.noteId=req.params.noteId;
             remainderData.remainder=req.body.remainder;
 
             const response={}
@@ -301,7 +299,10 @@ class ControllerClass {
                 return res.status(400).send(response);
             })
         }catch(err){
-            console.log(err);
+            logger.info(err);
+            const response={}
+            response.success=false;
+            response.message=' Something went Bad..';
             return res.status(500).send(response);
             
         }    
@@ -312,14 +313,14 @@ class ControllerClass {
      * @param {*} req 
      * @param {*} res 
      */
-    removeRemainderInController(req,res){
+    removeRemainder(req,res){
         try{
-            req.checkBody('noteId', 'NoteId  should not be empty.').notEmpty();
+            // req.checkBody('noteId', 'NoteId  should not be empty.').notEmpty();
             const remainderData={}
-            remainderData.noteId=req.body.noteId;
+            remainderData.noteId=req.params.noteId;
 
             const response={}
-            serviceClassObject.removeRemainderInService(remainderData)
+            serviceClassObject.removeRemainder(remainderData)
             .then(data=>{
                 response.success=true;
                 response.message='remainder Deleted successfully';
@@ -335,7 +336,10 @@ class ControllerClass {
                 return res.status(400).send(response);
             })
         }catch(err){
-            console.log(err);
+            logger.info(err);
+            const response={}
+            response.success=false;
+            response.message=' Something went Bad..';
             return res.status(500).send(response);
             
         }
@@ -345,84 +349,100 @@ class ControllerClass {
      * @param {*} req 
      * @param {*} res 
      */
-    archiveNoteInController(req,res){
-        req.checkBody('noteId', 'NoteId  should not be empty.').notEmpty();
-        const archiveData={}
-        archiveData.noteId=req.body.noteId;
+    archiveNote(req,res){
+        try{
+            // req.checkBody('noteId', 'NoteId  should not be empty.').notEmpty();
+            const archiveData={}
+            archiveData.noteId=req.params.noteId;
 
-        const response={}
-        serviceClassObject.archiveNoteInService(archiveData)
-        .then(data=>{
-            response.success=true;
-            response.message='Note Archive successfully';
-            response.data=data;
-            return res.status(200).send(response);
+            const response={}
+            serviceClassObject.archiveNote(archiveData)
+            .then(data=>{
+                response.success=true;
+                response.message='Note Archive successfully';
+                response.data=data;
+                return res.status(200).send(response);
 
-        })
-        .catch(err=>{
+            })
+            .catch(err=>{
+                response.success=false;
+                response.error='Error while Archiving Note'
+                response.data=err;
+                // response.data=err;
+                return res.status(400).send(response);
+            })
+        }catch(err){
+            logger.info(err);
+            const response={}
             response.success=false;
-            response.error='Error while Archiving Note'
-            response.data=err;
-            // response.data=err;
-            return res.status(400).send(response);
-        })
+            response.message=' Something went Bad..';
+            return res.status(500).send(response);
+            
+        }    
 
     }
-    /**
-     * @description API to remove Archive note
-     * @param {*} req 
-     * @param {*} res 
-     */
-    removeArchiveNoteInController(req,res){
-        req.checkBody('noteId', 'NoteId  should not be empty.').notEmpty();
-        const archiveData={}
-        archiveData.noteId=req.body.noteId;
+    // /**
+    //  * @description API to remove Archive note
+    //  * @param {*} req 
+    //  * @param {*} res 
+    //  */
+    // removeArchiveNote(req,res){
+    //     req.checkBody('noteId', 'NoteId  should not be empty.').notEmpty();
+    //     const archiveData={}
+    //     archiveData.noteId=req.body.noteId;
 
-        const response={}
-        serviceClassObject.removeArchiveNoteInService(archiveData)
-        .then(data=>{
-            response.success=true;
-            response.message='Note Archive successfully';
-            response.data=data;
-            return res.status(200).send(response);
+    //     const response={}
+    //     serviceClassObject.removeArchiveNote(archiveData)
+    //     .then(data=>{
+    //         response.success=true;
+    //         response.message='Note Archive successfully';
+    //         response.data=data;
+    //         return res.status(200).send(response);
 
-        })
-        .catch(err=>{
-            response.success=false;
-            response.error='Error while Archiving Note'
-            response.data=err;
-            // response.data=err;
-            return res.status(400).send(response);
-        })
+    //     })
+    //     .catch(err=>{
+    //         response.success=false;
+    //         response.error='Error while Archiving Note'
+    //         response.data=err;
+    //         // response.data=err;
+    //         return res.status(400).send(response);
+    //     })
 
-    }
+    // }
     /**
      * @description API to Pin a note
      * @param {*} req 
      * @param {*} res 
      */
-    pinNoteInController(req,res){
-       req.checkBody('noteId', 'NoteId  should not be empty.').notEmpty();
-       const pinNoteData={}
-       pinNoteData.noteId=req.body.noteId;
+    pinNote(req,res){
+        try{
+        //    req.checkBody('noteId', 'NoteId  should not be empty.').notEmpty();
+        const pinNoteData={}
+        pinNoteData.noteId=req.params.noteId;
 
-        const response={}
-        serviceClassObject.pinNoteInService(pinNoteData)
-        .then(data=>{
-            response.success=true;
-            response.message='Note Pinned successfully';
-            response.data=data;
-            return res.status(200).send(response);
+            const response={}
+            serviceClassObject.pinNote(pinNoteData)
+            .then(data=>{
+                response.success=true;
+                response.message='Note Pinned successfully';
+                response.data=data;
+                return res.status(200).send(response);
 
-        })
-        .catch(err=>{
+            })
+            .catch(err=>{
+                response.success=false;
+                response.error='Error while Pinning Note'
+                response.data=err;
+                // response.data=err;
+                return res.status(400).send(response);
+            })
+        }catch(err){
+            logger.info(err);
+            const response={}
             response.success=false;
-            response.error='Error while Pinning Note'
-            response.data=err;
-            // response.data=err;
-            return res.status(400).send(response);
-        })
-
+            response.message=' Something went Bad..';
+            return res.status(500).send(response);            
+        }    
 
     }
     /**
@@ -430,27 +450,36 @@ class ControllerClass {
      * @param {*} req 
      * @param {*} res 
      */
-    trashNoteInController(req,res){
-        req.checkBody('noteId', 'NoteId  should not be empty.').notEmpty();
-       const trashNoteData={}
-       trashNoteData.noteId=req.body.noteId;
+    trashNote(req,res){
+        try{
+            // req.checkBody('noteId', 'NoteId  should not be empty.').notEmpty();
+        const trashNoteData={}
+        trashNoteData.noteId=req.params.noteId;
 
-        const response={}
-        serviceClassObject.trashNoteInService(trashNoteData)
-        .then(data=>{
-            response.success=true;
-            response.message='Note Trash successfully';
-            response.data=data;
-            return res.status(200).send(response);
+            const response={}
+            serviceClassObject.trashNote(trashNoteData)
+            .then(data=>{
+                response.success=true;
+                response.message='Note Trash successfully';
+                response.data=data;
+                return res.status(200).send(response);
 
-        })
-        .catch(err=>{
+            })
+            .catch(err=>{
+                response.success=false;
+                response.error='Error while Trashing a Note'
+                response.data=err;
+                // response.data=err;
+                return res.status(400).send(response);
+            })
+        }catch(err){
+            logger.info(err);
+            const response={}
             response.success=false;
-            response.error='Error while Trashing a Note'
-            response.data=err;
-            // response.data=err;
-            return res.status(400).send(response);
-        })
+            response.message=' Something went Bad..';
+            return res.status(500).send(response);
+            
+        }    
 
     }
 

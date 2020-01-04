@@ -56,11 +56,11 @@ routes.put('/imageUpload',tokenObject.tokenVerification,controllerClassObject.im
 
 
 
-routes.post('/remainder',tokenObject.tokenVerification,noteControllerClassObject.addRemainder)
-routes.delete('/remainder',tokenObject.tokenVerification,noteControllerClassObject.removeRemainderInController)
-routes.put('/archive',tokenObject.tokenVerification,noteControllerClassObject.archiveNoteInController)
-routes.put('/pinned',tokenObject.tokenVerification,noteControllerClassObject.pinNoteInController)
-routes.put('/trash',tokenObject.tokenVerification,noteControllerClassObject.trashNoteInController)
+routes.post('/remainder/:noteId',tokenObject.tokenVerification,noteControllerClassObject.addRemainder)
+routes.delete('/remainder',tokenObject.tokenVerification,noteControllerClassObject.removeRemainder)
+routes.put('/archive',tokenObject.tokenVerification,noteControllerClassObject.archiveNote)
+routes.put('/pinned',tokenObject.tokenVerification,noteControllerClassObject.pinNote)
+routes.put('/trash',tokenObject.tokenVerification,noteControllerClassObject.trashNote)
 
 
 

@@ -46,7 +46,6 @@ module.exports={
                         console.log('Encoded Token :: '+JSON.stringify(req.decoded));
                         // console.log('DECODED TOEKN ID ::',req.decoded._id);
                         console.log('DECODED TOEKN ID ::',data._id);
-
                         const forgetToken=req.url.split('/').includes('resetPassword')
                         const registrationToken=req.url.split('/').includes('userVerification')
                         let redisData;
