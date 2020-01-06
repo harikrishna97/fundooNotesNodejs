@@ -540,8 +540,6 @@ chai.use(chaiHttp);
 
 
 //     })
-
-
     /**
      * @description Getall Notes API TEsting
      */
@@ -562,3 +560,744 @@ chai.use(chaiHttp);
     //   })
 
     // })
+
+    /**
+     * @description ADD Remainder API TEsting
+    */
+    describe('Add Remainder API TEST CASES', () => {
+
+        // it('it should successfully add remainder to the note', (done) => {
+        //  chai.request(server)
+        //      .post('/remainder/'+Credentials.noteId[0].noteId)
+        //      .set('token',Credentials.Token[0].token)
+        //      .send(Credentials.addRemainder[0])
+        //      .end((err, res) => {
+        //            res.should.have.status(200);
+        //            res.body.should.be.a('object');
+        //            console.log('Test BOdy :: ',res.body);
+        //        done();
+        //      });
+        // })
+
+        // it('it should return invalid NoteId', (done) => {
+        //     chai.request(server)
+        //         .post('/remainder/'+Credentials.noteId[1].noteId)
+        //         .set('token',Credentials.Token[0].token)
+        //         .send(Credentials.addRemainder[0])
+        //         .end((err, res) => {
+        //               res.should.have.status(400);
+        //               res.body.should.be.a('object');
+        //               console.log('Test BOdy :: ',res.body);
+        //           done();
+        //         });
+        // })  
+        
+        // it('it should return invalid NoteId,NoteId should not be empty', (done) => {
+        //     chai.request(server)
+        //         .post('/remainder/""')
+        //         .set('token',Credentials.Token[0].token)
+        //         .send(Credentials.addRemainder[0])
+        //         .end((err, res) => {
+        //               res.should.have.status(400);
+        //               res.body.should.be.a('object');
+        //               console.log('Test BOdy :: ',res.body);
+        //           done();
+        //         });
+        // })  
+
+        // it('it should return invalid NoteId,NoteId should not be null', (done) => {
+        //     chai.request(server)
+        //         .post('/remainder/'+Credentials.noteId[3].noteId)
+        //         .set('token',Credentials.Token[0].token)
+        //         .send(Credentials.addRemainder[0])
+        //         .end((err, res) => {
+        //               res.should.have.status(400);
+        //               res.body.should.be.a('object');
+        //               console.log('Test BOdy :: ',res.body);
+        //           done();
+        //         });
+        // }) 
+        
+        // it('it should return invalid NoteId,NoteId should not be undefined', (done) => {
+        //     chai.request(server)
+        //         .post('/remainder/'+Credentials.noteId[4].noteId)
+        //         .set('token',Credentials.Token[0].token)
+        //         .send(Credentials.addRemainder[0])
+        //         .end((err, res) => {
+        //               res.should.have.status(400);
+        //               res.body.should.be.a('object');
+        //               console.log('Test BOdy :: ',res.body);
+        //           done();
+        //         });
+        // })
+
+        // it('it should return invalid token', (done) => {
+        //     chai.request(server)
+        //         .post('/remainder/'+Credentials.noteId[0].noteId)
+        //         .set('token',Credentials.Token[1].token)
+        //         .send(Credentials.addRemainder[0])
+        //         .end((err, res) => {
+        //               res.should.have.status(400);
+        //               res.body.should.be.a('object');
+        //               console.log('Test BOdy :: ',res.body);
+        //           done();
+        //         });
+        // }) 
+
+        // it('it should return invalid token,Token should not be empty', (done) => {
+        //     chai.request(server)
+        //         .post('/remainder/'+Credentials.noteId[0].noteId)
+        //         .set('token',Credentials.Token[2].token)
+        //         .send(Credentials.addRemainder[0])
+        //         .end((err, res) => {
+        //               res.should.have.status(400);
+        //               res.body.should.be.a('object');
+        //               console.log('Test BOdy :: ',res.body);
+        //           done();
+        //         });
+        // })
+
+        // it('it should return invalid token,Token should not be null', (done) => {
+        //     chai.request(server)
+        //         .post('/remainder/'+Credentials.noteId[0].noteId)
+        //         .set('token',Credentials.Token[3].token)
+        //         .send(Credentials.addRemainder[0])
+        //         .end((err, res) => {
+        //               res.should.have.status(400);
+        //               res.body.should.be.a('object');
+        //               console.log('Test BOdy :: ',res.body);
+        //           done();
+        //         });
+        // })
+
+        // it('it should return invalid token,Token should not be undefined', (done) => {
+        //     chai.request(server)
+        //         .post('/remainder/'+Credentials.noteId[0].noteId)
+        //         // .set('token',Credentials.Token[4].token)
+        //         .send(Credentials.addRemainder[0])
+        //         .end((err, res) => {
+        //               res.should.have.status(400);
+        //               res.body.should.be.a('object');
+        //               console.log('Test BOdy :: ',res.body);
+        //           done();
+        //         });
+        // })
+
+        // it('it should return reminder should not be empty', (done) => {
+        //     chai.request(server)
+        //         .post('/remainder/'+Credentials.noteId[0].noteId)
+        //         .set('token',Credentials.Token[0].token)
+        //         .send(Credentials.addRemainder[1])
+        //         .end((err, res) => {
+        //               res.should.have.status(400);
+        //               res.body.should.be.a('object');
+        //               console.log('Test BOdy :: ',res.body);
+        //           done();
+        //         });
+        // })
+
+        // it('it should return reminder should not be null', (done) => {
+        //     chai.request(server)
+        //         .post('/remainder/'+Credentials.noteId[0].noteId)
+        //         .set('token',Credentials.Token[0].token)
+        //         .send(Credentials.addRemainder[2])
+        //         .end((err, res) => {
+        //               res.should.have.status(400);
+        //               res.body.should.be.a('object');
+        //               console.log('Test BOdy :: ',res.body);
+        //           done();
+        //         });
+        // })
+
+        // it('it should return reminder should not be undefined', (done) => {
+        //     chai.request(server)
+        //         .post('/remainder/'+Credentials.noteId[0].noteId)
+        //         .set('token',Credentials.Token[0].token)
+        //         .send(Credentials.addRemainder[3])
+        //         .end((err, res) => {
+        //               res.should.have.status(400);
+        //               res.body.should.be.a('object');
+        //               console.log('Test BOdy :: ',res.body);
+        //           done();
+        //         });
+        // })
+        
+    })
+
+
+    /**
+     * @description Remove Remainder API TEsting
+    */
+   describe('Add Remainder API TEST CASES', () => {
+
+    // it('it should successfully remove remainder from the note', (done) => {
+    //  chai.request(server)
+    //      .delete('/remainder/'+Credentials.noteId[0].noteId)
+    //      .set('token',Credentials.Token[0].token)
+    //     //  .send(Credentials.addRemainder[0])
+    //      .end((err, res) => {
+    //            res.should.have.status(200);
+    //            res.body.should.be.a('object');
+    //            console.log('Test BOdy :: ',res.body);
+    //        done();
+    //      });
+    // })
+
+    // it('it should return invalid noteId', (done) => {
+    //     chai.request(server)
+    //         .delete('/remainder/'+Credentials.noteId[1].noteId)
+    //         .set('token',Credentials.Token[0].token)
+    //        //  .send(Credentials.addRemainder[0])
+    //         .end((err, res) => {
+    //               res.should.have.status(400);
+    //               res.body.should.be.a('object');
+    //               console.log('Test BOdy :: ',res.body);
+    //           done();
+    //         });
+    // })
+
+    // it('it should return invalid noteId,NoteId should not be empty', (done) => {
+    //     chai.request(server)
+    //         .delete('/remainder/:""')
+    //         .set('token',Credentials.Token[0].token)
+    //        //  .send(Credentials.addRemainder[0])
+    //         .end((err, res) => {
+    //               res.should.have.status(400);
+    //               res.body.should.be.a('object');
+    //               console.log('Test BOdy :: ',res.body);
+    //           done();
+    //         });
+    // })
+
+    // it('it should return invalid noteId,NoteId should not be null', (done) => {
+    //     chai.request(server)
+    //         .delete('/remainder/'+Credentials.noteId[3].noteId)
+    //         .set('token',Credentials.Token[0].token)
+    //        //  .send(Credentials.addRemainder[0])
+    //         .end((err, res) => {
+    //               res.should.have.status(400);
+    //               res.body.should.be.a('object');
+    //               console.log('Test BOdy :: ',res.body);
+    //           done();
+    //         });
+    // })
+
+    // it('it should return invalid noteId,NoteId should not be undefined', (done) => {
+    //     chai.request(server)
+    //         .delete('/remainder/'+Credentials.noteId[4].noteId)
+    //         .set('token',Credentials.Token[0].token)
+    //        //  .send(Credentials.addRemainder[0])
+    //         .end((err, res) => {
+    //               res.should.have.status(400);
+    //               res.body.should.be.a('object');
+    //               console.log('Test BOdy :: ',res.body);
+    //           done();
+    //         });
+    // })
+
+
+    // it('it should return invalid token', (done) => {
+    //     chai.request(server)
+    //         .delete('/remainder/'+Credentials.noteId[0].noteId)
+    //         .set('token',Credentials.Token[1].token)
+    //        //  .send(Credentials.addRemainder[0])
+    //         .end((err, res) => {
+    //               res.should.have.status(400);
+    //               res.body.should.be.a('object');
+    //               console.log('Test BOdy :: ',res.body);
+    //           done();
+    //         });
+    // })
+
+    // it('it should return invalid token, Token should not be empty', (done) => {
+    //     chai.request(server)
+    //         .delete('/remainder/'+Credentials.noteId[0].noteId)
+    //         .set('token',Credentials.Token[2].token)
+    //        //  .send(Credentials.addRemainder[0])
+    //         .end((err, res) => {
+    //               res.should.have.status(400);
+    //               res.body.should.be.a('object');
+    //               console.log('Test BOdy :: ',res.body);
+    //           done();
+    //         });
+    // })
+
+    // it('it should return invalid token, Token should not be undefined', (done) => {
+    //     chai.request(server)
+    //         .delete('/remainder/'+Credentials.noteId[0].noteId)
+    //         .set('token',Credentials.Token[3].token)
+    //        //  .send(Credentials.addRemainder[0])
+    //         .end((err, res) => {
+    //               res.should.have.status(400);
+    //               res.body.should.be.a('object');
+    //               console.log('Test BOdy :: ',res.body);
+    //           done();
+    //         });
+    // })
+   })
+    /**
+     * @description Get All Archive Notes API TEsting
+    */
+//    describe('Get All Archive Notes API TEST CASES', () => {
+
+//     it('it should successfully get all archive notes', (done) => {
+//      chai.request(server)
+//          .get('/archive')
+//          .set('token',Credentials.Token[0].token)
+//         //  .send(Credentials.addRemainder[0])
+//          .end((err, res) => {
+//                res.should.have.status(200);
+//                res.body.should.be.a('object');
+//                console.log('Test BOdy :: ',res.body);
+//            done();
+//          });
+//     })
+
+//     it('it should return invalid token', (done) => {
+//         chai.request(server)
+//             .get('/archive')
+//             .set('token',Credentials.Token[1].token)
+//            //  .send(Credentials.addRemainder[0])
+//             .end((err, res) => {
+//                   res.should.have.status(400);
+//                   res.body.should.be.a('object');
+//                   console.log('Test BOdy :: ',res.body);
+//               done();
+//             });
+//        })
+
+//     it('it should return invalid user,token should not be empty', (done) => {
+//         chai.request(server)
+//             .get('/archive')
+//             .set('token',Credentials.Token[2].token)
+//            //  .send(Credentials.addRemainder[0])
+//             .end((err, res) => {
+//                   res.should.have.status(400);
+//                   res.body.should.be.a('object');
+//                   console.log('Test BOdy :: ',res.body);
+//               done();
+//             });
+//        })
+
+//        it('it should return invalid token,token should not be null', (done) => {
+//         chai.request(server)
+//             .get('/archive')
+//             .set('token',Credentials.Token[3].token)
+//            //  .send(Credentials.addRemainder[0])
+//             .end((err, res) => {
+//                   res.should.have.status(400);
+//                   res.body.should.be.a('object');
+//                   console.log('Test BOdy :: ',res.body);
+//               done();
+//             });
+//        })
+
+//        it('it should return invalid token,token should not be undefined', (done) => {
+//         chai.request(server)
+//             .get('/archive')
+//             // .set('token',Credentials.Token[4].token)
+//            //  .send(Credentials.addRemainder[0])
+//             .end((err, res) => {
+//                   res.should.have.status(400);
+//                   res.body.should.be.a('object');
+//                   console.log('Test BOdy :: ',res.body);
+//               done();
+//             });
+//        })
+
+//    })
+
+
+    /**
+     * @description Get All Archive Notes API TEsting
+    */
+//    describe('Get All trash Notes API TEST CASES', () => {
+
+//     it('it should successfully get all archive notes', (done) => {
+//      chai.request(server)
+//          .get('/trash')
+//          .set('token',Credentials.Token[0].token)
+//         //  .send(Credentials.addRemainder[0])
+//          .end((err, res) => {
+//                res.should.have.status(200);
+//                res.body.should.be.a('object');
+//                console.log('Test BOdy :: ',res.body);
+//            done();
+//          });
+//     })
+
+//     it('it should return invalid token', (done) => {
+//         chai.request(server)
+//             .get('/trash')
+//             .set('token',Credentials.Token[1].token)
+//            //  .send(Credentials.addRemainder[0])
+//             .end((err, res) => {
+//                   res.should.have.status(400);
+//                   res.body.should.be.a('object');
+//                   console.log('Test BOdy :: ',res.body);
+//               done();
+//             });
+//        })
+
+//     it('it should return invalid user,token should not be empty', (done) => {
+//         chai.request(server)
+//             .get('/trash')
+//             .set('token',Credentials.Token[2].token)
+//            //  .send(Credentials.addRemainder[0])
+//             .end((err, res) => {
+//                   res.should.have.status(400);
+//                   res.body.should.be.a('object');
+//                   console.log('Test BOdy :: ',res.body);
+//               done();
+//             });
+//        })
+
+//        it('it should return invalid token,token should not be null', (done) => {
+//         chai.request(server)
+//             .get('/trash')
+//             .set('token',Credentials.Token[3].token)
+//            //  .send(Credentials.addRemainder[0])
+//             .end((err, res) => {
+//                   res.should.have.status(400);
+//                   res.body.should.be.a('object');
+//                   console.log('Test BOdy :: ',res.body);
+//               done();
+//             });
+//        })
+
+//        it('it should return invalid token,token should not be undefined', (done) => {
+//         chai.request(server)
+//             .get('/trash')
+//             // .set('token',Credentials.Token[4].token)
+//            //  .send(Credentials.addRemainder[0])
+//             .end((err, res) => {
+//                   res.should.have.status(400);
+//                   res.body.should.be.a('object');
+//                   console.log('Test BOdy :: ',res.body);
+//               done();
+//             });
+//        })
+
+//    })
+
+//    /**
+//      * @description Get All Archive Notes API TEsting
+//     */
+//    describe('Get All pin Notes API TEST CASES', () => {
+
+//     it('it should successfully get all pin notes', (done) => {
+//      chai.request(server)
+//          .get('/pin')
+//          .set('token',Credentials.Token[0].token)
+//         //  .send(Credentials.addRemainder[0])
+//          .end((err, res) => {
+//                res.should.have.status(200);
+//                res.body.should.be.a('object');
+//                console.log('Test BOdy :: ',res.body);
+//            done();
+//          });
+//     })
+
+//     it('it should return invalid token', (done) => {
+//         chai.request(server)
+//             .get('/pin')
+//             .set('token',Credentials.Token[1].token)
+//            //  .send(Credentials.addRemainder[0])
+//             .end((err, res) => {
+//                   res.should.have.status(400);
+//                   res.body.should.be.a('object');
+//                   console.log('Test BOdy :: ',res.body);
+//               done();
+//             });
+//        })
+
+//     it('it should return invalid user,token should not be empty', (done) => {
+//         chai.request(server)
+//             .get('/pin')
+//             .set('token',Credentials.Token[2].token)
+//            //  .send(Credentials.addRemainder[0])
+//             .end((err, res) => {
+//                   res.should.have.status(400);
+//                   res.body.should.be.a('object');
+//                   console.log('Test BOdy :: ',res.body);
+//               done();
+//             });
+//        })
+
+//        it('it should return invalid token,token should not be null', (done) => {
+//         chai.request(server)
+//             .get('/pin')
+//             .set('token',Credentials.Token[3].token)
+//            //  .send(Credentials.addRemainder[0])
+//             .end((err, res) => {
+//                   res.should.have.status(400);
+//                   res.body.should.be.a('object');
+//                   console.log('Test BOdy :: ',res.body);
+//               done();
+//             });
+//        })
+
+//        it('it should return invalid token,token should not be undefined', (done) => {
+//         chai.request(server)
+//             .get('/pin')
+//             // .set('token',Credentials.Token[4].token)
+//            //  .send(Credentials.addRemainder[0])
+//             .end((err, res) => {
+//                   res.should.have.status(400);
+//                   res.body.should.be.a('object');
+//                   console.log('Test BOdy :: ',res.body);
+//               done();
+//             });
+//        })
+
+//    })
+
+
+
+// /**
+//      * @description  Archive given NoteAPI TEsting
+//     */
+//    describe(' archive Note API TEST CASES', () => {
+
+//     it('it should successfully archive given Note', (done) => {
+//      chai.request(server)
+//          .put('/archive/'+Credentials.noteId[0].noteId)
+//          .set('token',Credentials.Token[0].token)
+//         //  .send(Credentials.addRemainder[0])
+//          .end((err, res) => {
+//                res.should.have.status(200);
+//                res.body.should.be.a('object');
+//                console.log('Test BOdy :: ',res.body);
+//            done();
+//          });
+//     })
+
+//     it('it should return invalid NoteId', (done) => {
+//         chai.request(server)
+//             .put('/archive/'+Credentials.noteId[1].noteId)
+//             .set('token',Credentials.Token[0].token)
+//            //  .send(Credentials.addRemainder[0])
+//             .end((err, res) => {
+//                   res.should.have.status(400);
+//                   res.body.should.be.a('object');
+//                   console.log('Test BOdy :: ',res.body);
+//               done();
+//             });
+//     })
+
+//     it('it should return invalid NoteId,NoteId should not be empty', (done) => {
+//         chai.request(server)
+//             .put('/archive/:""')
+//             .set('token',Credentials.Token[0].token)
+//            //  .send(Credentials.addRemainder[0])
+//             .end((err, res) => {
+//                   res.should.have.status(400);
+//                   res.body.should.be.a('object');
+//                   console.log('Test BOdy :: ',res.body);
+//               done();
+//             });
+//     })
+
+
+//     it('it should return invalid NoteId,NoteId should not be null', (done) => {
+//         chai.request(server)
+//             .put('/archive/'+Credentials.noteId[3].noteId)
+//             .set('token',Credentials.Token[0].token)
+//            //  .send(Credentials.addRemainder[0])
+//             .end((err, res) => {
+//                   res.should.have.status(400);
+//                   res.body.should.be.a('object');
+//                   console.log('Test BOdy :: ',res.body);
+//               done();
+//             });
+//     })
+
+//     it('it should return invalid NoteId,NoteId should not be undefined', (done) => {
+//         chai.request(server)
+//             .put('/archive/'+Credentials.noteId[4].noteId)
+//             .set('token',Credentials.Token[0].token)
+//            //  .send(Credentials.addRemainder[0])
+//             .end((err, res) => {
+//                   res.should.have.status(400);
+//                   res.body.should.be.a('object');
+//                   console.log('Test BOdy :: ',res.body);
+//               done();
+//             });
+//     })
+
+//     it('it should return invalid token', (done) => {
+//         chai.request(server)
+//             .put('/archive/'+Credentials.noteId[0].noteId)
+//             .set('token',Credentials.Token[1].token)
+//            //  .send(Credentials.addRemainder[0])
+//             .end((err, res) => {
+//                   res.should.have.status(400);
+//                   res.body.should.be.a('object');
+//                   console.log('Test BOdy :: ',res.body);
+//               done();
+//             });
+//     })
+
+//     it('it should return invalid token,token should not empty', (done) => {
+//         chai.request(server)
+//             .put('/archive/'+Credentials.noteId[0].noteId)
+//             .set('token',Credentials.Token[2].token)
+//            //  .send(Credentials.addRemainder[0])
+//             .end((err, res) => {
+//                   res.should.have.status(400);
+//                   res.body.should.be.a('object');
+//                   console.log('Test BOdy :: ',res.body);
+//               done();
+//             });
+//     })
+
+//     it('it should return invalid token,token should not be null', (done) => {
+//         chai.request(server)
+//             .put('/archive/'+Credentials.noteId[0].noteId)
+//             .set('token',Credentials.Token[3].token)
+//            //  .send(Credentials.addRemainder[0])
+//             .end((err, res) => {
+//                   res.should.have.status(400);
+//                   res.body.should.be.a('object');
+//                   console.log('Test BOdy :: ',res.body);
+//               done();
+//             });
+//     })
+
+//     it('it should return invalid token,token should not be undefined', (done) => {
+//         chai.request(server)
+//             .put('/archive/'+Credentials.noteId[0].noteId)
+//             // .set('token',Credentials.Token[4].token)
+//            //  .send(Credentials.addRemainder[0])
+//             .end((err, res) => {
+//                   res.should.have.status(400);
+//                   res.body.should.be.a('object');
+//                   console.log('Test BOdy :: ',res.body);
+//               done();
+//             });
+//     })
+// })
+
+/**
+     * @description  pinned given NoteAPI TEsting
+    */
+   describe(' pinned Note API TEST CASES', () => {
+
+    it('it should successfully archive given Note', (done) => {
+     chai.request(server)
+         .put('/pin/'+Credentials.noteId[0].noteId)
+         .set('token',Credentials.Token[0].token)
+        //  .send(Credentials.addRemainder[0])
+         .end((err, res) => {
+               res.should.have.status(200);
+               res.body.should.be.a('object');
+               console.log('Test BOdy :: ',res.body);
+           done();
+         });
+    })
+
+    it('it should return invalid NoteId', (done) => {
+        chai.request(server)
+            .put('/pin/'+Credentials.noteId[1].noteId)
+            .set('token',Credentials.Token[0].token)
+           //  .send(Credentials.addRemainder[0])
+            .end((err, res) => {
+                  res.should.have.status(400);
+                  res.body.should.be.a('object');
+                  console.log('Test BOdy :: ',res.body);
+              done();
+            });
+    })
+
+    it('it should return invalid NoteId,NoteId should not be empty', (done) => {
+        chai.request(server)
+            .put('/pin/:""')
+            .set('token',Credentials.Token[0].token)
+           //  .send(Credentials.addRemainder[0])
+            .end((err, res) => {
+                  res.should.have.status(400);
+                  res.body.should.be.a('object');
+                  console.log('Test BOdy :: ',res.body);
+              done();
+            });
+    })
+
+
+    it('it should return invalid NoteId,NoteId should not be null', (done) => {
+        chai.request(server)
+            .put('/pin/'+Credentials.noteId[3].noteId)
+            .set('token',Credentials.Token[0].token)
+           //  .send(Credentials.addRemainder[0])
+            .end((err, res) => {
+                  res.should.have.status(400);
+                  res.body.should.be.a('object');
+                  console.log('Test BOdy :: ',res.body);
+              done();
+            });
+    })
+
+    it('it should return invalid NoteId,NoteId should not be undefined', (done) => {
+        chai.request(server)
+            .put('/pin/'+Credentials.noteId[4].noteId)
+            .set('token',Credentials.Token[0].token)
+           //  .send(Credentials.addRemainder[0])
+            .end((err, res) => {
+                  res.should.have.status(400);
+                  res.body.should.be.a('object');
+                  console.log('Test BOdy :: ',res.body);
+              done();
+            });
+    })
+
+    it('it should return invalid token', (done) => {
+        chai.request(server)
+            .put('/pin/'+Credentials.noteId[0].noteId)
+            .set('token',Credentials.Token[1].token)
+           //  .send(Credentials.addRemainder[0])
+            .end((err, res) => {
+                  res.should.have.status(400);
+                  res.body.should.be.a('object');
+                  console.log('Test BOdy :: ',res.body);
+              done();
+            });
+    })
+
+    it('it should return invalid token,token should not empty', (done) => {
+        chai.request(server)
+            .put('/pin/'+Credentials.noteId[0].noteId)
+            .set('token',Credentials.Token[2].token)
+           //  .send(Credentials.addRemainder[0])
+            .end((err, res) => {
+                  res.should.have.status(400);
+                  res.body.should.be.a('object');
+                  console.log('Test BOdy :: ',res.body);
+              done();
+            });
+    })
+
+    it('it should return invalid token,token should not be null', (done) => {
+        chai.request(server)
+            .put('/pin/'+Credentials.noteId[0].noteId)
+            .set('token',Credentials.Token[3].token)
+           //  .send(Credentials.addRemainder[0])
+            .end((err, res) => {
+                  res.should.have.status(400);
+                  res.body.should.be.a('object');
+                  console.log('Test BOdy :: ',res.body);
+              done();
+            });
+    })
+
+    it('it should return invalid token,token should not be undefined', (done) => {
+        chai.request(server)
+            .put('/pin/'+Credentials.noteId[0].noteId)
+            // .set('token',Credentials.Token[4].token)
+           //  .send(Credentials.addRemainder[0])
+            .end((err, res) => {
+                  res.should.have.status(400);
+                  res.body.should.be.a('object');
+                  console.log('Test BOdy :: ',res.body);
+              done();
+            });
+    })
+})

@@ -65,6 +65,8 @@ module.exports={
                             console.log('Reply from forget Token',reply);
                             if(token===reply){
                                 console.log('TOKEN is same');
+                                console.log('now controll goes to next..');
+
                                 next()
                             }else{
                                 console.log('Token is Not same');

@@ -23,8 +23,6 @@ const tokenObject=require('../utility/tokenVerification')
 const model=require('../app.js/model/user')
 const noteControllerClassObject=require('../controller/note')
 const labelControllerClassObject=require('../controller/label')
-
-
 const modelClassObject=new model.ModelClass
 
 const routes=express.Router()
@@ -55,12 +53,16 @@ routes.delete('/note/:noteId',tokenObject.tokenVerification,noteControllerClassO
 routes.put('/imageUpload',tokenObject.tokenVerification,controllerClassObject.imageUpload)
 
 
-
 routes.post('/remainder/:noteId',tokenObject.tokenVerification,noteControllerClassObject.addRemainder)
-routes.delete('/remainder',tokenObject.tokenVerification,noteControllerClassObject.removeRemainder)
-routes.put('/archive',tokenObject.tokenVerification,noteControllerClassObject.archiveNote)
-routes.put('/pinned',tokenObject.tokenVerification,noteControllerClassObject.pinNote)
-routes.put('/trash',tokenObject.tokenVerification,noteControllerClassObject.trashNote)
+routes.delete('/remainder/:noteId',tokenObject.tokenVerification,noteControllerClassObject.removeRemainder)
+
+routes.put('/archive/:noteId',tokenObject.tokenVerification,noteControllerClassObject.archiveNote)
+routes.put('/pin/:noteId',tokenObject.tokenVerification,noteControllerClassObject.pinNote)
+// routes.put('/trash/:noteId',tokenObject.tokenVerification,noteControllerClassObject.trashNote)
+routes.get('/trash',tokenObject.tokenVerification,noteControllerClassObject.getAllTrashNotes)
+routes.get('/archive',tokenObject.tokenVerification,noteControllerClassObject.getAllArchives)
+routes.get('/pin',tokenObject.tokenVerification,noteControllerClassObject.getAllPinnedNotes)
+
 
 
 

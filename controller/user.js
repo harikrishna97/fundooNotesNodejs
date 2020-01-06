@@ -152,7 +152,7 @@ class ControllerClass{
      * @param {*} res 
      */
     login(req,res){
-
+        console.log("in controller")
         try{
             req.checkBody('email', 'Email id should not be empty').notEmpty();
             req.checkBody('email', 'Please enter valid email id.').isEmail();

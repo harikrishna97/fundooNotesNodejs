@@ -23,8 +23,9 @@ const routes=require('./routes/routes')
 // var cors = require('cors');
 const database=require('./config/database.service');
 const DatabaseClassObject= new database.DatabaseClass;
-const cron=require('node-cron')
-const serviceClassObject=require('./services/note')
+const cron=require('node-cron');
+const serviceClassObject=require('./services/note');
+const schedularClassObject=require('./services/schedular');
 //create express app
 
 const app=express();
@@ -37,7 +38,8 @@ app.use(bodyParser.json())
 app.use(validator());
 app.use('/',routes);
 
- var port =process.env.PORT;
+ const port =process.env.PORT;
+ const redisPort=process.env.REDIS_PORT
  
 
 //  app.get('/', function (req, res) {
@@ -47,25 +49,14 @@ app.use('/',routes);
 
 //Node-cron schedular to schedule remainders
 cron.schedule("* * * * *", () => {
-  console.log(`I'm a node-cron schedular, running on every minute..`);
-  serviceClassObject.notificationServiceForRemainder()
-  .then(data=>{
-    if(data!==null){
-      // console.log('Remainder For :: \nTitle :: '+data[0].title+'\nDescription :: '+data[0].description)
-      // console.log('remainders :: ',data);
-      data.forEach(element => console.log('remainder :: ',element));
-
-      
-
-    }
+  schedularClassObject.notificationServiceForRemainder()
   })
-  });
-
 // listen for request
 app.listen(port,()=>{
     DatabaseClassObject.connect()
-    
     console.log('Server is Listening on port '+port+' ..');
 })
+console.log('Redis Server is Listening on port '+redisPort+' ..');
+
 
 module.exports=app

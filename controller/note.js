@@ -90,7 +90,7 @@ class ControllerClass {
             // logger.info(err);
             const response={}
             response.success=false;
-            response.message=' Something went Bad..';
+            response.message='create Something went Bad..';
             return res.status(500).send(response);
             
         }   
@@ -102,7 +102,6 @@ class ControllerClass {
      */
     getAllNotes(req,res){
         try{
-            
                 const getAllNotesData={}
                 getAllNotesData.userId=req.decoded._id
             serviceClassObject.getAllNotes(getAllNotesData)
@@ -132,7 +131,7 @@ class ControllerClass {
             logger.info(err);
             const response={}
             response.success=false;
-            response.message=' Something went Bad..';
+            response.message='getall Something went Bad..';
             return res.status(500).send(response);
             
         }       
@@ -201,7 +200,7 @@ class ControllerClass {
             logger.info(err);
             const response={}
             response.success=false;
-            response.message=' Something went Bad..';
+            response.message='edit Something went Bad..';
             return res.status(500).send(response);
             
         }           
@@ -264,7 +263,7 @@ class ControllerClass {
             logger.info(err);
             const response={}
             response.success=false;
-            response.message=' Something went Bad..';
+            response.message='remove note Something went Bad..';
             return res.status(500).send(response);
             
         }        
@@ -276,37 +275,57 @@ class ControllerClass {
      * @param {*} res 
      */
     addRemainder(req,res){
+        console.log('REq.remainder :: ',req.body.remainder);
+        
+        // req.checkBody('remainder', 'Remainder  should not be empty.').not().isEmpty();
         try{
-            // req.checkBody('noteId', 'NoteId  should not be empty.').notEmpty();
-            req.checkBody('remainder', 'Remainder  should not be empty.').notEmpty();            
-            const remainderData={}
-            remainderData.noteId=req.params.noteId;
-            remainderData.remainder=req.body.remainder;
-
-            const response={}
-            serviceClassObject.addRemainder(remainderData)
-            .then(data=>{
-                response.success=true;
-                response.message='remainder Added successfully';
-                response.data=data;
-                return res.status(200).send(response);
-
-            })
-            .catch(err=>{
-                response.success=false;
-                response.error=err
-                // response.data=err;
+            req.checkBody('remainder', 'Remainder  should not be empty.').notEmpty();
+            const errors = req.validationErrors();
+            logger.info('control in ');
+            
+            if(errors)
+            {
+                var response = {};
+                response.success = false;
+                response.error = errors[0].msg
                 return res.status(400).send(response);
-            })
+            }
+            // req.checkBody('remainder', 'Remainder  should not be empty.').notEmpty();
+            if(serviceClassObject.checkMongooseId(req.params.noteId)==false ||
+            serviceClassObject.checkMongooseId(req.decoded._id)==false){                
+                const response={}
+                response.success = false;
+                response.error = 'Invalid Id'
+                return res.status(400).send(response);
+            }else{                
+                // req.checkBody('remainder', 'Remainder  should have Proper Date Format.').isDate();                        
+                const remainderData={}
+                remainderData.noteId=req.params.noteId;
+                remainderData.remainder=req.body.remainder;
+
+                const response={}
+                serviceClassObject.addRemainder(remainderData)
+                .then(data=>{
+                    response.success=true;
+                    response.message='remainder Added successfully';
+                    // response.data=data;
+                    return res.status(200).send(response);
+
+                })
+                .catch(err=>{
+                    response.success=false;
+                    response.error=err
+                    // response.data=err;
+                    return res.status(400).send(response);
+                })
+            }    
         }catch(err){
             logger.info(err);
             const response={}
             response.success=false;
-            response.message=' Something went Bad..';
-            return res.status(500).send(response);
-            
+            response.message=' abc Something went Bad.#.';
+            return res.status(500).send(response);            
         }    
-
     }
     /**
      * @description API to delete remainder of a note
@@ -315,31 +334,40 @@ class ControllerClass {
      */
     removeRemainder(req,res){
         try{
-            // req.checkBody('noteId', 'NoteId  should not be empty.').notEmpty();
-            const remainderData={}
-            remainderData.noteId=req.params.noteId;
 
-            const response={}
-            serviceClassObject.removeRemainder(remainderData)
-            .then(data=>{
-                response.success=true;
-                response.message='remainder Deleted successfully';
-                response.data=data;
-                return res.status(200).send(response);
-
-            })
-            .catch(err=>{
-                response.success=false;
-                response.error='Error while deleting'
-                response.data=err;
-                // response.data=err;
+            // let isValid = mongoose.Types.ObjectId.isValid(req.params.noteId);
+            if(serviceClassObject.checkMongooseId(req.params.noteId)==false ||
+            serviceClassObject.checkMongooseId(req.decoded._id)==false){
+                const response={}
+                response.success = false;
+                response.error = 'Invalid NoteId'
                 return res.status(400).send(response);
-            })
+            }else{
+                const remainderData={}
+                remainderData.noteId=req.params.noteId;
+                remainderData.userId=req.decoded._id;
+                const response={}
+                serviceClassObject.removeRemainder(remainderData)
+                .then(data=>{
+                    response.success=true;
+                    response.message='remainder Deleted successfully';
+                    // response.data=data;
+                    return res.status(200).send(response);
+
+                })
+                .catch(err=>{
+                    response.success=false;
+                    response.error='Error while deleting'
+                    response.data=err;
+                    // response.data=err;
+                    return res.status(400).send(response);
+                })
+            }    
         }catch(err){
             logger.info(err);
             const response={}
             response.success=false;
-            response.message=' Something went Bad..';
+            response.message='remove Something went Bad..';
             return res.status(500).send(response);
             
         }
@@ -351,6 +379,7 @@ class ControllerClass {
      */
     archiveNote(req,res){
         try{
+
             // req.checkBody('noteId', 'NoteId  should not be empty.').notEmpty();
             const archiveData={}
             archiveData.noteId=req.params.noteId;
@@ -360,7 +389,7 @@ class ControllerClass {
             .then(data=>{
                 response.success=true;
                 response.message='Note Archive successfully';
-                response.data=data;
+                // response.data=data;
                 return res.status(200).send(response);
 
             })
@@ -375,40 +404,13 @@ class ControllerClass {
             logger.info(err);
             const response={}
             response.success=false;
-            response.message=' Something went Bad..';
+            response.message='archive Something went Bad..';
             return res.status(500).send(response);
             
         }    
 
     }
-    // /**
-    //  * @description API to remove Archive note
-    //  * @param {*} req 
-    //  * @param {*} res 
-    //  */
-    // removeArchiveNote(req,res){
-    //     req.checkBody('noteId', 'NoteId  should not be empty.').notEmpty();
-    //     const archiveData={}
-    //     archiveData.noteId=req.body.noteId;
-
-    //     const response={}
-    //     serviceClassObject.removeArchiveNote(archiveData)
-    //     .then(data=>{
-    //         response.success=true;
-    //         response.message='Note Archive successfully';
-    //         response.data=data;
-    //         return res.status(200).send(response);
-
-    //     })
-    //     .catch(err=>{
-    //         response.success=false;
-    //         response.error='Error while Archiving Note'
-    //         response.data=err;
-    //         // response.data=err;
-    //         return res.status(400).send(response);
-    //     })
-
-    // }
+    
     /**
      * @description API to Pin a note
      * @param {*} req 
@@ -425,7 +427,7 @@ class ControllerClass {
             .then(data=>{
                 response.success=true;
                 response.message='Note Pinned successfully';
-                response.data=data;
+                // response.data=data;
                 return res.status(200).send(response);
 
             })
@@ -440,7 +442,7 @@ class ControllerClass {
             logger.info(err);
             const response={}
             response.success=false;
-            response.message=' Something went Bad..';
+            response.message='pin Something went Bad..';
             return res.status(500).send(response);            
         }    
 
@@ -461,7 +463,7 @@ class ControllerClass {
             .then(data=>{
                 response.success=true;
                 response.message='Note Trash successfully';
-                response.data=data;
+                // response.data=data;
                 return res.status(200).send(response);
 
             })
@@ -476,14 +478,165 @@ class ControllerClass {
             logger.info(err);
             const response={}
             response.success=false;
-            response.message=' Something went Bad..';
+            response.message='trash Something went Bad..';
             return res.status(500).send(response);
             
         }    
 
     }
+    /**
+     * @description API to get All Archive notes from database
+     * @param {*} req 
+     * @param {*} res 
+     */
+    getAllArchives(req,res){
+        try{
+            console.log(req.decoded);
+            
+            if(serviceClassObject.checkMongooseId(req.decoded._id)==false){
+                const response={}
+                response.success = false;
+                response.error = 'Invalid UserId'
+                return res.status(400).send(response);
+            }else{
+                // return res.status(500).send('error');
 
+                const getAllArchivesData={}
+                getAllArchivesData.userId=req.decoded._id
+                serviceClassObject.getAllArchives(getAllArchivesData)
+                .then(data=>{
+                    const response={}
+                    if(data==null){
+                        response.success=false;
+                        response.error='Invalid UserId';
+                        // response.data=err;
+                        return res.status(400).send(response);
+                    }else{
+                    response.success=true;
+                    // response.message='';
+                    response.data=data;
+                    return res.status(200).send(response);
+                    }
+                })
+                .catch(err=>{
+                    const response={}
+                            response.success=false;
+                            response.error=err;
+                            // response.data=err;
+                            return res.status(400).send(response);
+                })
+            }       
+        }catch(err){
+            logger.info(err);
+            const response={}
+            response.success=false;
+            response.message='allarchive Something went Bad..';
+            return res.status(500).send(response);            
+        }       
+    }
+    /**
+     * @description API to get All Trash notes from database
+     * @param {*} req 
+     * @param {*} res 
+     */
+    getAllTrashNotes(req,res){
+        try{
+            if(serviceClassObject.checkMongooseId(req.decoded._id)==false){
+                const response={}
+                response.success = false;
+                response.error = 'Invalid UserId'
+                return res.status(400).send(response);
+            }else{
+                const getAllArchivesData={}
+                getAllArchivesData.userId=req.decoded._id
+                serviceClassObject.getAllTrashNotes(getAllArchivesData)
+                .then(data=>{
+                    const response={}
+                    if(data==null){
+                        response.success=false;
+                        response.error='Invalid UserId';
+                        // response.data=err;
+                        return res.status(400).send(response);
+                    }else{
+                    response.success=true;
+                    // response.message='';
+                    response.data=data;
+                    return res.status(200).send(response);
+                    }
+                })
+                .catch(err=>{
+                    const response={}
+                            response.success=false;
+                            response.error=err;
+                            // response.data=err;
+                            return res.status(400).send(response);
+                })
+        }        
+        }catch(err){
+            logger.info(err);
+            const response={}
+            response.success=false;
+            response.message='all trash Something went Bad..';
+            return res.status(500).send(response);            
+        }       
+    }
+    /**
+     * @description API to get All Pinned notes from database
+     * @param {*} req 
+     * @param {*} res 
+     */
+    getAllPinnedNotes(req,res){
+        try{
+            
+            if(serviceClassObject.checkMongooseId(req.decoded._id)==false){
+                const response={}
+                response.success = false;
+                response.error = 'Invalid UserId'
+                return res.status(400).send(response);
+            }else{
+                const getAllArchivesData={}
+                getAllArchivesData.userId=req.decoded._id
+                serviceClassObject.getAllPinnedNotes(getAllArchivesData)
+                .then(data=>{
+                    const response={}
+                    if(data==null){
+                        response.success=false;
+                        response.error='Invalid UserId';
+                        // response.data=err;
+                        return res.status(400).send(response);
+                    }else{
+                    response.success=true;
+                    // response.message='';
+                    response.data=data;
+                    return res.status(200).send(response);
+                    }
+                })
+                .catch(err=>{
+                    const response={}
+                            response.success=false;
+                            response.error=err;
+                            // response.data=err;
+                            return res.status(400).send(response);
+                })
+        }       
+        }catch(err){
+            logger.info(err);
+            const response={}
+            response.success=false;
+            response.message='all pinned Something went Bad..';
+            return res.status(500).send(response);            
+        }       
+    }
     // booleanUpdateInController(req,res){
+        // const updateData={}
+    //    updateData.noteId=req.params.noteId;
+        // if(req.params.value==pin){
+        //     updateData.value=req.params.pin;
+        // }else if(req.params.value==trash){
+        //     updateData.value=req.params.trash;
+        // }else this.if(req.params.value==archive){
+        //     updateData.value=req.params.archive;
+        // }
     //     req.checkBody('noteId', 'NoteId  should not be empty.').notEmpty();
     //     req.checkBody('noteData', 'noteData  should not be empty.').notEmpty();
 
@@ -507,7 +660,6 @@ class ControllerClass {
     //     return res.status(400).send(response);
     //    })
     // }
-
 
 }
 

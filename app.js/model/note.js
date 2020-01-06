@@ -45,7 +45,7 @@ var NoteSchema=new Schema(
             // required:true
         },
         remainder:{
-            type:Date,
+            type:String,
             default:null
         },
         isArchive:{
@@ -139,8 +139,7 @@ var NoteSchema=new Schema(
                         resolve(data);
                     }else{
                         reject('invalid NoteId')
-                    }
-                   
+                    }                   
                 })
                 .catch(err=>{
                     // console.log('in err',err);   
@@ -148,7 +147,6 @@ var NoteSchema=new Schema(
                 })
             })
         }
-
         /**
          * @description: Function to delete note from database 
          * @param {*} deleteData 
@@ -163,8 +161,7 @@ var NoteSchema=new Schema(
                         resolve(data)
                     }else if(data==null){
                         reject(data)
-                    }
-                   
+                    }                   
                 })
                 .catch(err=>{
                     reject(err)
