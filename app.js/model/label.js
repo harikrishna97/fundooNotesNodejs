@@ -29,7 +29,8 @@ var LabelSchema=new Schema(
             default:null
         },
         userId:{
-            type:String
+            type:Schema.Types.ObjectId,
+            ref: 'User'
         }
         
  },

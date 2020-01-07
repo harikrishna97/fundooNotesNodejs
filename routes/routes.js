@@ -46,7 +46,7 @@ routes.get('/userVerify/:url',(req,res)=>{//localhost:4000
 routes.post('/userVerification/:token',tokenObject.tokenVerification,controllerClassObject.userVerificatonInController);
 // routes.post('/userVerification/:token',tokenObject.userVerification,controllerClassObject.userVerificatonInController);
 
-routes.post('/note/',tokenObject.tokenVerification,noteControllerClassObject.createNote);
+routes.post('/note',tokenObject.tokenVerification,noteControllerClassObject.createNote);
 routes.get('/note',tokenObject.tokenVerification,noteControllerClassObject.getAllNotes)
 routes.put('/note/:noteId',tokenObject.tokenVerification,noteControllerClassObject.editNote)
 routes.delete('/note/:noteId',tokenObject.tokenVerification,noteControllerClassObject.removeNote)
@@ -58,10 +58,15 @@ routes.delete('/remainder/:noteId',tokenObject.tokenVerification,noteControllerC
 
 routes.put('/archive/:noteId',tokenObject.tokenVerification,noteControllerClassObject.archiveNote)
 routes.put('/pin/:noteId',tokenObject.tokenVerification,noteControllerClassObject.pinNote)
-// routes.put('/trash/:noteId',tokenObject.tokenVerification,noteControllerClassObject.trashNote)
+routes.put('/trash/:noteId',tokenObject.tokenVerification,noteControllerClassObject.trashNote)
 routes.get('/trash',tokenObject.tokenVerification,noteControllerClassObject.getAllTrashNotes)
 routes.get('/archive',tokenObject.tokenVerification,noteControllerClassObject.getAllArchives)
 routes.get('/pin',tokenObject.tokenVerification,noteControllerClassObject.getAllPinnedNotes)
+
+// routes.post('/collaborator/:collaboratorId/:noteId',tokenObject.tokenVerification,collaboratorObject.addCollaborator)
+// routes.delete('/collaborator/:collaboratorId',tokenObject.tokenVerification,collaboratorObject.removeCollaborator)
+
+
 
 
 

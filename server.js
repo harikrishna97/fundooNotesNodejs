@@ -23,6 +23,7 @@ const routes=require('./routes/routes')
 // var cors = require('cors');
 const database=require('./config/database.service');
 const DatabaseClassObject= new database.DatabaseClass;
+const RedisClassObject=require('./config/redis.service')
 const cron=require('node-cron');
 const serviceClassObject=require('./services/note');
 const schedularClassObject=require('./services/schedular');
@@ -39,9 +40,8 @@ app.use(validator());
 app.use('/',routes);
 
  const port =process.env.PORT;
- const redisPort=process.env.REDIS_PORT
+//  const redisPort=process.env.REDIS_PORT
  
-
 //  app.get('/', function (req, res) {
 //     res.json({msg: 'This is CORS-enabled for all origins!'})
 //   })
@@ -54,9 +54,10 @@ cron.schedule("* * * * *", () => {
 // listen for request
 app.listen(port,()=>{
     DatabaseClassObject.connect()
+    RedisClassObject.connect()
     console.log('Server is Listening on port '+port+' ..');
 })
-console.log('Redis Server is Listening on port '+redisPort+' ..');
+// console.log('Redis Server is Listening on port '+redisPort+' ..');
 
 
 module.exports=app

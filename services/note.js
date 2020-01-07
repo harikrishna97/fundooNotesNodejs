@@ -51,8 +51,8 @@ class ServiceClass {
      * @param {*} getAllNotesData 
      */
     getAllNotes(getAllNotesData){
+
         return new Promise((resolve,reject)=>{
-            // const readNotesData={'eamil':getAllNoteData.email}
             modelClassObject.readNotes({'userId':getAllNotesData.userId,'isTrash':false,'isArchive':false,'isPinned':false},{'title':1,'description':1})
             .then(data=>{
                 if(data!==null){
@@ -80,6 +80,8 @@ class ServiceClass {
                         console.log('null id',data);
                         
                         resolve(data)
+                        console.log('hfdkdhkjdd');
+                        
                     })
                     .catch(err=>{
                         reject(err)
@@ -95,11 +97,11 @@ class ServiceClass {
     }
     /**
      * @description API to remove Note
-     * @param {*} removeNote 
+     * @param {object} removeNote 
      */
     removeNote(removeNote){
         return new Promise((resolve,reject)=>{
-            const deleteData={'noteId':removeNote._id}
+            // const deleteData={'noteId':removeNote._id}
             //call find method here and then update note
             modelClassObject.findOne({'userId':removeNote.userId})
             .then(data=>{
@@ -114,7 +116,7 @@ class ServiceClass {
                 }else{
                     reject('invalid UserId')
                 } 
-            })       
+            })    
         })
 
     }
@@ -187,7 +189,13 @@ class ServiceClass {
      */
     pinNote(pinNoteData){
         return new Promise((resolve,reject)=>{
-            modelClassObject.updateNote({'_id':pinNoteData.noteId},{'isPinned':true,'isArchive':false,'isTrash':false})
+            modelClassObject.updateNote({
+                '_id':pinNoteData.noteId
+            },{
+                'isPinned':true,
+                'isArchive':false,
+                'isTrash':false
+            })
             .then(data=>{
                 resolve(data)
             })

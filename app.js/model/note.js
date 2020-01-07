@@ -34,7 +34,7 @@ var NoteSchema=new Schema(
         },
         userId:{
             type:String,
-            required:true
+            required:true,
             // type:Schema.Types.ObjectId,
             // ref: 'User',
             // required:true,
@@ -65,13 +65,16 @@ var NoteSchema=new Schema(
             default:false
         },
         label:{
-            type:Array,
-            default:null
+            // type:Array,
+            // ref:mongoose.type
+            // default:null
+            type:Schema.Types.ObjectId,
+            ref: 'Label'
         },
-        collaborator:{
-            type:String,
-            default:null
-        }        
+        // collaborator:{
+        //     type:String,
+        //     default:null
+        // }        
  },
  {timestamps:true})
     var note=mongoose.model('Note',NoteSchema);
@@ -109,6 +112,7 @@ var NoteSchema=new Schema(
                 .then(data=>{
                     // console.log("in found DAta",JSON.stringify(data));
                     if(data!==null){
+                        
                         resolve(data.reverse());    
                     }else{
                         // console.log(' readnotes null ',data);                       
@@ -119,7 +123,7 @@ var NoteSchema=new Schema(
                     // console.log('error in read notes :: 120',err);                  
                     reject(err)
                 })
-            })  
+            }) 
         }
         
         /**

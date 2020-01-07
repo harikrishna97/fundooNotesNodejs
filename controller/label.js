@@ -2,19 +2,20 @@
  *  @Execution       :   1. default node              cmd> node server.js 
  *                      2. if nodemon installed   cmd> nodemon server.js
  * 
- *  @Purpose         : Fundoo-Notes APP backend server
+ *  @Purpose         : Fundoo-Notes APP  backend server
  * 
- *  @description    : Controllers process incoming requests, handle user input
- *                    and interactions, and execute appropriate application logic
-
- * 
- *  @file              : label.js
- *  @overview      :  Controllers process incoming requests, handle user input
- *                    and interactions, and execute appropriate application logic
+ *  @description    : Model represents domain specific data and business
+ *                    logic in MVC architecture. It maintains the data of the
+ *                    application. Model objects retrieve and store model state 
+ *                    in the persistance store like a database. Model class holds
+ *                    data in public properties. 
+ *  @file              : user.js
+ *  @overview      :  Model objects retrieve and store model state 
+ *                    in the persistance store like a database.
  *  @module        : 
  *  @author         : Shailesh Borase
- *  @version        : npm -3.5.2  node v13.5.0 
- *  @since           : 31-12-2019
+ *  @version        : npm -3.5.2  node v13.3.0 
+ *  @since           : 18-12-2019
  *
  ******************************************************************************/
 const serviceClassObject=require('../services/label')
@@ -27,7 +28,7 @@ class ControllerClass {
       * @param {*} res 
       */ 
     createLabelIncontroller(req,res){
-        // try{
+        try{
         req.checkBody('userId', 'UserId should not be empty.').notEmpty();   
         req.checkBody('label', 'Label should not be empty.').notEmpty();
         var errors = req.validationErrors();
@@ -71,11 +72,11 @@ class ControllerClass {
                 })
             // })
         }  
-        // }catch(err){
-        //     console.log(err);
-        //     return res.status(500).send(response);
+        }catch(err){
+            console.log(err);
+            return res.status(500).send(response);
             
-        // }   
+        }   
     }
     /**
      * @description API to getallNotes from database
