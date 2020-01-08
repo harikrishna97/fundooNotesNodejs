@@ -326,6 +326,27 @@ class ServiceClass {
             return valid;
 
     }
+
+/**
+     * @description search API to get all Notes by any key
+     * @param {object} searchData 
+     */
+    search(searchData){
+        return new Promise((resolve,reject)=>{
+            modelClassObject.search(searchData)
+            .then(data=>{
+                if(data!==null){
+                    resolve(data)
+                }else{
+                    reject(data)
+                }
+            })
+            .catch(err=>{
+                reject(err)
+            })
+        })
+    }
+
 }
 
 module.exports=new ServiceClass;

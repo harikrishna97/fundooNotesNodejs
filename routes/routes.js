@@ -21,10 +21,10 @@ const express=require('express')
 const controllerClassObject=require('../controller/user')
 const tokenObject=require('../utility/tokenVerification')
 const model=require('../app.js/model/user')
-const noteControllerClassObject=require('../controller/note')
+const noteController=require('../controller/note')
 const labelControllerClassObject=require('../controller/label')
 const modelClassObject=new model.ModelClass
-
+const collaboratorController=require('../controller/collaborator')
 const routes=express.Router()
 
 routes.post('/user',controllerClassObject.registration);
@@ -46,25 +46,26 @@ routes.get('/userVerify/:url',(req,res)=>{//localhost:4000
 routes.post('/userVerification/:token',tokenObject.tokenVerification,controllerClassObject.userVerificatonInController);
 // routes.post('/userVerification/:token',tokenObject.userVerification,controllerClassObject.userVerificatonInController);
 
-routes.post('/note',tokenObject.tokenVerification,noteControllerClassObject.createNote);
-routes.get('/note',tokenObject.tokenVerification,noteControllerClassObject.getAllNotes)
-routes.put('/note/:noteId',tokenObject.tokenVerification,noteControllerClassObject.editNote)
-routes.delete('/note/:noteId',tokenObject.tokenVerification,noteControllerClassObject.removeNote)
+routes.post('/note',tokenObject.tokenVerification,noteController.createNote);
+routes.get('/note',tokenObject.tokenVerification,noteController.getAllNotes)
+routes.put('/note/:noteId',tokenObject.tokenVerification,noteController.editNote)
+routes.delete('/note/:noteId',tokenObject.tokenVerification,noteController.removeNote)
 routes.put('/imageUpload',tokenObject.tokenVerification,controllerClassObject.imageUpload)
 
 
-routes.post('/remainder/:noteId',tokenObject.tokenVerification,noteControllerClassObject.addRemainder)
-routes.delete('/remainder/:noteId',tokenObject.tokenVerification,noteControllerClassObject.removeRemainder)
+routes.post('/remainder/:noteId',tokenObject.tokenVerification,noteController.addRemainder)
+routes.delete('/remainder/:noteId',tokenObject.tokenVerification,noteController.removeRemainder)
 
-routes.put('/archive/:noteId',tokenObject.tokenVerification,noteControllerClassObject.archiveNote)
-routes.put('/pin/:noteId',tokenObject.tokenVerification,noteControllerClassObject.pinNote)
-routes.put('/trash/:noteId',tokenObject.tokenVerification,noteControllerClassObject.trashNote)
-routes.get('/trash',tokenObject.tokenVerification,noteControllerClassObject.getAllTrashNotes)
-routes.get('/archive',tokenObject.tokenVerification,noteControllerClassObject.getAllArchives)
-routes.get('/pin',tokenObject.tokenVerification,noteControllerClassObject.getAllPinnedNotes)
+routes.put('/archive/:noteId',tokenObject.tokenVerification,noteController.archiveNote)
+routes.put('/pin/:noteId',tokenObject.tokenVerification,noteController.pinNote)
+routes.put('/trash/:noteId',tokenObject.tokenVerification,noteController.trashNote)
+routes.get('/trash',tokenObject.tokenVerification,noteController.getAllTrashNotes)
+routes.get('/archive',tokenObject.tokenVerification,noteController.getAllArchives)
+routes.get('/pin',tokenObject.tokenVerification,noteController.getAllPinnedNotes)
 
-// routes.post('/collaborator/:collaboratorId/:noteId',tokenObject.tokenVerification,collaboratorObject.addCollaborator)
-// routes.delete('/collaborator/:collaboratorId',tokenObject.tokenVerification,collaboratorObject.removeCollaborator)
+routes.post('/collaborator/:noteId/:collaboratorId',tokenObject.tokenVerification,collaboratorController.addCollaborator)
+routes.delete('/collaborator/:collaboratorId',tokenObject.tokenVerification,collaboratorController.removeCollaborator)
+routes.get('/search/:searchKey',tokenObject.tokenVerification,noteController.search)
 
 
 

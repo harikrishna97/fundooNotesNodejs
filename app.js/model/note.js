@@ -18,8 +18,10 @@
  *  @since           : 18-12-2019
  *
  ******************************************************************************/
-const mongoose=require('mongoose');
-const Schema=mongoose.Schema;
+const 
+    mongoose=require('mongoose'),
+    logger=require('../../config/winston')
+    Schema=mongoose.Schema;
 
 var NoteSchema=new Schema(
     {   
@@ -71,13 +73,18 @@ var NoteSchema=new Schema(
             type:Schema.Types.ObjectId,
             ref: 'Label'
         },
-        // collaborator:{
-        //     type:String,
-        //     default:null
-        // }        
+        collaboratorId:{
+            type:String,
+            default:null
+        }        
  },
  {timestamps:true})
-    var note=mongoose.model('Note',NoteSchema);
+    // NoteSchema.index({'$**': 'text'});
+    NoteSchema.index({title: 'text', description: 'text',color:'text',label:'text'});
+
+
+    const note=mongoose.model('Note',NoteSchema);
+
     class ModelClass{   
         /**
          * @description: create to new note and save to database
@@ -189,6 +196,43 @@ var NoteSchema=new Schema(
 
                 })
             })
+        }
+
+
+
+        /**
+         * @description : read All notes From database
+         */
+        search(query){
+            return new Promise((resolve,reject)=>{
+                // note.find(findData,filterData)
+                note.find({$text: {$search: query.searchKey}},{'title':1,'description':1,'color':1,'label':1})
+                // .skip(20)
+                .limit(10)
+                // .exec((err,data)=>{
+                //     if(err){
+                //         console.log('error:: ',err);
+                        
+                //     }else{
+                //         console.log('DAta :: ',data);
+                        
+                //     }
+                // })
+                .then(data=>{
+                    logger.info("in found DAta",JSON.stringify(data));
+                    if(data!==null){
+                        
+                        resolve(data.reverse());    
+                    }else{
+                        console.log(' readnotes null ',data);                       
+                        reject(data);
+                    }              
+                })
+                .catch(err=>{
+                    console.log('error in read notes :: 120',err);                  
+                    reject(err)
+                })
+            }) 
         }
         
     }   

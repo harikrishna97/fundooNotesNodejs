@@ -63,6 +63,10 @@ var UserSchema=new mongoose.Schema(
     imageUrl:{
         type:String
     },
+    collaborator:{
+        type:String,
+        default:null
+    },
     saltSecret:String,
 },
 {timestamps:true});

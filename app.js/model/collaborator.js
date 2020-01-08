@@ -21,7 +21,7 @@
 
 const mongoose=require('mongoose');
 const Schema=mongoose.Schema;
-
+const logger=require('../../config/winston')
 var CollaboratorSchema=new Schema(
     {   
         userId:{
@@ -40,7 +40,7 @@ var CollaboratorSchema=new Schema(
         }      
  },
  {timestamps:true})
-    var collaborator=mongoose.model('Collaborator',CollaboratorSchema);
+    const collaborator=mongoose.model('Collaborator',CollaboratorSchema);
 
     class CollaboratorClass{ 
 
@@ -50,12 +50,74 @@ var CollaboratorSchema=new Schema(
 
 
 
-        createCollaborator(){
+        create(queryData){
+            let collaboratorData=new collaborator(
+                {
+                    userId:queryData.userId,
+                    noteId:queryData.noteId,
+                    collaboratorId:queryData.collaboratorId,
+                }
+            )
+            /** @description save() methods are used to update document into a collection.
+                            save() method replaces the existing document with the document
+                            passed in save() method.*/ 
+            return new Promise((resolve,reject)=>{
+                console.log('........0.....');
+                
+                collaboratorData.save()
+                .then(data=>{
+                    logger.info('Data :: '+data);
+                    resolve(data)
+                })
+                .catch(err=>{
+                    logger.info('error :: '+err);
+                    reject(err)                    
+                })
+            })          
+        }
 
+        delete(queryData){
+            return new Promise((resolve,reject)=>{
+                collaborator.findOneAndDelete(queryData)
+                .then(data=>{
+                    if(data!==null){
+                        resolve(data)
+                    }else{
+                        reject(data)
+                    }
+                })
+                .catch(err=>{
+                    reject(err)
+                })
+            })    
 
         }
 
-        deleteCollaborator(){
+        /**
+         * @description : find function to find note from database
+         * @param {*} findData 
+         */
+        findOne(queryData){
+            
+            return new Promise((resolve,reject)=>{
+                  note.findOne(queryData)
+                  .then(data=>{
+                      if(data!==null){
+                        console.log('DAta in find One :: ',data);  
+                        resolve(data)
+                      }else{
+                          reject(data)
+                      }
+                  })
+                  .catch(err=>{
+                      reject(err)
+                      console.log('err in find One :: ',err);  
+  
+                  })
+              })
+          }
 
-        }
+        
     }
+
+    module.exports=new CollaboratorClass
