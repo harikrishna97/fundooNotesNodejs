@@ -62,6 +62,8 @@ routes.put('/trash/:noteId',tokenObject.tokenVerification,noteController.trashNo
 routes.get('/trash',tokenObject.tokenVerification,noteController.getAllTrashNotes)
 routes.get('/archive',tokenObject.tokenVerification,noteController.getAllArchives)
 routes.get('/pin',tokenObject.tokenVerification,noteController.getAllPinnedNotes)
+routes.put('/flag/:noteId/:flag',tokenObject.tokenVerification,noteController.updateFlag)
+
 
 routes.post('/collaborator/:noteId/:collaboratorId',tokenObject.tokenVerification,collaboratorController.addCollaborator)
 routes.delete('/collaborator/:collaboratorId',tokenObject.tokenVerification,collaboratorController.removeCollaborator)
@@ -70,22 +72,10 @@ routes.get('/search/:searchKey',tokenObject.tokenVerification,noteController.sea
 
 
 
-
-
-
-
-
-
-
-
-
-
-
 routes.post('/label',tokenObject.tokenVerification,labelControllerClassObject.createLabelIncontroller)
 routes.get('/label',tokenObject.tokenVerification,labelControllerClassObject.getAllLabelsIncontroller)
-routes.put('/label',tokenObject.tokenVerification,labelControllerClassObject.editLabelIncontroller)
-routes.delete('/label',tokenObject.tokenVerification,labelControllerClassObject.removeLabelIncontroller)
-
+routes.put('/label/:labelId',tokenObject.tokenVerification,labelControllerClassObject.editLabelIncontroller)
+routes.delete('/label:labelId',tokenObject.tokenVerification,labelControllerClassObject.removeLabelIncontroller)
 
 
 
@@ -95,6 +85,7 @@ routes.delete('/label',tokenObject.tokenVerification,labelControllerClassObject.
 
 
 module.exports = routes;
+
 
 
 

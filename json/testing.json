@@ -3,7 +3,7 @@
 
     {
         "email":"adhokshaj108@gmail.com",
-        "password":"shailesh123"
+        "password":"adhokshaj123"
     },
     {
         "email":"adhokshaj10@gmail.com",
@@ -81,7 +81,7 @@
 
 "resetWithToken":[
     {
-        "token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZGZjZDJhM2NmZWYxNzI2Y2VjM2IyZDIiLCJlbWFpbCI6ImFkaG9rc2hhajEwOEBnbWFpbC5jb20iLCJpYXQiOjE1NzcwODkyMjcsImV4cCI6MTU3NzE3NTYyN30.aB8yT7YVN46W4vcgXkkflI-vPmcL9tObDQlfb7I0-3U"
+        "token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZTBlZTMzZjY5M2E4ZDI0ZWZhYmE4YmEiLCJlbWFpbCI6ImFkaG9rc2hhajEwOEBnbWFpbC5jb20iLCJpYXQiOjE1Nzg1NjY5NDgsImV4cCI6MTU3ODY1MzM0OH0.SYp64oNjw6ZUODfcohJ3RMMDkynuGOcfCazXjPuhZoM"
     },
     {
         "token":""

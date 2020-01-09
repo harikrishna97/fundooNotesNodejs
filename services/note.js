@@ -309,6 +309,27 @@ class ServiceClass {
 
 
     /**
+     * @description API to upadate flag value a note
+     * @param {object} idData 
+     * @param {object} flagData 
+     */
+    updateFlag(idData,flagData){
+        return new Promise((resolve,reject)=>{
+            modelClassObject.updateNote({'_id':idData.noteId},flagData)
+            .then(data=>{
+                resolve(data)
+            })
+            .catch(err=>{
+                reject(err)
+            })
+        })
+    }
+
+
+
+
+
+    /**
      * @description Function to validate Mongoose Id
      * @param {*} id 
      */

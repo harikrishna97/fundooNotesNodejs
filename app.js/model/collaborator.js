@@ -36,8 +36,7 @@ var CollaboratorSchema=new Schema(
             type:Schema.Types.ObjectId,
             ref: 'User',
             default:null
-
-        }      
+        }
  },
  {timestamps:true})
     const collaborator=mongoose.model('Collaborator',CollaboratorSchema);

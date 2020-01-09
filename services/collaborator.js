@@ -1,7 +1,7 @@
 
 
 const collaboratormodel=require('../app.js/model/collaborator')
-
+const noteService=require('../app.js/model/note')
 class ServiceClass{
 
 
@@ -9,13 +9,21 @@ class ServiceClass{
      * @description API to add Collaborator in a given note
      * @param {object} collaboratorData 
      */
-    addCollaborator(collaboratorData){
+     addCollaborator(collaboratorData){
     // logger.info('collaboratorData in service'+JSON.stringify(collaboratorData));
 
         return new Promise((resolve,reject)=>{
             collaboratormodel.create(collaboratorData)
             .then(data=>{
-                resolve(data)
+                logger.info('HARI ::: main task here :: '+JSON.stringify(data));
+                
+                noteService.updateNote({'_id':data.noteId},{'collaboratorId':data.collaboratorId})
+                .then(data1=>{
+                    logger.info('data from note '+data1);
+                    
+                    resolve(data)
+                });
+                
             })
             .catch(err=>{
                 reject(err)

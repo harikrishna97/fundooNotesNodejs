@@ -46,12 +46,12 @@ module.exports={
                         console.log('Encoded Token :: '+JSON.stringify(req.decoded));
                         // console.log('DECODED TOEKN ID ::',req.decoded._id);
                         console.log('DECODED TOEKN ID ::',data._id);
-                        const forgetToken=req.url.split('/').includes('resetPassword')
-                        const registrationToken=req.url.split('/').includes('userVerification')
+                        const url=req.url.split('/')
+                        // const registrationToken=req.url.split('/')
                         let redisData;
-                        if(forgetToken==true){
+                        if(url.includes('resetPassword')){
                             redisData="forgetToken"+data._id;
-                        }else if(registrationToken==true){
+                        }else if(url.includes('userVerification')){
                             redisData="registrationToken"+data._id;
                         }else {
                             redisData=data._id;

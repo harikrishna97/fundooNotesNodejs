@@ -103,7 +103,7 @@ class ControllerClass {
       serviceClassObject
         .getAllNotes(getAllNotesData)
         .then(data => {
-          console.log("kdnjhfkjdhfdkf");
+          logger.info("kdnjhfkjdhfdkf");
           const response = {};
           if (data == null) {
             response.success = false;
@@ -142,7 +142,7 @@ class ControllerClass {
   editNote(req, res) {
     try {
       let isValid = mongoose.Types.ObjectId.isValid(req.params.noteId); //true
-      console.log("mongoose validator :: ", isValid);
+      logger.info("mongoose validator :: ", isValid);
 
       if (isValid == false) {
         const response = {};
@@ -212,7 +212,7 @@ class ControllerClass {
       // req.params('token', 'Token  should not be empty.').notEmpty();
       // req.params('noteId', 'NoteId  should not be empty.').notEmpty();
       let isValid = mongoose.Types.ObjectId.isValid(req.params.noteId); //true
-      console.log("mongoose validator :: ", isValid);
+      logger.info("mongoose validator :: ", isValid);
 
       // var errors = req.validationErrors();
       var response = {};
@@ -505,7 +505,7 @@ class ControllerClass {
    */
   getAllArchives(req, res) {
     try {
-      console.log(req.decoded);
+      logger.info(req.decoded);
 
       if (serviceClassObject.checkMongooseId(req.decoded._id) == false) {
         const response = {};
@@ -651,7 +651,7 @@ class ControllerClass {
    */
   search(req, res) {
     try {
-      console.log(req);
+      logger.info(req.body);
 
       if (serviceClassObject.checkMongooseId(req.decoded._id) == false) {
         const response = {};
@@ -665,7 +665,7 @@ class ControllerClass {
         noteService
           .search(searchData)
           .then(data => {
-            console.log("1111111111111111");
+            logger.info("1111111111111111");
             const response = {};
             if (data == null) {
               response.success = false;
@@ -680,7 +680,7 @@ class ControllerClass {
             }
           })
           .catch(err => {
-            console.log(".............");
+            logger.info(".............");
 
             const response = {};
             response.success = false;
@@ -698,39 +698,72 @@ class ControllerClass {
     }
   }
 
-  // booleanUpdateInController(req,res){
-  // const updateData={}
-  //    updateData.noteId=req.params.noteId;
-  // if(req.params.value==pin){
-  //     updateData.value=req.params.pin;
-  // }else if(req.params.value==trash){
-  //     updateData.value=req.params.trash;
-  // }else this.if(req.params.value==archive){
-  //     updateData.value=req.params.archive;
-  // }
-  //     req.checkBody('noteId', 'NoteId  should not be empty.').notEmpty();
-  //     req.checkBody('noteData', 'noteData  should not be empty.').notEmpty();
+  updateFlag(req,res){
+      req.checkBody('flagValue', 'Data  should not be empty.').notEmpty();
+      if (serviceClassObject.checkMongooseId(req.decoded._id) == false) {
+        const response = {};
+        response.success = false;
+        response.error = "Invalid NoteId";
+        return res.status(400).send(response);
+      } else {
+          const updateData={}
+          const idObjectData={}
+          idObjectData.noteId=req.params.noteId;
+          idObjectData.userId=req.decoded._id;
 
-  //    const updateData={}
-  //    updateData.noteId=req.body.noteId;
-  //    updateData.noteData=req.body.noteData;
-
-  //    const response={}
-  //    serviceClassObject.booleanUpdateInService(updateData)
-  //    .then(data=>{
-  //     response.success=true;
-  //     response.message='Note Trash successfully';
-  //     response.data=data;
-  //     return res.status(200).send(response);
-  //    })
-  //    .catch(err=>{
-  //     response.success=false;
-  //     response.error='Error while Trashing a Note'
-  //     response.data=err;
-  //     // response.data=err;
-  //     return res.status(400).send(response);
-  //    })
-  // }
+          if(req.params.flag=='pin'){
+            if(req.body.flagValue==true){
+                updateData.isPinned=true;
+                updateData.isArchive=false;
+                updateData.isTrash=false;
+            }else{
+              updateData.isPinned=false;
+              updateData.isArchive=false;
+              updateData.isTrash=false;
+            }
+          }
+          if(req.params.flag=='trash'){
+            if(req.body.flagValue===true){
+              updateData.isTrash=true;
+              updateData.isPinned=false;
+              updateData.isArchive=false;
+            }
+          }
+          
+          if(req.params.flag=='archive'){
+            if(req.body.flagValue===true){
+              updateData.isTrash=false;
+              updateData.isPinned=false;
+              updateData.isArchive=true;
+            }else{
+              updateData.isArchive=false;
+              updateData.isTrash=false;
+              updateData.isPinned=false;
+            }
+          }
+          
+          if(req.params.flag=='color'){
+            updateData.color=req.body.flagValue;
+          }
+      
+        const response={}
+        logger.info('updateData :: '+JSON.stringify(updateData),null,'\n')
+        serviceClassObject.updateFlag(idObjectData,updateData)
+        .then(data=>{
+          response.success=true;
+          response.message='Note updated successfully';
+          response.data=data;
+          return res.status(200).send(response);
+        })
+        .catch(err=>{
+          response.success=false;
+          response.error='Error while updating a Note'
+          response.data=err;
+          // response.data=err;
+          return res.status(400).send(response);
+        })
+      }    
+  }
 }
 
 module.exports = new ControllerClass();

@@ -56,7 +56,7 @@ class ControllerClass{
                 
                 response.success = true;
                 response.message = "Note Collaborate successfully";
-                // response.data=data;
+                response.data=data;
                 return res.status(200).send(response);
             })
             .catch(err => {
@@ -78,7 +78,7 @@ class ControllerClass{
      * @description API to remove collaborated note
      * @param {*} req
 
-    * @param {*} res
+    * @param {object} res
     **/
     removeCollaborator(req, res) {
         try {

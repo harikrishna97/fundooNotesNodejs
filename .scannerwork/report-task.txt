@@ -1,0 +1,6 @@
+projectKey=fundooNotesBackEnd
+serverUrl=http://localhost:9000
+serverVersion=6.7.1.35068
+dashboardUrl=http://localhost:9000/dashboard/index/fundooNotesBackEnd
+ceTaskId=AW-Kbl-a_gMp-pLJGz41
+ceTaskUrl=http://localhost:9000/api/ce/task?id=AW-Kbl-a_gMp-pLJGz41
