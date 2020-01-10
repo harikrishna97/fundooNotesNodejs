@@ -68,8 +68,6 @@ class ServiceClass {
    */
   checkMongooseId(id) {
     logger.info("in mongoose validator");
-
-    // coerce to string so the function can be generically used to test both strings and native objectIds created by the driver
     id = id + "";
     var len = id.length,
       valid = false;

@@ -20,7 +20,7 @@
  ******************************************************************************/
 const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
-
+const looger = require("../../config/winston");
 var UserSchema = new mongoose.Schema(
   {
     firstName: {
@@ -103,10 +103,10 @@ class ModelClass {
   findOne(findData, callback) {
     user.findOne(findData, (err, data) => {
       if (err) {
-        console.log("ERROR in findOne :: " + err);
+        logger.info("ERROR in findOne :: " + err);
         return callback(err, null);
       } else {
-        console.log("Data in findOne :: " + data);
+        logger.info("Data in findOne :: " + data);
         return callback(null, data);
       }
     });
@@ -120,17 +120,17 @@ class ModelClass {
    * @param {*} dataToBeUpadted
    */
   updateData(updateData, dataToBeUpadted) {
-    console.log("===>", updateData);
+    logger.info("===>", updateData);
     return new Promise((resolve, reject) => {
       user
         .findOneAndUpdate(updateData, dataToBeUpadted, { new: true })
         .then(data => {
-          console.log("in data");
+          logger.info("in data");
 
           resolve(data);
         })
         .catch(err => {
-          console.log("in err", err);
+          logger.info("in err", err);
 
           reject(err);
         });
@@ -155,45 +155,17 @@ class ModelClass {
 
     userData.save((err, data) => {
       if (err) {
-        console.log("Error in Model :: " + err);
+        logger.info("Error in Model :: " + err);
 
         return callback(err, null);
       } else {
-        console.log("Data after save :: " + data);
+        logger.info("Data after save :: " + data);
         return callback(null, data);
       }
     });
   }
 }
-// deleteFromDatabase(deleteData,callback){
 
-//     user.findOneAndDelete({'_id':deleteData._id},(err,res)=>{
-//         if(err){
-//             return callback(err,null);
-//         }else{
-
-//             return callback(null,res);
-//         }
-//     })
-// }
-// /**
-//  * @description:function get All Users information
-//  * @param:no params
-//  * @returns:{*} data or err
-//  */
-// findAll(){
-//     return new Promise((reject,resolve)=>{
-//          user.find({}).then(data=>{
-//              console.log("in found DAta",data);
-
-//              resolve(data);
-
-//          })
-//          .catch(err=>{
-//              reject(err)
-//          })
-//      })
-//  }
 module.exports = {
   ModelClass,
   user
