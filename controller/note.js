@@ -698,71 +698,140 @@ class ControllerClass {
     }
   }
 
-  updateFlag(req,res){
-      req.checkBody('flagValue', 'Data  should not be empty.').notEmpty();
+  /**
+   * @description  Common API to Update flag like isTrash,isPinned,isArchive,
+   *               color with value true/false/color
+   * @param {*} req
+   * @param {*} res
+   */
+  updateFlag(req, res) {
+    req.checkBody("flagValue", "Data  should not be empty.").notEmpty();
+    if (serviceClassObject.checkMongooseId(req.decoded._id) == false) {
+      const response = {};
+      response.success = false;
+      response.error = "Invalid NoteId";
+      return res.status(400).send(response);
+    } else {
+      const updateData = {};
+      const idObjectData = {};
+      idObjectData.noteId = req.params.noteId;
+      idObjectData.userId = req.decoded._id;
+
+      switch (req.params.flag) {
+        case "pin":
+          {
+            if (req.body.flagValue == true) {
+              updateData.isPinned = true;
+              updateData.isArchive = false;
+              updateData.isTrash = false;
+            } else {
+              updateData.isPinned = false;
+              updateData.isArchive = false;
+              updateData.isTrash = false;
+            }
+          }
+          // code block
+          break;
+        case "trash":
+          {
+            if (req.params.flag == "trash") {
+              if (req.body.flagValue === true) {
+                updateData.isTrash = true;
+                updateData.isPinned = false;
+                updateData.isArchive = false;
+              }
+            }
+          }
+          // code block
+          break;
+        case "archive":
+          {
+            if (req.body.flagValue === true) {
+              updateData.isTrash = false;
+              updateData.isPinned = false;
+              updateData.isArchive = true;
+            } else {
+              updateData.isArchive = false;
+              updateData.isTrash = false;
+              updateData.isPinned = false;
+            }
+          }
+          // code block
+          break;
+        case "color":
+          updateData.color = req.body.flagValue;
+          // code block
+          break;
+      }
+
+      const response = {};
+      logger.info("updateData :: " + JSON.stringify(updateData), null, "\n");
+      serviceClassObject
+        .updateFlag(idObjectData, updateData)
+        .then(data => {
+          response.success = true;
+          response.message = "Note updated successfully";
+          response.data = data;
+          return res.status(200).send(response);
+        })
+        .catch(err => {
+          response.success = false;
+          response.error = "Error while updating a Note";
+          response.data = err;
+          // response.data=err;
+          return res.status(400).send(response);
+        });
+    }
+  }
+
+  updateNote(req, res) {
+    const response = {};
+    try {
       if (serviceClassObject.checkMongooseId(req.decoded._id) == false) {
         const response = {};
         response.success = false;
         response.error = "Invalid NoteId";
         return res.status(400).send(response);
       } else {
-          const updateData={}
-          const idObjectData={}
-          idObjectData.noteId=req.params.noteId;
-          idObjectData.userId=req.decoded._id;
+        logger.info("hari");
+        const idData = {};
+        const updateData = {};
+        idData._id = req.params.noteId;
+        
+        if (req.body.title !== undefined) {
+          updateData.title = req.body.title;
+        }
 
-          if(req.params.flag=='pin'){
-            if(req.body.flagValue==true){
-                updateData.isPinned=true;
-                updateData.isArchive=false;
-                updateData.isTrash=false;
-            }else{
-              updateData.isPinned=false;
-              updateData.isArchive=false;
-              updateData.isTrash=false;
-            }
-          }
-          if(req.params.flag=='trash'){
-            if(req.body.flagValue===true){
-              updateData.isTrash=true;
-              updateData.isPinned=false;
-              updateData.isArchive=false;
-            }
-          }
-          
-          if(req.params.flag=='archive'){
-            if(req.body.flagValue===true){
-              updateData.isTrash=false;
-              updateData.isPinned=false;
-              updateData.isArchive=true;
-            }else{
-              updateData.isArchive=false;
-              updateData.isTrash=false;
-              updateData.isPinned=false;
-            }
-          }
-          
-          if(req.params.flag=='color'){
-            updateData.color=req.body.flagValue;
-          }
-      
-        const response={}
-        logger.info('updateData :: '+JSON.stringify(updateData),null,'\n')
-        serviceClassObject.updateFlag(idObjectData,updateData)
-        .then(data=>{
-          response.success=true;
-          response.message='Note updated successfully';
-          response.data=data;
-          return res.status(200).send(response);
-        })
-        .catch(err=>{
-          response.success=false;
-          response.error='Error while updating a Note'
-          response.data=err;
-          // response.data=err;
-          return res.status(400).send(response);
-        })
-      }    
+        if (req.body.description !== undefined) {
+          updateData.description = req.body.description;
+        }
+
+        serviceClassObject
+          .updateNote(idData, updateData)
+          .then(data => {
+            logger.info("DAta in Controller :: edit");
+
+            response.success = true;
+            response.message = "Note Successfully Updated";
+            response.data = data;
+            return res.status(200).send(response);
+          })
+          .catch(err => {
+            logger.info("err in Controller :: edit");
+            // const response={}
+            response.success = false;
+            response.error = err;
+            // response.data=err;
+            return res.status(400).send(response);
+          });
+      }
+    } catch (err) {
+      logger.info(err);
+      const response = {};
+      response.success = false;
+      response.message = "Something went Bad..";
+      return res.status(500).send(response);
+    }
   }
 }
 

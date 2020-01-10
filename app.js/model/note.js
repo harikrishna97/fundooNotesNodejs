@@ -65,12 +65,15 @@ var NoteSchema = new Schema(
       type: Boolean,
       default: false
     },
-    label: [
-      {
-        type: Schema.Types.ObjectId,
-        ref: "Label"
-      }
-    ],
+    // label: [
+    //   {
+    //     type: Schema.Types.ObjectId,
+    //     ref: "Label"
+    //   }
+    // ],
+    label: {
+      type: String
+    },
     collaboratorId: {
       type: String,
       default: null
@@ -217,14 +220,14 @@ class ModelClass {
                 { title: { $regex: query.searchKey, $options: "i" } },
                 { description: { $regex: query.searchKey, $options: "i" } },
                 { reminder: { $regex: query.searchKey, $options: "i" } },
-                { color: { $regex: query.searchKey, $options: "i" } },
-                { label: { $regex: query.searchKey, $options: "i" } }
+                { color: { $regex: query.searchKey, $options: "i" } }
+                // { label: { $regex: query.searchKey, $options: "i" } }
               ]
             },
             { userId: query.userId }
           ]
         })
-        .populate('label')
+        .populate("label")
         // note.find(findData,filterData)
         // note.find({$text: {$search: query.searchKey}},{'title':1,'description':1,'color':1,'label':1})
         // .skip(20)
