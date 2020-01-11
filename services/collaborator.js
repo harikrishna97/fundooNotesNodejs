@@ -1,12 +1,14 @@
 const collaboratormodel = require("../app.js/model/collaborator");
 const noteService = require("../app.js/model/note");
+const logger = require("../config/winston");
+
 class ServiceClass {
   /**
    * @description API to add Collaborator in a given note
    * @param {object} collaboratorData
    */
   addCollaborator(collaboratorData) {
-    // logger.info('collaboratorData in service'+JSON.stringify(collaboratorData));
+    logger.info('collaboratorData in service');
 
     return new Promise((resolve, reject) => {
       collaboratormodel
@@ -17,7 +19,7 @@ class ServiceClass {
           noteService
             .updateNote(
               { _id: data.noteId },
-              { collaboratorId: data.collaboratorId }
+              { $push:{collaboratorId: data.collaboratorId }}
             )
             .then(data1 => {
               logger.info("data from note " + data1);
@@ -44,6 +46,16 @@ class ServiceClass {
         .delete({ _id: removeData.collaboratorId })
         .then(data => {
           if (data !== null) {
+            const idData={}
+            idData._id=data.noteId;
+            const updateData={$push:{'collaboratorId':null}}
+            noteService.updateNote(idData,updateData)
+            .then(data1=>{
+              logger.info(' '+data1)
+            })
+            .catch(err=>{
+              logger.info('...'+err);
+            })
             return resolve(data);
           } else {
             return reject(data);

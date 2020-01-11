@@ -20,7 +20,7 @@
  ******************************************************************************/
 const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
-const looger = require("../../config/winston");
+const logger = require("../../config/winston");
 var UserSchema = new mongoose.Schema(
   {
     firstName: {

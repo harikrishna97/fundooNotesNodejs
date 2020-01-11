@@ -75,7 +75,7 @@ var NoteSchema = new Schema(
       type: String
     },
     collaboratorId: {
-      type: String,
+      type: [],
       default: null
     }
   },

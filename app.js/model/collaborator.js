@@ -46,6 +46,7 @@ class CollaboratorClass {
   constructor() {}
 
   create(queryData) {
+    logger.info('controll1')
     let collaboratorData = new collaborator({
       userId: queryData.userId,
       noteId: queryData.noteId,
