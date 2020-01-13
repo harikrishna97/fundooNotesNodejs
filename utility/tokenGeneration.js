@@ -24,7 +24,7 @@ module.exports = {
     try {
       console.log("pay---->", payload);
 
-      var token = jwt.sign(payload, secretKey);//, { expiresIn: "1d" }
+      var token = jwt.sign(payload, secretKey,{ expiresIn: "60d" });//, { expiresIn: "60d" }
       return token;
     } catch (err) {
       console.log(err);

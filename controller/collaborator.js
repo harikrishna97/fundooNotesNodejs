@@ -23,24 +23,22 @@ const logger = require("../config/winston");
 class ControllerClass {
   /**
    * @description API to add Collaborator in a note
-   * @param {*} req
-   * @param {*} res
+   * @param {object} req
+   * @param {object} res
    */
   addCollaborator(req, res) {
     const response = {};
-// logger.info('controll goes here1')
+    // logger.info('controll goes here1')
     try {
       // logger.info('controll goes here2 '+req.params.noteId+" "+req.params.collaboratorId)
-const a=true
+      const a = true;
       if (
         collaboratorService.checkMongooseId(req.params.noteId) == false ||
-        collaboratorService.checkMongooseId(req.params.collaboratorId) == false ||
+        collaboratorService.checkMongooseId(req.params.collaboratorId) ==
+          false ||
         collaboratorService.checkMongooseId(req.decoded._id) == false
       ) {
-        logger.info('controll goes here3')
-
-        console.log("1");
-
+        logger.info("controll goes here3");
         response.success = false;
         response.error = "Invalid Id";
         return res.status(400).send(response);
@@ -52,7 +50,8 @@ const a=true
         collaboratorData.noteId = req.params.noteId;
         collaboratorData.collaboratorId = req.params.collaboratorId;
         collaboratorData.userId = req.decoded._id;
-        collaboratorService.addCollaborator(collaboratorData)
+        collaboratorService
+          .addCollaborator(collaboratorData)
           .then(data => {
             // logger.info("DATA :: "+data);
 
@@ -64,33 +63,28 @@ const a=true
           .catch(err => {
             response.success = false;
             response.error = err;
-            response.data=err;
+            response.data = err;
             return res.status(400).send(response);
           });
       }
     } catch (err) {
       // logger.info("err"+err);
       response.success = false;
-      response.message = "Some1thing went Bad.."+err;
+      response.message = "Some1thing went Bad.." + err;
       return res.status(500).send(response);
     }
   }
 
   /**
      * @description API to remove collaborated note
-     * @param {*} req
-
-    * @param {object} res
+     * @param {object} req
+     * @param {object} res
     **/
   removeCollaborator(req, res) {
     try {
-      // let isValid = mongoose.Types.ObjectId.isValid(req.params.noteId);
       if (
         collaboratorService.checkMongooseId(req.params.collaboratorId) == false
       ) {
-        // ||
-        // collaboratorService.checkMongooseId(req.decoded._id) == false
-        // ) {
         const response = {};
         response.success = false;
         response.error = "Invalid NoteId";
@@ -105,12 +99,12 @@ const a=true
           .then(data => {
             response.success = true;
             response.message = "collaborator removed successfully";
-            // response.data=data;
+            response.data=data;
             return res.status(200).send(response);
           })
           .catch(err => {
             response.success = false;
-            response.error = "Error while deleting";
+            response.error = err;
             response.data = err;
             // response.data=err;
             return res.status(400).send(response);

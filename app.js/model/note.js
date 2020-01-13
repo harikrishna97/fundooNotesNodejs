@@ -164,7 +164,7 @@ class ModelClass {
     });
   }
   /**
-   * @description: Function to delete note from database
+   * @description: Function to delete note forever from database
    * @param {object} deleteData
    */
   deleteNote(deleteData) {

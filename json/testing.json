@@ -6,21 +6,38 @@
         "password":"adhokshaj123"
     },
     {
-        "email":"adhokshaj10@gmail.com",
-        "password":"adhokshaj123"
-    },
-    {
-        "email":"adhokshaj108@gmail.com",
-        "password":"adhokshaj23"
-    },
-    {
         "email":"",
         "password":"adhokshaj23"
     },
     {
-        "email":"adhokshaj108@gmail.com",
+        "email":null,
+        "password":"adhokshaj23"
+    },
+    {
+        "password":"adhokshaj23"
+    },
+    {
+        "email":"adhokshaj108gmail.com",
+        "password":"adhokshaj23"
+    },
+
+
+    {
+        "email":"adhokshaj10@gmail.com",
         "password":""
+    },
+    {
+        "email":"adhokshaj10@gmail.com",
+        "password":null
+    },
+    {
+        "email":"adhokshaj10@gmail.com"
+    },
+    {
+        "email":"adhokshaj10@gmail.com",
+        "password":"ad3"
     }
+    
 
 ],
 
@@ -29,31 +46,95 @@
         "email":"adhokshaj108@gmail.com"
     },
     {
-        "email":"hfdhfd@gmail.com"
-    },
-    {
-        "email":"hdfkjh"
-    },
-    {
         "email":""
+    },
+    {
+        "email":null
+    },
+    {
+        
+    },
+    {
+        "email":"adhokshaj108gmail.com"
+        
     }
 
 ],
 
 "registration":[
     {
-        
+        "firstName":"Ram",
+        "lastName":"Borase",
+        "email":"abc1d@gmail.com",
+        "password":"abc123"
+    },
+    {
+        "firstName":"",
         "lastName":"Borase",
         "email":"abcd@gmail.com",
         "password":"abc123"
     },
+    {
+        "firstName":null,
+        "lastName":"Borase",
+        "email":"abcd@gmail.com",
+        "password":"abc123"
+    },
+    {
+       
+        "lastName":"Borase",
+        "email":"abcd@gmail.com",
+        "password":"abc123"
+    },
+
+
+    {
+        "firstName":"Ram",
+        "lastName":"",
+        "email":"abc1d@gmail.com",
+        "password":"abc123"
+    },
+    {
+        "firstName":"Ram",
+        "lastName":null,
+        "email":"abc1d@gmail.com",
+        "password":"abc123"
+    },
+    {
+        "firstName":"Ram",
+       
+        "email":"abc1d@gmail.com",
+        "password":"abc123"
+    },
+
+
+
     {
         "firstName":"Ram",
         "lastName":"Borase",
         "email":"",
         "password":"ram123"
     },
+    {
+        "firstName":"Ram",
+        "lastName":"Borase",
+        "email":null,
+        "password":"ram123"
+    },
+    {
+        "firstName":"Ram",
+        "lastName":"Borase",
+        "password":"ram123"
+    },
+    {
+        "firstName":"Ram",
+        "lastName":"Borase",
+        "email":"123gmail.com",
+        "password":"ram123"
+    },
     
+
+
     {
         "firstName":"Ram",
         "lastName":"Borase",
@@ -63,16 +144,38 @@
     
     {
         "firstName":"Ram",
-        
+        "lastName":"Borase",
         "email":"ram@gmail.com",
-        "password":""
+        "password":null
+    },
+
+    {
+        "firstName":"Ram",
+        "lastName":"Borase",
+        "email":"ram@gmail.com"
+    },
+    {
+        "firstName":"Ram",
+        "lastName":"Borase",
+        "email":"ram@gmail.com",
+        "password":"as12"
     }
     
 ],
 
 "resetPassword":[
     {
-        "password":"adhokshaj123"
+        "password":"adhokshaj123",
+        "token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZTBlZTMzZjY5M2E4ZDI0ZWZhYmE4YmEiLCJlbWFpbCI6ImFkaG9rc2hhajEwOEBnbWFpbC5jb20iLCJpYXQiOjE1Nzg5MDMxNzB9.up1iafUQNp6DnR4Zc_yd4cFjgQZ7dlB-JEFux9wi2NE"
+    },
+    {
+        "password":""
+    },
+    {
+        "password":null
+    },
+    {
+
     },
     {
         "password":"asd"
@@ -81,10 +184,18 @@
 
 "resetWithToken":[
     {
-        "token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZTBlZTMzZjY5M2E4ZDI0ZWZhYmE4YmEiLCJlbWFpbCI6ImFkaG9rc2hhajEwOEBnbWFpbC5jb20iLCJpYXQiOjE1Nzg2NjAwNDl9.Awxa6u2ckLi7g94odFYf86M17EBWmjjBrPgoq0ZwDh0"
+        "token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZTBlZTMzZjY5M2E4ZDI0ZWZhYmE4YmEiLCJlbWFpbCI6ImFkaG9rc2hhajEwOEBnbWFpbC5jb20iLCJpYXQiOjE1Nzg5MDMxNzB9.up1iafUQNp6DnR4Zc_yd4cFjgQZ7dlB-JEFux9wi2NE"
     },
     {
         "token":""
+    },
+    {
+        "token":null
+    },
+    {
+    },
+    {
+        "token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZTBlZTMzZjY5M2E4ZDI0ZWZhYmE4YmEi"
     }
 ]
 

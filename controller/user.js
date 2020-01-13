@@ -176,7 +176,7 @@ class ControllerClass {
       if (errors) {
         response.success = false;
         response.error = errors;
-        return res.status(422).send(response);
+        return res.status(400).send(response);
       } else {
         const loginData = {};
         (loginData.email = req.body.email),
@@ -232,7 +232,7 @@ class ControllerClass {
       if (errors) {
         response.success = false;
         response.error = errors;
-        return res.status(422).send(response);
+        return res.status(400).send(response);
       } else {
         var forgetPasswordData = {};
         forgetPasswordData.email = req.body.email;
@@ -293,6 +293,8 @@ class ControllerClass {
    */
   resetPasswordInController(req, res) {
     try {
+      console.log('req.body',req.body);
+      
       req.checkBody("password", "Password should not be empty.").notEmpty();
       req
         .checkBody("password", "Password length should be minimum 6.")
@@ -308,7 +310,7 @@ class ControllerClass {
         response.success = false;
         response.error = errors;
         console.log("error==>", response);
-        return res.status(422).send(response);
+        return res.status(400).send(response);
       } else {
         var resetPasswordData = {};
         resetPasswordData._id = req.decoded._id;

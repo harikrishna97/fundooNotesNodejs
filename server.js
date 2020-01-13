@@ -18,6 +18,7 @@ require("dotenv").config();
 const express = require("express");
 const bodyParser = require("body-parser");
 const validator = require("express-validator");
+const logger=require('./config/winston')
 const routes = require("./routes/routes");
 // var cors = require('cors');
 const database = require("./config/database.service");
@@ -53,7 +54,7 @@ cron.schedule("* * * * *", () => {
 app.listen(port, () => {
   DatabaseClassObject.connect();
   RedisClassObject.connect();
-  console.log("Server is Listening on port " + port + " ..");
+  logger.info("Main Server is Listening on port " + port + " ..");
 });
 // console.log('Redis Server is Listening on port '+redisPort+' ..');
 

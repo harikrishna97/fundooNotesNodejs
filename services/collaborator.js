@@ -48,7 +48,7 @@ class ServiceClass {
           if (data !== null) {
             const idData={}
             idData._id=data.noteId;
-            const updateData={$push:{'collaboratorId':null}}
+            const updateData={'collaboratorId':null}
             noteService.updateNote(idData,updateData)
             .then(data1=>{
               logger.info(' '+data1)
@@ -79,14 +79,14 @@ class ServiceClass {
    * @param {*} id
    */
   checkMongooseId(id) {
-    logger.info("in mongoose validator");
     id = id + "";
     var len = id.length,
       valid = false;
-    if (len == 12 || len == 24) {
-      //&& isValid==true) {
+    if (len == 24) {
       valid = /^[0-9a-fA-F]+$/.test(id);
     }
+    logger.info("in mongoose validator ",valid);
+
     return valid;
   }
 }

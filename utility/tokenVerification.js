@@ -1,8 +1,8 @@
 /******************************************************************************
- *  Execution       :   1. default node              cmd> node server.js
+ *  @Execution       :   1. default node              cmd> node server.js
  *                      2. if nodemon installed   cmd> nodemon server.js
  *
- *  Purpose         :  verifying token to change password of valid user
+ *  @Purpose         :  verifying token to change password of valid user
  *
  *  @description    : verifying token to change password of valid user
  *
@@ -16,17 +16,15 @@
  ******************************************************************************/
 const jwt = require("jsonwebtoken");
 require("dotenv/config");
-const model = require("../app.js/model/user");
-// const modelClassObject=new model.ModelClass;
 const redis = require("redis");
-var secretKey = `${process.env.SECRET_KEY}`;
-// console.log('SECRETKey,',secretKey );
+const secretKey = `${process.env.SECRET_KEY}`;
 const client = redis.createClient(`${process.env.REDIS_PORT}`);
-
+const logger = require("../config/winston");
 module.exports = {
   tokenVerification(req, res, next) {
+    // logger.info("header",req.headers)
     var token = req.headers.token || req.params.token;
-    console.log("Token In Token Verification :: ", req.headers.token);
+    logger.info("Token In Token Verification :: "+JSON.stringify(token));
 
     try {
       if (token) {
@@ -40,11 +38,11 @@ module.exports = {
           } else {
             req.decoded = data;
             // req.body['data'] = data
-            console.log("Encoded Token :: " + JSON.stringify(req.decoded));
-            // console.log('DECODED TOEKN ID ::',req.decoded._id);
-            console.log("DECODED TOEKN ID ::", data._id);
+            logger.info("Encoded Token :: " +JSON.stringify(req.decoded));
+            // logger.info('DECODED TOEKN ID ::',req.decoded._id);
+            logger.info("DECODED TOEKN ID ::", data._id);
             const url = req.url.split("/");
-            // const registrationToken=req.url.split('/')
+            const registrationToken = req.url.split("/");
             let redisData;
             if (url.includes("resetPassword")) {
               redisData = "forgetToken" + data._id;
@@ -53,35 +51,28 @@ module.exports = {
             } else {
               redisData = data._id;
             }
-            console.log("REdisdata :: ", redisData);
-            console.log("EQ>PARAMS TOken Verification For REDIS ::", req.url);
+            logger.info("REdisdata :: "+redisData);
+            logger.info("EQ>PARAMS TOken Verification For REDIS ::"+req.url);
 
             client.get(redisData, (err, reply) => {
               // reply is null when the key is missing
-              console.log("Reply from forget Token", reply);
+              logger.info("Reply from forget Token", reply);
               if (token === reply) {
-                console.log("TOKEN is same");
-                console.log("now controll goes to next..");
+                logger.info("TOKEN is same");
+                logger.info("now controll goes to next..");
 
                 next();
               } else {
-                console.log("Token is Not same");
-                const result ={
+                logger.info("Token is Not same");
+                const result = {
                   success: false,
                   message: "invalid Url"
-                }
-                return res.status(401).send(result);
+                };
+                return res.status(400).send(result);
               }
             });
           }
         });
-      } else if (token == null || token == undefined) {
-        return res.status(400).send(
-          res.json({
-            success: false,
-            message: "invalid User"
-          })
-        );
       } else {
         return res.status(400).send({
           success: false,
@@ -89,15 +80,16 @@ module.exports = {
         });
       }
     } catch (err) {
-      console.log(err);
+      logger.info(err);
       return err;
     }
   }
+
   // userVerification(req,res,next){
-  //     console.log("verify");
+  //     logger.info("verify");
 
   //      var urlCode=req.params.url;
-  //      console.log('URL CODE ',urlCode);
+  //      logger.info('URL CODE ',urlCode);
 
   //      modelClassObject.findOne({'urlCode':urlCode},(err,data)=>{
 
@@ -108,17 +100,17 @@ module.exports = {
   //                  message:'invalid address'
   //              })
   //          }else{
-  //              console.log('DATA in  UserVerifivcation And findone',data);
-  //              console.log('Data from Database :: '+data);
+  //              logger.info('DATA in  UserVerifivcation And findone',data);
+  //              logger.info('Data from Database :: '+data);
 
-  //              console.log('LongUrl is :: '+data.longUrl);
+  //              logger.info('LongUrl is :: '+data.longUrl);
 
   //              const data12=data.longUrl.split('http://localhost:4000/userVerification/');
 
   //              const token=data12[1];
-  //              console.log('Token is ',data12);
+  //              logger.info('Token is ',data12);
 
-  //              console.log('urlCode in userVerification :: ',urlCode);
+  //              logger.info('urlCode in userVerification :: ',urlCode);
 
   //              // model ka find method call backend data-long url
   //              //split long url and find tokrn
@@ -134,7 +126,7 @@ module.exports = {
   //                          }else{
   //                              req.decoded=data
   //                              // req.body['data'] = data
-  //                              console.log('Encoded url :: '+JSON.stringify(req.decoded));
+  //                              logger.info('Encoded url :: '+JSON.stringify(req.decoded));
   //                              next()
   //                          }
   //                      })
@@ -149,7 +141,7 @@ module.exports = {
   //                  }
 
   //              }catch(err){
-  //                  console.log(err);
+  //                  logger.info(err);
   //                  return err
 
   //              }

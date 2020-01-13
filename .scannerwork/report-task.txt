@@ -2,5 +2,5 @@ projectKey=fundooNotesBackEnd
 serverUrl=http://localhost:9000
 serverVersion=6.7.1.35068
 dashboardUrl=http://localhost:9000/dashboard/index/fundooNotesBackEnd
-ceTaskId=AW-PrBwwGx42ZI0g_bHe
-ceTaskUrl=http://localhost:9000/api/ce/task?id=AW-PrBwwGx42ZI0g_bHe
+ceTaskId=AW-efaGjp_E8ItvzDzya
+ceTaskUrl=http://localhost:9000/api/ce/task?id=AW-efaGjp_E8ItvzDzya

@@ -33,7 +33,7 @@ routes.post(
   controllerClassObject.forgetPasswordInController
 );
 routes.post(
-  "/resetPassword/:token",
+  "/resetPassword",
   tokenObject.tokenVerification,
   controllerClassObject.resetPasswordInController
 );
@@ -60,11 +60,7 @@ routes.post(
 routes.post("/note", tokenObject.tokenVerification, noteController.createNote);
 routes.get("/note", tokenObject.tokenVerification, noteController.getAllNotes);
 
-// routes.put(
-//   "/note/:noteId",
-//   tokenObject.tokenVerification,
-//   noteController.editNote
-// );
+
 routes.delete(
   "/note/:noteId",
   tokenObject.tokenVerification,
@@ -87,21 +83,6 @@ routes.delete(
   noteController.removeRemainder
 );
 
-routes.put(
-  "/archive/:noteId",
-  tokenObject.tokenVerification,
-  noteController.archiveNote
-);
-routes.put(
-  "/pin/:noteId",
-  tokenObject.tokenVerification,
-  noteController.pinNote
-);
-routes.put(
-  "/trash/:noteId",
-  tokenObject.tokenVerification,
-  noteController.trashNote
-);
 routes.get(
   "/trash",
   tokenObject.tokenVerification,

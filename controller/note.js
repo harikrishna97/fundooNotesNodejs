@@ -21,6 +21,7 @@ const serviceClassObject = require("../services/note"),
   noteService = require("../services/note"),
   mongoose = require("mongoose"),
   logger = require("../config/winston");
+
 class ControllerClass {
   /**
    * @description : API to create Note
@@ -134,73 +135,7 @@ class ControllerClass {
     }
   }
 
-  /**
-   * @description API to edit note
-   * @param {*} req
-   * @param {*} res
-   */
-  editNote(req, res) {
-    try {
-      let isValid = mongoose.Types.ObjectId.isValid(req.params.noteId); //true
-      logger.info("mongoose validator :: ", isValid);
-
-      if (isValid == false) {
-        const response = {};
-        response.success = false;
-        response.error = "Invalid NoteId";
-        return res.status(400).send(response);
-      } else {
-        req
-          .checkBody("description", "description should not be empty.")
-          .notEmpty();
-        req.checkBody("title", "title should not be empty.").notEmpty();
-        var errors = req.validationErrors();
-        var response = {};
-        if (errors) {
-          logger.error("Validataion err");
-          response.success = false;
-          response.error = errors[0].msg;
-          return res.status(400).send(response);
-        } else {
-          logger.info("Controller Data req", req.params.noteId);
-          const editData = {};
-          editData.userId = req.decoded._id;
-          editData.noteId = req.params.noteId;
-          editData.description = req.body.description;
-          editData.title = req.body.title;
-
-          logger.info("Controller Data req2", req.decoded._id);
-
-          serviceClassObject
-            .editNote(editData)
-            .then(data => {
-              logger.info("DAta in Controller :: edit");
-
-              const response = {};
-              response.success = true;
-              response.message = "Note Successfully Updated";
-              // response.data=data;
-              return res.status(200).send(response);
-            })
-            .catch(err => {
-              logger.info("err in Controller :: edit");
-              // const response={}
-              response.success = false;
-              response.error = err;
-              // response.data=err;
-              return res.status(400).send(response);
-            });
-        }
-      }
-    } catch (err) {
-      logger.info(err);
-      const response = {};
-      response.success = false;
-      response.message = "edit Something went Bad..";
-      return res.status(500).send(response);
-    }
-  }
-
+  
   /**
    * @description API to remove note
    * @param {*} req
@@ -362,142 +297,7 @@ class ControllerClass {
       return res.status(500).send(response);
     }
   }
-  /**
-   * @description API to Archive note
-   * @param {*} req
-   * @param {*} res
-   */
-  archiveNote(req, res) {
-    try {
-      // req.checkBody('noteId', 'NoteId  should not be empty.').notEmpty();
-      if (
-        serviceClassObject.checkMongooseId(req.params.noteId) == false ||
-        serviceClassObject.checkMongooseId(req.decoded._id) == false
-      ) {
-        const response = {};
-        response.success = false;
-        response.error = "Invalid NoteId";
-        return res.status(400).send(response);
-      } else {
-        const archiveData = {};
-        archiveData.noteId = req.params.noteId;
-
-        const response = {};
-        serviceClassObject
-          .archiveNote(archiveData)
-          .then(data => {
-            response.success = true;
-            response.message = "Note Archive successfully";
-            // response.data=data;
-            return res.status(200).send(response);
-          })
-          .catch(err => {
-            response.success = false;
-            response.error = "Error while Archiving Note";
-            response.data = err;
-            // response.data=err;
-            return res.status(400).send(response);
-          });
-      }
-    } catch (err) {
-      logger.info(err);
-      const response = {};
-      response.success = false;
-      response.message = "Something went Bad..";
-      return res.status(500).send(response);
-    }
-  }
-
-  /**
-   * @description API to Pin a note
-   * @param {*} req
-   * @param {*} res
-   */
-  pinNote(req, res) {
-    try {
-      //    req.checkBody('noteId', 'NoteId  should not be empty.').notEmpty();
-      if (
-        serviceClassObject.checkMongooseId(req.params.noteId) == false ||
-        serviceClassObject.checkMongooseId(req.decoded._id) == false
-      ) {
-        const response = {};
-        response.success = false;
-        response.error = "Invalid NoteId";
-        return res.status(400).send(response);
-      } else {
-        const pinNoteData = {};
-        pinNoteData.noteId = req.params.noteId;
-
-        const response = {};
-        serviceClassObject
-          .pinNote(pinNoteData)
-          .then(data => {
-            response.success = true;
-            response.message = "Note Pinned successfully";
-            // response.data=data;
-            return res.status(200).send(response);
-          })
-          .catch(err => {
-            response.success = false;
-            response.error = "Error while Pinning Note";
-            response.data = err;
-            // response.data=err;
-            return res.status(400).send(response);
-          });
-      }
-    } catch (err) {
-      logger.info(err);
-      const response = {};
-      response.success = false;
-      response.message = "Something went Bad..";
-      return res.status(500).send(response);
-    }
-  }
-  /**
-   * @description API to Trash a note
-   * @param {*} req
-   * @param {*} res
-   */
-  trashNote(req, res) {
-    try {
-      // req.checkBody('noteId', 'NoteId  should not be empty.').notEmpty();
-      if (
-        serviceClassObject.checkMongooseId(req.params.noteId) == false ||
-        serviceClassObject.checkMongooseId(req.decoded._id) == false
-      ) {
-        const response = {};
-        response.success = false;
-        response.error = "Invalid NoteId";
-        return res.status(400).send(response);
-      } else {
-        const trashNoteData = {};
-        trashNoteData.noteId = req.params.noteId;
-
-        const response = {};
-        serviceClassObject
-          .trashNote(trashNoteData)
-          .then(data => {
-            response.success = true;
-            response.message = "Note Trash successfully";
-            // response.data=data;
-            return res.status(200).send(response);
-          })
-          .catch(err => {
-            response.success = false;
-            response.error = "Error while Trashing a Note";
-            response.data = err;
-            // response.data=err;
-            return res.status(400).send(response);
-          });
-      }
-    } catch (err) {
-      logger.info(err);
-      const response = {};
-      response.success = false;
-      response.message = "Something went Bad..";
-      return res.status(500).send(response);
-    }
-  }
+  
   /**
    * @description API to get All Archive notes from database
    * @param {*} req
@@ -651,6 +451,9 @@ class ControllerClass {
    */
   search(req, res) {
     try {
+      if(req.params.searchKey===undefined){
+        throw "Search Key is required.."
+      }
       logger.info(req.body);
 
       if (serviceClassObject.checkMongooseId(req.decoded._id) == false) {
@@ -693,7 +496,7 @@ class ControllerClass {
       logger.error(err);
       const response = {};
       response.success = false;
-      response.message = "Something went Bad..";
+      response.message = err;
       return res.status(500).send(response);
     }
   }

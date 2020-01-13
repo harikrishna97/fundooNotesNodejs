@@ -26,7 +26,7 @@ const modelClassObject = require("../app.js/model/note"),
 class ServiceClass {
   /**
    * @description API to create Note
-   * @param {*} createData
+   * @param {object} createData
    */
   createNote(createData) {
     return new Promise((resolve, reject) => {
@@ -35,16 +35,16 @@ class ServiceClass {
         .then(data => {
           console.log("in service");
 
-          resolve(data);
+          return resolve(data);
         })
         .catch(err => {
-          reject(data);
+          return reject(data);
         });
     });
   }
   /**
    * @description API to get all Notes
-   * @param {*} getAllNotesData
+   * @param {object} getAllNotesData
    */
   getAllNotes(getAllNotesData) {
     return new Promise((resolve, reject) => {
@@ -56,53 +56,21 @@ class ServiceClass {
             isArchive: false,
             isPinned: false
           },
-          { title: 1, description: 1 ,collaboratorId:1}
+          { title: 1, description: 1, collaboratorId: 1 }
         )
         .then(data => {
           if (data !== null) {
-            resolve(data);
+            return resolve(data);
           } else {
-            reject(data);
+            return reject(data);
           }
         })
         .catch(err => {
-          reject(err);
+          return reject(err);
         });
     });
   }
-  /**
-   * @description API to edit Note
-   * @param {*} editData
-   */
-  editNote(editData) {
-    return new Promise((resolve, reject) => {
-      modelClassObject
-        .findOne({ userId: editData.userId })
-        .then(data => {
-          if (data !== null) {
-            modelClassObject
-              .updateNote(
-                { _id: editData.noteId },
-                { title: editData.title, description: editData.description }
-              )
-              .then(data => {
-                console.log("null id", data);
 
-                resolve(data);
-                console.log("hfdkdhkjdd");
-              })
-              .catch(err => {
-                reject(err);
-              });
-          } else {
-            reject("invalid UserId");
-          }
-        })
-        .catch(err => {
-          reject(err);
-        });
-    });
-  }
   /**
    * @description API to remove Note
    * @param {object} removeNote
@@ -116,10 +84,10 @@ class ServiceClass {
           modelClassObject
             .updateNote({ _id: removeNote.noteId }, { isTrash: true })
             .then(data => {
-              resolve(data);
+              return resolve(data);
             })
             .catch(err => {
-              reject(err);
+              return reject(err);
             });
         } else {
           reject("invalid UserId");
@@ -129,7 +97,7 @@ class ServiceClass {
   }
   /**
    * @description API to add remainder in a given note
-   * @param {*} remainderData
+   * @param {object} remainderData
    */
   addRemainder(remainderData) {
     console.log("Remainder Date in service", JSON.stringify(remainderData));
@@ -141,16 +109,16 @@ class ServiceClass {
           { remainder: remainderData.remainder }
         )
         .then(data => {
-          resolve(data);
+          return resolve(data);
         })
         .catch(err => {
-          reject(err);
+          return reject(err);
         });
     });
   }
   /**
    * @description API to remove remainder in of a given note
-   * @param {*} remainderData
+   * @param {object} remainderData
    */
   removeRemainder(remainderData) {
     return new Promise((resolve, reject) => {
@@ -162,117 +130,27 @@ class ServiceClass {
               .updateNote({ _id: remainderData.noteId }, { remainder: null })
               .then(data => {
                 if (data !== null) {
-                  resolve(data);
+                  return resolve(data);
                 } else {
-                  reject(data);
+                  return reject(data);
                 }
               })
               .catch(err => {
-                reject(err);
+                return reject(err);
               });
           } else {
             reject("invalid UserId");
           }
         })
         .catch(err => {
-          reject(err);
-        });
-    });
-  }
-  /**
-   * @description API to Archive a note
-   * @param {*} remainderData
-   */
-  archiveNote(archiveData) {
-    return new Promise((resolve, reject) => {
-      modelClassObject
-        .updateNote(
-          { _id: archiveData.noteId },
-          { isArchive: true, isPinned: false, isTrash: false }
-        )
-        .then(data => {
-          resolve(data);
-        })
-        .catch(err => {
-          reject(err);
-        });
-    });
-  }
-  /**
-   * @description API to Pinned a note
-   * @param {*} remainderData
-   */
-  pinNote(pinNoteData) {
-    return new Promise((resolve, reject) => {
-      modelClassObject
-        .updateNote(
-          {
-            _id: pinNoteData.noteId
-          },
-          {
-            isPinned: true,
-            isArchive: false,
-            isTrash: false
-          }
-        )
-        .then(data => {
-          resolve(data);
-        })
-        .catch(err => {
-          reject(err);
-        });
-    });
-  }
-  /**
-   * @description API to Trash a note
-   * @param {*} remainderData
-   */
-  trashNote(trashNoteData) {
-    return new Promise((resolve, reject) => {
-      modelClassObject
-        .updateNote(
-          { _id: trashNoteData.noteId },
-          { isTrash: true, isPinned: false, isArchive: false }
-        )
-        .then(data => {
-          resolve(data);
-        })
-        .catch(err => {
-          reject(err);
-        });
-    });
-  }
-  /**
-   * @description API to add schedular for Reminders
-   */
-  notificationServiceForRemainder() {
-    // new Date() will return :: Sat Jan 04 2020 16:35:03 GMT+0530 (India Standard Time)
-    var today = new Date();
-    var dd = String(today.getDate()).padStart(2, "0");
-    var mm = String(today.getMonth() + 1).padStart(2, "0"); //January is 0!
-    var yyyy = today.getFullYear();
-    today = dd + "/" + mm + "/" + yyyy;
-    // console.log(today);
-    return new Promise((resolve, reject) => {
-      modelClassObject
-        .readNotes({ remainder: today }, { title: 1, description: 1 })
-
-        .then(data => {
-          if (data !== null) {
-            resolve(data);
-          } else {
-            reject(data);
-          }
-        })
-        .catch(err => {
-          reject(err);
+          return reject(err);
         });
     });
   }
 
   /**
    * @description API to get all Archive Notes
-   * @param {*} getAllArchivesData
+   * @param {object} getAllArchivesData
    */
   getAllArchives(getAllArchivesData) {
     return new Promise((resolve, reject) => {
@@ -283,20 +161,20 @@ class ServiceClass {
         )
         .then(data => {
           if (data !== null) {
-            resolve(data);
+            return resolve(data);
           } else {
-            reject(data);
+            return reject(data);
           }
         })
         .catch(err => {
-          reject(err);
+          return reject(err);
         });
     });
   }
 
   /**
    * @description API to get all Trash Notes
-   * @param {*} getAllTrashData
+   * @param {object} getAllTrashData
    */
   getAllTrashNotes(getAllTrashData) {
     return new Promise((resolve, reject) => {
@@ -307,20 +185,20 @@ class ServiceClass {
         )
         .then(data => {
           if (data !== null) {
-            resolve(data);
+            return resolve(data);
           } else {
-            reject(data);
+            return reject(data);
           }
         })
         .catch(err => {
-          reject(err);
+          return reject(err);
         });
     });
   }
 
   /**
    * @description API to get all Pinned Notes
-   * @param {*} getAllTrashData
+   * @param {object} getAllTrashData
    */
   getAllPinnedNotes(getAllTrashData) {
     return new Promise((resolve, reject) => {
@@ -331,13 +209,13 @@ class ServiceClass {
         )
         .then(data => {
           if (data !== null) {
-            resolve(data);
+            return resolve(data);
           } else {
-            reject(data);
+            return reject(data);
           }
         })
         .catch(err => {
-          reject(err);
+          return reject(err);
         });
     });
   }
@@ -352,17 +230,17 @@ class ServiceClass {
       modelClassObject
         .updateNote({ _id: idData.noteId }, flagData)
         .then(data => {
-          resolve(data);
+          return resolve(data);
         })
         .catch(err => {
-          reject(err);
+          return reject(err);
         });
     });
   }
 
   /**
    * @description Function to validate Mongoose Id
-   * @param {*} id
+   * @param {object} id
    */
   checkMongooseId(id) {
     // coerce to string so the function can be generically used to test both strings and native objectIds created by the driver
@@ -385,36 +263,31 @@ class ServiceClass {
         .search(searchData)
         .then(data => {
           if (data !== null) {
-            resolve(data);
+            return resolve(data);
           } else {
-            reject(data);
+            return reject(data);
           }
         })
         .catch(err => {
-          reject(err);
+          return reject(err);
         });
     });
   }
 
-  updateNote(idData,updataeData){
-return new Promise((resolve,reject)=>{
-  modelClassObject.updateNote(idData,updataeData)
-  .then(data => {
-    console.log("null id", data);
+  updateNote(idData, updataeData) {
+    return new Promise((resolve, reject) => {
+      modelClassObject
+        .updateNote(idData, updataeData)
+        .then(data => {
+          console.log("null id", data);
 
-    resolve(data);
-    console.log("hfdkdhkjdd");
-  })
-  .catch(err => {
-    reject(err);
-  });
-
-})
-
+          return resolve(data);
+        })
+        .catch(err => {
+          return reject(err);
+        });
+    });
   }
-
-
-
 }
 
 module.exports = new ServiceClass();
