@@ -65,19 +65,22 @@ var NoteSchema = new Schema(
       type: Boolean,
       default: false
     },
-    // label: [
-    //   {
-    //     type: Schema.Types.ObjectId,
-    //     ref: "Label"
-    //   }
-    // ],
-    label: {
-      type: String
-    },
-    collaboratorId: {
-      type: [],
-      default: null
-    }
+    label: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "Label"
+      }
+    ],
+    // label: {
+    //   type: String
+    // },
+    collaboratorId: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "Collaborator",
+        unique: true        
+      }
+    ]
   },
   { timestamps: true }
 );
@@ -105,34 +108,34 @@ class ModelClass {
       noteData
         .save()
         .then(data => {
-          resolve(data);
+          return resolve(data);
         })
         .catch(err => {
-          reject(err);
+          return reject(err);
         });
     });
   }
   /**
    * @description : read All notes From database
-   * @param {*} findData
-   * @param {*} filterData
+   * @param {object} findData
+   * @param {object} filterData
    */
   readNotes(findData, filterData) {
     return new Promise((resolve, reject) => {
       note
         .find(findData, filterData)
         .then(data => {
-          // console.log("in found DAta",JSON.stringify(data));
+          // logger.info("in found DAta"+JSON.stringify(data));
           if (data !== null) {
             resolve(data.reverse());
           } else {
-            // console.log(' readnotes null ',data);
-            reject(data);
+            // logger.info(' readnotes null '+data);
+            return reject(data);
           }
         })
         .catch(err => {
-          // console.log('error in read notes :: 120',err);
-          reject(err);
+          // logger.info('error in read notes :: 134'+err);
+          return reject(err);
         });
     });
   }
@@ -143,23 +146,23 @@ class ModelClass {
    * @param {object} dataToBeUpadted
    */
   updateNote(updateData, dataToBeUpadted) {
-    console.log("===>", updateData);
+    logger.info("===>" + updateData);
     return new Promise((resolve, reject) => {
-      console.log("In Promise");
+      logger.info("In Promise");
       //useFind both Id's
       note
         .findByIdAndUpdate(updateData, dataToBeUpadted, { new: true })
         .then(data => {
-          // console.log('in data',data);
+          // logger.info('in data'+data);
           if (data != null) {
-            resolve(data);
+            return resolve(data);
           } else {
-            reject("invalid NoteId");
+            return reject("invalid NoteId");
           }
         })
         .catch(err => {
-          // console.log('in err',err);
-          reject(err);
+          // logger.error('in err'+err);
+          return reject(err);
         });
     });
   }
@@ -172,16 +175,16 @@ class ModelClass {
       note
         .findOneAndRemove(deleteData)
         .then(data => {
-          console.log("Data in delete note", data);
+          logger.info("Data in delete note" + data);
 
           if (data != null) {
-            resolve(data);
+            return resolve(data);
           } else if (data == null) {
-            reject(data);
+            return reject(data);
           }
         })
         .catch(err => {
-          reject(err);
+          return reject(err);
         });
     });
   }
@@ -194,22 +197,22 @@ class ModelClass {
       note
         .findOne(findData)
         .then(data => {
-          console.log("DAta in find One :: ", data);
-          resolve(data);
+          logger.info("DAta in find One :: " + data);
+          return resolve(data);
         })
         .catch(err => {
-          reject(err);
-          console.log("err in find One :: ", err);
+          return reject(err);
+          // logger.error("err in find One :: "+err);
         });
     });
   }
 
   /**
    * @description : read All notes From database
-   * @param {*} query
+   * @param {object} query
    */
   search(query) {
-    logger.info("hkhk");
+    // logger.info("hkhk");
 
     return new Promise((resolve, reject) => {
       note
@@ -219,8 +222,7 @@ class ModelClass {
               $or: [
                 { title: { $regex: query.searchKey, $options: "i" } },
                 { description: { $regex: query.searchKey, $options: "i" } },
-                { reminder: { $regex: query.searchKey, $options: "i" } },
-                { color: { $regex: query.searchKey, $options: "i" } }
+                { color: { $regex: query.searchKey, $options: "i" } }//,
                 // { label: { $regex: query.searchKey, $options: "i" } }
               ]
             },
@@ -228,46 +230,19 @@ class ModelClass {
           ]
         })
         .populate("label")
-        // note.find(findData,filterData)
-        // note.find({$text: {$search: query.searchKey}},{'title':1,'description':1,'color':1,'label':1})
-        // .skip(20)
-        // note.findOne({
-        //     $or: [
-        //         {title:{$regex: query.searchKey},//,$options:'i'},
-        //         // {description:{$regex: query.searchKey}//,//$options:'i'},
-        //         // { color:{$regex: query.searchKey},//$options:'i'},
-        //         // {label:{$regex: query.searchKey}//,$options:'i'}
-        //     ]
-        // })
-        // // {'title':1,'description':1,'color':1,'label':1})
-        // {
-        //     $or: [
-        //       { _id: { $regex: failureRegex } },
-        //       { name: { $regex: failureRegex } }
-        //     ]
-        //   }
         .limit(10)
-        // .exec((err,data)=>{
-        //     if(err){
-        //         console.log('error:: ',err);
-
-        //     }else{
-        //         console.log('DAta :: ',data);
-
-        //     }
-        // })
         .then(data => {
           logger.info("in found DAta", JSON.stringify(data));
           if (data !== null) {
             resolve(data.reverse());
           } else {
-            console.log(" readnotes null ", data);
-            reject(data);
+            logger.info(" readnotes null ", data);
+            return reject(data);
           }
         })
         .catch(err => {
-          console.log("error in read notes :: 120", err);
-          reject(err);
+          logger.info("error in read notes :: 120", err);
+          return reject(err);
         });
     });
   }

@@ -16,7 +16,7 @@ describe("RESET PASSWORD API TEST CASES", () => {
     chai
       .request(server)
       .post("/resetPassword")
-      .set("token", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZTBlZTMzZjY5M2E4ZDI0ZWZhYmE4YmEiLCJlbWFpbCI6ImFkaG9rc2hhajEwOEBnbWFpbC5jb20iLCJpYXQiOjE1Nzg5MDgwMTEsImV4cCI6MTU4NDA5MjAxMX0.rDshzRd36Fp51xbvxv9voitCGUTYhoXUnoDakaQYYpg")
+      .set("token", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZTBlZTMzZjY5M2E4ZDI0ZWZhYmE4YmEiLCJlbWFpbCI6ImFkaG9rc2hhajEwOEBnbWFpbC5jb20iLCJpYXQiOjE1NzkwMDE1MTMsImV4cCI6MTU4NDE4NTUxM30.VzS0FYNMsQnKEtfxyupKizu6q52XvtRz-JFRTwjUEng")
       .send({"password":"adhokshaj123"})
       .end((err, res) => {
         res.should.have.status(200);

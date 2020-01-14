@@ -1,7 +1,6 @@
 /******************************************************************************
  *  @Execution       :   1. default node              cmd> node server.js
  *                      2. if nodemon installed   cmd> nodemon server.js
- *
  *  @Purpose         : Fundoo-Notes APP  backend server
  *
  *  @description    : Model represents domain specific data and business
@@ -16,18 +15,17 @@
  *  @author         : Shailesh Borase
  *  @version        : npm -3.5.2  node v13.3.0
  *  @since           : 18-12-2019
- *
  ******************************************************************************/
 const serviceClassObject = require("../services/label");
-
+const logger = require("../config/winston");
 class ControllerClass {
   /**
    * @description : API to create label
-   * @param {*} req
-   * @param {*} res
+   * @param {object} req
+   * @param {object} res
    */
 
-  createLabelIncontroller(req, res) {
+  createLabel(req, res) {
     try {
       req.checkBody("userId", "UserId should not be empty.").notEmpty();
       req.checkBody("label", "Label should not be empty.").notEmpty();
@@ -38,19 +36,19 @@ class ControllerClass {
         response.error = errors;
         return res.status(400).send(response);
       } else {
-        console.log("REquest in Controller", req.body);
+        logger.info("REquest in Controller" + req.body);
 
         const createLabelData = {};
         createLabelData.userId = req.body.userId;
         createLabelData.label = req.body.label;
-        console.log("In Create Label", createLabelData);
+        logger.info("In Create Label" + createLabelData);
 
         //  new Promise((resolve,reject)=>{
         const response = {};
         serviceClassObject
-          .createLabelInService(createLabelData)
+          .createLabel(createLabelData)
           .then(data => {
-            console.log("In Create Label data ", data);
+            logger.info("In Create Label data " + data);
 
             // resolve(data);
             response.success = true;
@@ -59,7 +57,7 @@ class ControllerClass {
             return res.status(200).send(response);
           })
           .catch(err => {
-            console.log("In Create Label data ", err);
+            logger.info("In Create Label data " + err);
 
             // reject(err);
             response.success = true;
@@ -70,22 +68,22 @@ class ControllerClass {
         // })
       }
     } catch (err) {
-      console.log(err);
+      logger.info(err);
       return res.status(500).send(response);
     }
   }
   /**
    * @description API to getallNotes from database
-   * @param {*} req
-   * @param {*} res
+   * @param {object} req
+   * @param {object} res
    */
-  getAllLabelsIncontroller(req, res) {
+  getAllLabels(req, res) {
     // req.checkBody('email', 'UserId should not be empty.').notEmpty();
     // req.checkBody('email', 'UserId is invalid..').isEmail();
     // const getAllNoteData={}
     // getAllNoteData.email=req.body.email;
     serviceClassObject
-      .getAllLabelsInService()
+      .getAllLabels()
       .then(data => {
         const response = {};
         response.success = true;
@@ -103,11 +101,11 @@ class ControllerClass {
   }
   /**
    * @description API to edit note
-   * @param {*} req
-   * @param {*} res
+   * @param {object} req
+   * @param {object} res
    */
-  editLabelIncontroller(req, res) {
-    console.log("heoolljfjdklf");
+  editLabel(req, res) {
+    logger.info("heoolljfjdklf");
 
     // req.checkBody('_id', '_id should not be empty.').notEmpty();
     req.checkBody("labelId", "LableId should not be empty.").notEmpty();
@@ -116,23 +114,23 @@ class ControllerClass {
     var errors = req.validationErrors();
     var response = {};
     if (errors) {
-      console.log("Validataion err");
+      logger.error("Validataion err");
       response.success = false;
       response.error = errors[0].msg;
       return res.status(400).send(response);
     } else {
-      console.log("Controller Data req", req.body.labelId);
+      logger.info("Controller Data req" + req.body.labelId);
 
       const editData = {};
       editData.labelId = req.body.labelId;
       editData.label = req.body.label;
 
-      console.log("Controller Data req2", req.body.userId);
+      logger.info("Controller Data req2" + req.body.userId);
 
       serviceClassObject
-        .editLabelInService(editData)
+        .editLabel(editData)
         .then(data => {
-          console.log("DAta in Controller :: edit");
+          logger.info("DAta in Controller :: edit");
 
           const response = {};
           response.success = true;
@@ -141,21 +139,21 @@ class ControllerClass {
           return res.status(200).send(response);
         })
         .catch(err => {
-          console.log("err in Controller :: edit");
+          logger.error("err in Controller :: edit");
           // const response={}
           response.success = false;
+          // response.message="something went bad";
           response.error = err;
-          // response.data=err;
           return res.status(400).send(response);
         });
     }
   }
   /**
    * @description API to remove note
-   * @param {*} req
-   * @param {*} res
+   * @param {object} req
+   * @param {object} res
    */
-  removeLabelIncontroller(req, res) {
+  removeLabel(req, res) {
     req.checkBody("labelId", "LabelId  should not be empty.").notEmpty();
     var errors = req.validationErrors();
     var response = {};
@@ -164,15 +162,14 @@ class ControllerClass {
       response.error = errors[0].msg;
       return res.status(400).send(response);
     } else {
-      // console.log('REquest in Controller',req.body);
-
+      // logger.info('REquest in Controller'+req.body);
       const removeData = {};
       removeData.labelId = req.body.labelId;
       new Promise((resolve, reject) => {
         serviceClassObject
-          .removeLabelInService(removeData)
+          .removeLabel(removeData)
           .then(data => {
-            console.log("Data in remove Controller", data);
+            logger.info("Data in remove Controller" + data);
 
             const response = {};
             response.success = true;
@@ -182,7 +179,7 @@ class ControllerClass {
             return res.status(200).send(response);
           })
           .catch(err => {
-            console.log("error in EDIT Controller", err);
+            logger.error("error in EDIT Controller" + err);
 
             const response = {};
             response.success = false;

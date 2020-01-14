@@ -60,7 +60,6 @@ routes.post(
 routes.post("/note", tokenObject.tokenVerification, noteController.createNote);
 routes.get("/note", tokenObject.tokenVerification, noteController.getAllNotes);
 
-
 routes.delete(
   "/note/:noteId",
   tokenObject.tokenVerification,
@@ -123,22 +122,22 @@ routes.get(
 routes.post(
   "/label",
   tokenObject.tokenVerification,
-  labelControllerClassObject.createLabelIncontroller
+  labelControllerClassObject.createLabel
 );
 routes.get(
   "/label",
   tokenObject.tokenVerification,
-  labelControllerClassObject.getAllLabelsIncontroller
+  labelControllerClassObject.getAllLabels
 );
 routes.put(
   "/label/:labelId",
   tokenObject.tokenVerification,
-  labelControllerClassObject.editLabelIncontroller
+  labelControllerClassObject.editLabel
 );
 routes.delete(
   "/label:labelId",
   tokenObject.tokenVerification,
-  labelControllerClassObject.removeLabelIncontroller
+  labelControllerClassObject.removeLabel
 );
 
 routes.put(

@@ -166,7 +166,7 @@
 "resetPassword":[
     {
         "password":"adhokshaj123",
-        "token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZTBlZTMzZjY5M2E4ZDI0ZWZhYmE4YmEiLCJlbWFpbCI6ImFkaG9rc2hhajEwOEBnbWFpbC5jb20iLCJpYXQiOjE1Nzg5MDMxNzB9.up1iafUQNp6DnR4Zc_yd4cFjgQZ7dlB-JEFux9wi2NE"
+        "token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZTBlZTMzZjY5M2E4ZDI0ZWZhYmE4YmEiLCJlbWFpbCI6ImFkaG9rc2hhajEwOEBnbWFpbC5jb20iLCJpYXQiOjE1NzkwMDEzMzksImV4cCI6MTU4NDE4NTMzOX0.9ISe07nbva7unJhVlLn2Nbk1joWYFhQ3yVYHkBJHgJw"
     },
     {
         "password":""
@@ -184,7 +184,7 @@
 
 "resetWithToken":[
     {
-        "token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZTBlZTMzZjY5M2E4ZDI0ZWZhYmE4YmEiLCJlbWFpbCI6ImFkaG9rc2hhajEwOEBnbWFpbC5jb20iLCJpYXQiOjE1Nzg5MDMxNzB9.up1iafUQNp6DnR4Zc_yd4cFjgQZ7dlB-JEFux9wi2NE"
+        "token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZTBlZTMzZjY5M2E4ZDI0ZWZhYmE4YmEiLCJlbWFpbCI6ImFkaG9rc2hhajEwOEBnbWFpbC5jb20iLCJpYXQiOjE1NzkwMDEzMzksImV4cCI6MTU4NDE4NTMzOX0.9ISe07nbva7unJhVlLn2Nbk1joWYFhQ3yVYHkBJHgJw"
     },
     {
         "token":""

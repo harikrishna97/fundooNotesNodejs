@@ -57,41 +57,45 @@ class CollaboratorClass {
                             passed in save() method.*/
 
     return new Promise((resolve, reject) => {
-      console.log("........0.....");
+      logger.info("........0.....");
 
       collaboratorData
         .save()
         .then(data => {
           logger.info("Data :: " + data);
-          resolve(data);
+          return resolve(data);
         })
         .catch(err => {
           logger.info("error :: " + err);
-          reject(err);
+          return reject(err);
         });
     });
   }
-
+  /**
+   * @description : API to delete Note forever
+   * @param {object} queryData 
+   */
   delete(queryData) {
     return new Promise((resolve, reject) => {
       collaborator
         .findOneAndDelete(queryData)
         .then(data => {
           if (data !== null) {
-            resolve(data);
+            return resolve(data);
+          
           } else {
-            reject(data);
+            return reject(data);
           }
         })
         .catch(err => {
-          reject(err);
+          return reject(err);
         });
     });
   }
 
   /**
    * @description : find function to find note from database
-   * @param {*} findData
+   * @param {object} findData
    */
   findOne(queryData) {
     return new Promise((resolve, reject) => {
@@ -99,15 +103,15 @@ class CollaboratorClass {
         .findOne(queryData)
         .then(data => {
           if (data !== null) {
-            console.log("DAta in find One :: ", data);
-            resolve(data);
+            logger.info("DAta in find One :: ", data);
+            return resolve(data);
           } else {
-            reject(data);
+            return reject(data);
           }
         })
         .catch(err => {
-          reject(err);
-          console.log("err in find One :: ", err);
+          return reject(err);
+          // logger.info("err in find One :: ", err);
         });
     });
   }

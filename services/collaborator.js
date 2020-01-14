@@ -8,7 +8,7 @@ class ServiceClass {
    * @param {object} collaboratorData
    */
   addCollaborator(collaboratorData) {
-    logger.info('collaboratorData in service');
+    logger.info("collaboratorData in service");
 
     return new Promise((resolve, reject) => {
       collaboratormodel
@@ -19,7 +19,7 @@ class ServiceClass {
           noteService
             .updateNote(
               { _id: data.noteId },
-              { $push:{collaboratorId: data.collaboratorId }}
+              { $push: { collaboratorId: data.collaboratorId } }
             )
             .then(data1 => {
               logger.info("data from note " + data1);
@@ -46,18 +46,53 @@ class ServiceClass {
         .delete({ _id: removeData.collaboratorId })
         .then(data => {
           if (data !== null) {
-            const idData={}
-            idData._id=data.noteId;
-            const updateData={'collaboratorId':null}
-            noteService.updateNote(idData,updateData)
-            .then(data1=>{
-              logger.info(' '+data1)
-            })
-            .catch(err=>{
-              logger.info('...'+err);
-            })
+            const idData = {};
+            idData._id = data.noteId;
+            noteService
+              .findOne(idData)
+              .then(findData => {
+                logger.info('findData :: '+findData.collaboratorId)
+                // "--"+findData.collaboratorId.length+'--'+data.collaboratorId)
+                const array = [];
+                const collaboratorId = findData.collaboratorId;
+                // for(let i=0;i<collaboratorId.length;i++){
+                //   array.push(collaboratorId[i])
+
+                // }
+                logger.info("Array before splice :: " + findData.collaboratorId);
+                const index = findData.collaboratorId.indexOf(
+                  data.collaboratorId
+                );
+                console.log("index 63: ", index);
+
+                if (index > -1) {
+                  console.log("index 64: ", index);
+
+                  array.splice(index, 1);
+                }
+                logger.info("array after splice  1 " + findData.collaboratorId);
+
+                const updateData = { collaboratorId: findData.collaboratorId };
+                noteService
+                  .updateNote(idData, updateData)
+                  .then(data1 => {
+                    // logger.info(' from note :: '+data1)
+                    logger.info(
+                      "array after upadate 2 :: " + data1.collaboratorId
+                    );
+                  })
+                  .catch(err => {
+                    logger.info("..err from note1 ::" + err);
+                  });
+              })
+              .catch(err => {
+                logger.info("..err from note2 ::" + err);
+              });
+
             return resolve(data);
           } else {
+            console.log("data", data);
+
             return reject(data);
           }
         })
@@ -85,7 +120,7 @@ class ServiceClass {
     if (len == 24) {
       valid = /^[0-9a-fA-F]+$/.test(id);
     }
-    logger.info("in mongoose validator ",valid);
+    logger.info("in mongoose validator " + valid);
 
     return valid;
   }

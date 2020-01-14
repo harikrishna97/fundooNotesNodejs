@@ -30,18 +30,19 @@ const service = require("../services/user"),
   serviceClassObject = new service.ServiceClass(),
   redis = require("redis"),
   client = redis.createClient(process.env.REDIS_PORT);
+const logger = require("../config/winston");
 // const client = redis.createClient();
 
 class ControllerClass {
   /**
    * @description: registration API to create new User or register user Using callback
-   * @param {*} req
-   * @param {*} res
-   * @returns {*} response
+   * @param {object} req
+   * @param {object} res
+   * @return {object} response
    */
   registration(req, res) {
     try {
-      console.log("in control registration");
+      logger.info("in control registration");
       req.checkBody("firstName", "First name should not be empty.").notEmpty();
       req.checkBody("firstName", "Please enter only lettes.").isAlpha();
       req.checkBody("lastName", "Last name should not be empty.").notEmpty();
@@ -65,35 +66,33 @@ class ControllerClass {
           (userRegistrationData.lastName = req.body.lastName),
           (userRegistrationData.email = req.body.email),
           (userRegistrationData.password = req.body.password);
-        console.log(userRegistrationData);
+        logger.info(userRegistrationData);
         serviceClassObject.userRegistration(
           userRegistrationData,
           (err, resData) => {
-            // console.log('Data In Controller :: '+resData);
+            // logger.info('Data In Controller :: '+resData);
             if (err) {
-              console.log("Something Went wrong in controller.." + err);
+              logger.info("Something Went wrong in controller.." + err);
               response.success = false;
               response.error = err;
               return res.status(422).send(response);
             } else {
-              // console.log('Data in controller :: '+resData);
+              // logger.info('Data in controller :: '+resData);
               // make paylod and generate token and send it for shortning
               var payload = {
                 _id: resData._id,
                 email: resData.email
               };
               var token = tokenGenerator.tokenGeneration(payload);
-              console.log("Generator Token in registration Is :: " + token);
-              console.log("RESDATA_ID", "registrationToken" + resData._id);
+              logger.info("Generator Token in registration Is :: " + token);
+              logger.info("RESDATA_ID", "registrationToken" + resData._id);
 
               // var longUrl='http://localhost:4000/userVerification/'+token;
               var longUrl = `${process.env.USER_VERIFICATION_URL}` + token;
-              client.set(
-                "registrationToken" + resData._id,
-                token,
-                "EX",
-                60 * 60 * 24
-              );
+              client.set("registrationToken" + resData._id, token); //,
+              // "EX",
+              // 60 * 60 * 24
+              // );
               urlShortnerClassObject.urlShortner(
                 resData,
                 longUrl,
@@ -102,17 +101,17 @@ class ControllerClass {
                     response.success = false;
                     response.data = resData;
                     response.message = err;
-                    console.log("--->", response);
+                    logger.info("--->" + response);
                     return res.status(200).send(response);
                   } else {
-                    console.log("HI");
+                    logger.info("HI");
                     response.success = true;
                     response.data = {
                       message:
                         "Registration Successful.. Link has been sent to your register Email,check Your Email for Verification"
                     };
                     // response.data=resData;
-                    console.log("--->", response);
+                    logger.info("--->" + response);
                     return res.status(200).send(response);
                   }
                 }
@@ -122,7 +121,7 @@ class ControllerClass {
         );
       }
     } catch (err) {
-      console.log(err);
+      logger.info(err);
       // return err;
       return res.status(500).send(err);
     }
@@ -130,26 +129,26 @@ class ControllerClass {
 
   /**
    * @description userVerificaton API for verifying valid user
-   * @param {*} req
-   * @param {*} res
+   * @param {object} req
+   * @param {object} res
    */
   userVerificatonInController(req, res) {
     var userVerificationData = {};
     userVerificationData._id = req.decoded._id;
-    console.log("----->", userVerificationData);
+    logger.info("----->" + userVerificationData);
 
     return new Promise((resolve, reject) => {
       serviceClassObject
         .userVerificationInService(userVerificationData)
         .then(data => {
-          console.log("DATAAA", data);
+          logger.info("DATAAA" + data);
           const response = {};
           (response.success = true),
             (response.message = "User verification successful..");
           return res.status(200).send(response);
         })
         .catch(err => {
-          console.log("ERRRR", err);
+          logger.error("ERRRR" + err);
           const response = {};
 
           (response.success = false), (response.message = err);
@@ -159,11 +158,11 @@ class ControllerClass {
   }
   /**
    * @description:login API to login user Using Callback
-   * @param {*} req
-   * @param {*} res
+   * @param {object} req
+   * @param {object} res
    */
   login(req, res) {
-    console.log("in controller");
+    logger.info("in controller");
     try {
       req.checkBody("email", "Email id should not be empty").notEmpty();
       req.checkBody("email", "Please enter valid email id.").isEmail();
@@ -182,23 +181,23 @@ class ControllerClass {
         (loginData.email = req.body.email),
           (loginData.password = req.body.password);
         serviceClassObject.userLogin(loginData, (err, data) => {
-          console.log("Data In COntroller while send", +data);
+          logger.info("Data In COntroller while send", +data);
           if (err) {
-            console.log("Error :: Controller :: " + err);
+            logger.error("Error :: Controller :: " + err);
             let response = {};
             response.success = false;
             response.message = err;
 
             return res.status(422).send(response);
           } else {
-            console.log("data in controller :: " + JSON.stringify(data._id));
+            logger.info("data in controller :: " + JSON.stringify(data._id));
             var payload = {
               _id: data._id,
               email: data.email
             };
-            console.log("PayLoad Is :: " + JSON.stringify(payload));
+            logger.info("PayLoad Is :: " + JSON.stringify(payload));
             var token = tokenGenerator.tokenGeneration(payload);
-            console.log("Generated token is" + token);
+            logger.info("Generated token is" + token);
             client.set(data._id, token); //'EX', 60 * 60 * 24)
 
             let response = {};
@@ -210,15 +209,15 @@ class ControllerClass {
         });
       }
     } catch (err) {
-      console.log(err);
+      logger.error(err);
       return res.status(500).send(err);
     }
   }
 
   /**
    * @description Forget Password API for user's to change forget password
-   * @param {*} req
-   * @param {*} res
+   * @param {object} req
+   * @param {object} res
    */
   forgetPasswordInController(req, res) {
     try {
@@ -236,13 +235,13 @@ class ControllerClass {
       } else {
         var forgetPasswordData = {};
         forgetPasswordData.email = req.body.email;
-        console.log("email in controller :: " + forgetPasswordData.email);
+        logger.info("email in controller :: " + forgetPasswordData.email);
 
         serviceClassObject.forgetPasswordInService(
           forgetPasswordData,
           (err, data) => {
             if (err) {
-              console.log("ERROR in controller :: " + err);
+              logger.error("ERROR in controller :: " + err);
               var response = {};
               response.success = false;
               response.error = "Invalid Email";
@@ -253,12 +252,12 @@ class ControllerClass {
                 email: forgetPasswordData.email
               };
               var token = tokenGenerator.tokenGeneration(payload);
-              console.log("Generator Token in ForgetPass Is :: " + token);
+              logger.info("Generator Token in ForgetPass Is :: " + token);
               // var longUrl='http://localhost:8080/#/resetPassword/'+token;
-              client.set("forgetToken" + data._id, token, "EX", 60 * 60 * 24);
+              client.set("forgetToken" + data._id, token); //, "EX", 60 * 60 * 24);
 
               var longUrl = `${process.env.RESET_PASSWORD_URL}` + token;
-              console.log(longUrl);
+              logger.info(longUrl);
 
               //nodemailer
               nodeMailerObject.sendMailUsingNodeMailer(
@@ -281,20 +280,20 @@ class ControllerClass {
         );
       }
     } catch (err) {
-      console.log(err);
+      logger.info(err);
       return res.status(500).send(err);
     }
   }
 
   /**
    * @description:API to reset Usr's Password
-   * @param {*} req
-   * @param {*} res
+   * @param {object} req
+   * @param {object} res
    */
   resetPasswordInController(req, res) {
     try {
-      console.log('req.body',req.body);
-      
+      logger.info("req.body", req.body);
+
       req.checkBody("password", "Password should not be empty.").notEmpty();
       req
         .checkBody("password", "Password length should be minimum 6.")
@@ -303,32 +302,32 @@ class ControllerClass {
       var errors = req.validationErrors();
 
       var response = {};
-      // console.log("req in data==",req);
+      // logger.info("req in data==",req);
 
       if (errors) {
-        console.log("ERROR ", errors);
+        logger.info("ERROR ", errors);
         response.success = false;
         response.error = errors;
-        console.log("error==>", response);
+        logger.info("error==>", response);
         return res.status(400).send(response);
       } else {
         var resetPasswordData = {};
         resetPasswordData._id = req.decoded._id;
         resetPasswordData.password = req.body.password;
-        console.log("----->", resetPasswordData);
+        logger.info("----->", resetPasswordData);
 
         new Promise((resolve, reject) => {
           serviceClassObject
             .resetPasswordInService(resetPasswordData)
             .then(data => {
-              console.log("DATAAA", data);
+              logger.info("DATAAA", data);
               (response.success = true),
                 (response.message = "Password Reset SuccessFully..");
               resolve("Password Reset SuccessFully..");
               return res.status(200).send(response);
             })
             .catch(err => {
-              console.log("ERRRR in comntroller ", err);
+              logger.info("ERRRR in comntroller ", err);
               (response.success = false), (response.error = err);
               reject(err);
               return res.status(400).send(response);
@@ -336,29 +335,36 @@ class ControllerClass {
         });
       }
     } catch (err) {
-      console.log(err);
+      logger.info(err);
       return res.status(500).send(err);
     }
   }
 
   /**
    * @description:API to create imageUrl using S3 Bucket And save Url in Database
-   * @param {*} req
-   * @param {*} res
+   * @param {object} req
+   * @param {object} res
    */
   imageUpload(req, res) {
+    // if((/\.(jpeg|png)$/i).test(req.file.name)==false){
+    //   const response={}
+    //   response.success=false
+    //   response.error="invalid Image type, only png and jpeg allow"
+    //   return res.status(400).send(response);
+    // }else{
+
     singleUpload(req, res, function(err) {
       if (err) {
         return res.status(422).send({
           errors: [{ title: "File Upload Error", detail: err.message }]
         });
       }
-      console.log("FileUrl :::", req.file.location);
+      logger.info("FileUrl :::", req.file.location);
 
       const imageData = {};
       //   imageData.email='adhokshaj108@gmail.com'
       imageData.userId = req.decoded._id;
-      console.log("REQ.Id", req.decoded._id);
+      logger.info("REQ.Id", req.decoded._id);
 
       // imageData.email=req.body.email;
       imageData.imageUrl = req.file.location;
@@ -366,7 +372,7 @@ class ControllerClass {
       serviceClassObject
         .imageUpload(imageData)
         .then(data => {
-          console.log("DATA in controller response :: ", data);
+          logger.info("DATA in controller response :: ", data);
 
           (response.success = true),
             (response.message = "Image Url saved SuccessFully..");
@@ -378,6 +384,7 @@ class ControllerClass {
           return res.status(400).send(response);
         });
     });
+    // }
   }
 }
 module.exports = new ControllerClass();

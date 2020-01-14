@@ -3,7 +3,8 @@ let chai = require("chai");
 let chaiHttp = require("chai-http");
 let server = require("../server");
 let should = chai.should();
-// console.log(Credentials.Token[0].token);
+logger = require("../config/winston");
+// logger.info(Credentials.Token[0].token);
 chai.use(chaiHttp);
 
 /**
@@ -24,11 +25,11 @@ describe(" addCollaborator API TEST CASES", () => {
       .end((err, res) => {
         res.should.have.status(200);
         res.body.should.be.a("object");
-        console.log("Test BOdy :: ", res.body);
+        logger.info("Test BOdy :: " + res.body);
         done();
       });
   });
-//..............CollaboratorI test cases -empty,null,undefined,invalid.........................
+  //..............CollaboratorI test cases -empty,null,undefined,invalid.........................
   it("it should return invalid collaboratorId ", done => {
     chai
       .request(server)
@@ -43,7 +44,7 @@ describe(" addCollaborator API TEST CASES", () => {
       .end((err, res) => {
         res.should.have.status(400);
         res.body.should.be.a("object");
-        console.log("Test BOdy :: ", res.body);
+        logger.info("Test BOdy :: " + res.body);
         done();
       });
   });
@@ -57,7 +58,7 @@ describe(" addCollaborator API TEST CASES", () => {
       .end((err, res) => {
         res.should.have.status(400);
         res.body.should.be.a("object");
-        console.log("Test BOdy :: ", res.body);
+        logger.info("Test BOdy :: " + res.body);
         done();
       });
   });
@@ -76,7 +77,7 @@ describe(" addCollaborator API TEST CASES", () => {
       .end((err, res) => {
         res.should.have.status(400);
         res.body.should.be.a("object");
-        console.log("Test BOdy :: ", res.body);
+        logger.info("Test BOdy :: " + res.body);
         done();
       });
   });
@@ -90,11 +91,11 @@ describe(" addCollaborator API TEST CASES", () => {
       .end((err, res) => {
         res.should.have.status(400);
         res.body.should.be.a("object");
-        console.log("Test BOdy :: ", res.body);
+        logger.info("Test BOdy :: " + res.body);
         done();
       });
   });
-//................Token Test empty,null,invalid,undefined.................
+  //................Token Test empty,null,invalid,undefined.................
   it("it should return invalid token", done => {
     chai
       .request(server)
@@ -109,7 +110,7 @@ describe(" addCollaborator API TEST CASES", () => {
       .end((err, res) => {
         res.should.have.status(400);
         res.body.should.be.a("object");
-        console.log("Test BOdy :: ", res.body);
+        logger.info("Test BOdy :: " + res.body);
         done();
       });
   });
@@ -128,7 +129,7 @@ describe(" addCollaborator API TEST CASES", () => {
       .end((err, res) => {
         res.should.have.status(400);
         res.body.should.be.a("object");
-        console.log("Test BOdy :: ", res.body);
+        logger.info("Test BOdy :: " + res.body);
         done();
       });
   });
@@ -147,7 +148,7 @@ describe(" addCollaborator API TEST CASES", () => {
       .end((err, res) => {
         res.should.have.status(400);
         res.body.should.be.a("object");
-        console.log("Test BOdy :: ", res.body);
+        logger.info("Test BOdy :: " + res.body);
         done();
       });
   });
@@ -161,16 +162,15 @@ describe(" addCollaborator API TEST CASES", () => {
           "/" +
           Credentials.collaboratorId[3].collaboratorId
       )
-    //   .set("token", Credentials.Token[3].token)
+      //   .set("token", Credentials.Token[3].token)
       // .send(Credentials.addRemainder[0])
       .end((err, res) => {
         res.should.have.status(400);
         res.body.should.be.a("object");
-        console.log("Test BOdy :: ", res.body);
+        logger.info("Test BOdy :: " + res.body);
         done();
       });
   });
-
 
   //.............NoteId Test cases - empty,null,undefined,invalid..................
 
@@ -188,7 +188,7 @@ describe(" addCollaborator API TEST CASES", () => {
       .end((err, res) => {
         res.should.have.status(400);
         res.body.should.be.a("object");
-        console.log("Test BOdy :: ", res.body);
+        logger.info("Test BOdy :: " + res.body);
         done();
       });
   });
@@ -197,16 +197,14 @@ describe(" addCollaborator API TEST CASES", () => {
     chai
       .request(server)
       .post(
-        "/collaborator/''" +
-          "/" +
-          Credentials.collaboratorId[0].collaboratorId
+        "/collaborator/''" + "/" + Credentials.collaboratorId[0].collaboratorId
       )
       .set("token", Credentials.Token[0].token)
       // .send(Credentials.addRemainder[0])
       .end((err, res) => {
         res.should.have.status(400);
         res.body.should.be.a("object");
-        console.log("Test BOdy :: ", res.body);
+        logger.info("Test BOdy :: " + res.body);
         done();
       });
   });
@@ -225,7 +223,7 @@ describe(" addCollaborator API TEST CASES", () => {
       .end((err, res) => {
         res.should.have.status(400);
         res.body.should.be.a("object");
-        console.log("Test BOdy :: ", res.body);
+        logger.info("Test BOdy :: " + res.body);
         done();
       });
   });
@@ -234,7 +232,8 @@ describe(" addCollaborator API TEST CASES", () => {
     chai
       .request(server)
       .post(
-        "/collaborator/" +{}+
+        "/collaborator/" +
+          {} +
           "/" +
           Credentials.collaboratorId[0].collaboratorId
       )
@@ -243,9 +242,8 @@ describe(" addCollaborator API TEST CASES", () => {
       .end((err, res) => {
         res.should.have.status(400);
         res.body.should.be.a("object");
-        console.log("Test BOdy :: ", res.body);
+        logger.info("Test BOdy :: " + res.body);
         done();
       });
   });
-
 });

@@ -12,17 +12,17 @@ chai.use(chaiHttp);
 console.log(" Credentials :: ", loginCredentials);
 describe("LOGIN API TEST CASES", () => {
   //Positive test case
-  it("it should log successfully", done => {
-    chai
-      .request(server)
-      .post("/login")
-      .send(loginCredentials.login[0])
-      .end((err, res) => {
-        res.should.have.status(200);
-        res.body.should.be.a("object");
-        done();
-      });
-  });
+  // it("it should log successfully", done => {
+  //   chai
+  //     .request(server)
+  //     .post("/login")
+  //     .send(loginCredentials.login[0])
+  //     .end((err, res) => {
+  //       res.should.have.status(200);
+  //       res.body.should.be.a("object");
+  //       done();
+  //     });
+  // });
 //.................. Email Test Cases- empty ,null, undefined, invalid email format
   it("it should return email should not be empty", done => {
     chai
