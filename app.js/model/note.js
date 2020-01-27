@@ -55,7 +55,7 @@ var NoteSchema = new Schema(
     },
     color: {
       type: String,
-      default: null
+      default: null,
     },
     isPinned: {
       type: Boolean,
@@ -151,7 +151,7 @@ class ModelClass {
       logger.info("In Promise");
       //useFind both Id's
       note
-        .findByIdAndUpdate(updateData, dataToBeUpadted, { new: true })
+        .findByIdAndUpdate(updateData,dataToBeUpadted,{ new: true })
         .then(data => {
           // logger.info('in data'+data);
           if (data != null) {

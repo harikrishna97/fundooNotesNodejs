@@ -22,20 +22,24 @@ const client = redis.createClient(`${process.env.REDIS_PORT}`);
 const logger = require("../config/winston");
 module.exports = {
   tokenVerification(req, res, next) {
-    // logger.info("header",req.headers)
+    logger.info("header",req.headers)
     var token = req.headers.token || req.params.token;
-    logger.info("Token In Token Verification :: "+JSON.stringify(token));
+   logger.info("Token In Token Verification :: "+ token)
 
     try {
       if (token) {
+        logger.info("1111111111"+token);
+        
         jwt.verify(token, secretKey, (err, data) => {
           if (err) {
             // return res.status(400).send(err);
+
             return res.status(400).send({
               success: false,
               message: "invalid token"
             });
           } else {
+            
             req.decoded = data;
             // req.body['data'] = data
             logger.info("Encoded Token :: " +JSON.stringify(req.decoded));
@@ -84,6 +88,9 @@ module.exports = {
       return err;
     }
   }
+
+
+
 
   // userVerification(req,res,next){
   //     logger.info("verify");

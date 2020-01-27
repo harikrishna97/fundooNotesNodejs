@@ -35,7 +35,7 @@ class ServiceClass {
 
   /**
    * @description API to remove collaborator in of a given note
-   * @param {*} removeData
+   * @param {object} removeData
    */
   removeCollaborator(removeData) {
     return new Promise((resolve, reject) => {
@@ -63,10 +63,10 @@ class ServiceClass {
                 const index = findData.collaboratorId.indexOf(
                   data.collaboratorId
                 );
-                console.log("index 63: ", index);
+                logger.info("index 63: "+ index);
 
                 if (index > -1) {
-                  console.log("index 64: ", index);
+                  logger.info("index 64: "+ index);
 
                   array.splice(index, 1);
                 }
@@ -91,7 +91,7 @@ class ServiceClass {
 
             return resolve(data);
           } else {
-            console.log("data", data);
+            logger.info("data"+data);
 
             return reject(data);
           }
@@ -111,7 +111,7 @@ class ServiceClass {
 
   /**
    * @description Function to validate Mongoose Id
-   * @param {*} id
+   * @param {object} id
    */
   checkMongooseId(id) {
     id = id + "";

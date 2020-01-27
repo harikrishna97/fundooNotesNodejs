@@ -18,71 +18,80 @@
  ******************************************************************************/
 
 const modelClassObject = require("../app.js/model/label");
-
+const logger = require("../config/winston");
 class ServiceClass {
   /**
-   *
-   * @param {*} createData
+   * @description create Label API
+   * @param {object} createData
    */
-  createLabelInService(createData) {
+  createLabel(createData) {
     return new Promise((resolve, reject) => {
       modelClassObject
         .createLabel(createData)
         .then(data => {
-          console.log("in service");
+          logger.info("in service");
 
-          resolve(data);
+          return resolve(data);
         })
         .catch(err => {
-          reject(data);
+          return reject(err);
         });
     });
   }
 
-  getAllLabelsInService() {
+  /**
+   * @description getall Label API
+   *
+   */
+  getAllLabels(getAllLabelsData) {
     return new Promise((resolve, reject) => {
       // const readNotesData={'eamil':getAllNoteData.email}
       modelClassObject
-        .readLabels()
+        .readLabels(getAllLabelsData)
         .then(data => {
-          resolve(data);
+          return resolve(data);
         })
         .catch(err => {
-          reject(err);
+          return reject(err);
         });
     });
   }
 
-  editLabelInService(editData) {
+  /**
+   * @description create Label API
+   * @param {object} editData
+   */
+  editLabel(editData) {
     return new Promise((resolve, reject) => {
       modelClassObject
         .updateLabel({ _id: editData.labelId }, { label: editData.label })
         .then(data => {
-          resolve(data);
+          return resolve(data);
         })
         .catch(err => {
-          reject(err);
+          return reject(err);
         });
 
       // const updatedata={'_id':editData._id}
       // const dataToBeUpdated={'title':editData.title,'description':editData.description}
     });
   }
+
   /**
    * @description API to remove Label from database
-   * @param {*} removeLabel
+   * @param {object} removeLabel
    */
-  removeLabelInService(removeLabel) {
+  removeLabel(removeLabel) {
     return new Promise((resolve, reject) => {
       const deleteData = { _id: removeLabel.labelId };
 
       modelClassObject
         .deleteLabel(deleteData)
         .then(data => {
-          resolve(data);
+          return resolve(data);
         })
         .catch(err => {
-          reject(err);
+          return reject(err);
         });
     });
   }

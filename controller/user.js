@@ -18,7 +18,7 @@
  *
  ******************************************************************************/
 
-require("dotenv").config();
+require("dotenv/config");
 
 const service = require("../services/user"),
   tokenGenerator = require("../utility/tokenGeneration"),
@@ -29,7 +29,7 @@ const service = require("../services/user"),
   nodeMailerObject = new nodeMailer.NodeMailerClass(),
   serviceClassObject = new service.ServiceClass(),
   redis = require("redis"),
-  client = redis.createClient(process.env.REDIS_PORT);
+  client = redis.createClient(`${process.env.REDIS_PORT}`);
 const logger = require("../config/winston");
 // const client = redis.createClient();
 
@@ -75,7 +75,7 @@ class ControllerClass {
               logger.info("Something Went wrong in controller.." + err);
               response.success = false;
               response.error = err;
-              return res.status(422).send(response);
+              return res.status(400).send(response);
             } else {
               // logger.info('Data in controller :: '+resData);
               // make paylod and generate token and send it for shortning
@@ -88,7 +88,7 @@ class ControllerClass {
               logger.info("RESDATA_ID", "registrationToken" + resData._id);
 
               // var longUrl='http://localhost:4000/userVerification/'+token;
-              var longUrl = `${process.env.USER_VERIFICATION_URL}` + token;
+              var longUrl = `${process.env.USER_VERIFICATION_URL}`+token;
               client.set("registrationToken" + resData._id, token); //,
               // "EX",
               // 60 * 60 * 24
@@ -103,7 +103,7 @@ class ControllerClass {
                     response.message = err;
                     logger.info("--->" + response);
                     return res.status(200).send(response);
-                  } else {
+                  } else if(data){
                     logger.info("HI");
                     response.success = true;
                     response.data = {
@@ -180,32 +180,42 @@ class ControllerClass {
         const loginData = {};
         (loginData.email = req.body.email),
           (loginData.password = req.body.password);
+
         serviceClassObject.userLogin(loginData, (err, data) => {
-          logger.info("Data In COntroller while send", +data);
+          logger.info("Data In COntroller while send"+data);
           if (err) {
             logger.error("Error :: Controller :: " + err);
             let response = {};
             response.success = false;
-            response.message = err;
+            response.error = err;
 
-            return res.status(422).send(response);
-          } else {
-            logger.info("data in controller :: " + JSON.stringify(data._id));
-            var payload = {
-              _id: data._id,
-              email: data.email
-            };
-            logger.info("PayLoad Is :: " + JSON.stringify(payload));
-            var token = tokenGenerator.tokenGeneration(payload);
-            logger.info("Generated token is" + token);
-            client.set(data._id, token); //'EX', 60 * 60 * 24)
+            return res.status(400).send(response);
+          } else if(data){
+            if(data=="not verified"){
+              let response = {};
+              response.success = false;
+              response.message = "Please Verify before Login";
+              return res.status(200).send(response);
+            }else{
+              logger.info("data in controller :: " +JSON.stringify(data._id));
+              var payload = {
+                _id: data._id,
+                email: data.email
+              };
+              logger.info("PayLoad Is :: " + JSON.stringify(payload));
+              var token = tokenGenerator.tokenGeneration(payload);
+              logger.info("Generated token is" + token);
+              client.set(data._id, token); //'EX', 60 * 60 * 24)
 
-            let response = {};
-            response.success = true;
-            response.message = "Login Successful...";
-            response.token = token;
-            return res.status(200).send(response);
-          }
+              let response = {};
+              response.success = true;
+              response.message = "Login Successful...";
+              response.data=data;
+              response.token = token;
+              console.log('response is :: ',response);
+              
+              return res.status(200).send(response);
+            }}
         });
       }
     } catch (err) {
@@ -328,7 +338,8 @@ class ControllerClass {
             })
             .catch(err => {
               logger.info("ERRRR in comntroller ", err);
-              (response.success = false), (response.error = err);
+              response.success = false,
+               response.error = err;
               reject(err);
               return res.status(400).send(response);
             });
@@ -373,7 +384,6 @@ class ControllerClass {
         .imageUpload(imageData)
         .then(data => {
           logger.info("DATA in controller response :: ", data);
-
           (response.success = true),
             (response.message = "Image Url saved SuccessFully..");
           // response.ImageUrl=data.imageUrl;

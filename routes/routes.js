@@ -17,6 +17,7 @@
  *
  ******************************************************************************/
 const express = require("express");
+require("dotenv/config")
 const controllerClassObject = require("../controller/user");
 const tokenObject = require("../utility/tokenVerification");
 const model = require("../app.js/model/user");
@@ -45,7 +46,7 @@ routes.get("/userVerify/:url", (req, res) => {
       return res.status(404).send("Invalid Url");
     } else if (data == null) {
       return res.status(400).send("Invalid Url");
-    } else {
+    } else if(data){
       return res.redirect(data.longUrl);
     }
   });
@@ -55,7 +56,6 @@ routes.post(
   tokenObject.tokenVerification,
   controllerClassObject.userVerificatonInController
 );
-// routes.post('/userVerification/:token',tokenObject.userVerification,controllerClassObject.userVerificatonInController);
 
 routes.post("/note", tokenObject.tokenVerification, noteController.createNote);
 routes.get("/note", tokenObject.tokenVerification, noteController.getAllNotes);

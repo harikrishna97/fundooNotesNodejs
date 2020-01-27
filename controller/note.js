@@ -25,8 +25,8 @@ const serviceClassObject = require("../services/note"),
 class ControllerClass {
   /**
    * @description : API to create Note
-   * @param {*} req
-   * @param {*} res
+   * @param {object} req
+   * @param {object} res
    */
 
   createNote(req, res) {
@@ -50,7 +50,6 @@ class ControllerClass {
           response.error = errors;
           return res.status(400).send(response);
         } else {
-          // logger.info('REquest in Controller',req.body);
 
           const createNoteData = {};
 
@@ -94,8 +93,8 @@ class ControllerClass {
   }
   /**
    * @description API to getallNotes from database
-   * @param {*} req
-   * @param {*} res
+   * @param {object} req
+   * @param {object} res
    */
   getAllNotes(req, res) {
     try {
@@ -138,8 +137,8 @@ class ControllerClass {
   
   /**
    * @description API to remove note
-   * @param {*} req
-   * @param {*} res
+   * @param {object} req
+   * @param {object} res
    */
   removeNote(req, res) {
     try {
@@ -156,7 +155,6 @@ class ControllerClass {
         response.error = "invalid NoteId";
         return res.status(400).send(response);
       } else {
-        // logger.info('REquest in Controller',req.body);
 
         const removeData = {};
         // removeData._id=req.body._id;
@@ -199,8 +197,8 @@ class ControllerClass {
 
   /**
    * @description API to add remainder in a note
-   * @param {*} req
-   * @param {*} res
+   * @param {object} req
+   * @param {object} res
    */
   addRemainder(req, res) {
     // req.checkBody('remainder', 'Remainder  should not be empty.').not().isEmpty();
@@ -254,8 +252,8 @@ class ControllerClass {
   }
   /**
    * @description API to delete remainder of a note
-   * @param {*} req
-   * @param {*} res
+   * @param {object} req
+   * @param {object} res
    */
   removeRemainder(req, res) {
     try {
@@ -300,12 +298,12 @@ class ControllerClass {
   
   /**
    * @description API to get All Archive notes from database
-   * @param {*} req
-   * @param {*} res
+   * @param {object} req
+   * @param {object} res
    */
   getAllArchives(req, res) {
     try {
-      logger.info(req.decoded);
+      // logger.info(req.decoded);
 
       if (serviceClassObject.checkMongooseId(req.decoded._id) == false) {
         const response = {};
@@ -351,8 +349,8 @@ class ControllerClass {
   }
   /**
    * @description API to get All Trash notes from database
-   * @param {*} req
-   * @param {*} res
+   * @param {object} req
+   * @param {object} res
    */
   getAllTrashNotes(req, res) {
     try {
@@ -398,8 +396,8 @@ class ControllerClass {
   }
   /**
    * @description API to get All Pinned notes from database
-   * @param {*} req
-   * @param {*} res
+   * @param {object} req
+   * @param {object} res
    */
   getAllPinnedNotes(req, res) {
     try {
@@ -446,15 +444,14 @@ class ControllerClass {
 
   /**
    * @description API to getallNotes from database
-   * @param {*} req
-   * @param {*} res
+   * @param {object} req
+   * @param {object} res
    */
   search(req, res) {
     try {
       if(req.params.searchKey===undefined){
         throw "Search Key is required.."
       }
-      logger.info(req.body);
 
       if (serviceClassObject.checkMongooseId(req.decoded._id) == false) {
         const response = {};
@@ -504,17 +501,23 @@ class ControllerClass {
   /**
    * @description  Common API to Update flag like isTrash,isPinned,isArchive,
    *               color with value true/false/color
-   * @param {*} req
-   * @param {*} res
+   * @param {object} req
+   * @param {object} res
    */
   updateFlag(req, res) {
+    // console.log("restore1",req);
+
     req.checkBody("flagValue", "Data  should not be empty.").notEmpty();
     if (serviceClassObject.checkMongooseId(req.decoded._id) == false) {
+      // console.log("restore2");
+      
       const response = {};
       response.success = false;
       response.error = "Invalid NoteId";
       return res.status(400).send(response);
     } else {
+      // console.log("restore");
+
       const updateData = {};
       const idObjectData = {};
       idObjectData.noteId = req.params.noteId;
@@ -540,6 +543,10 @@ class ControllerClass {
             if (req.params.flag == "trash") {
               if (req.body.flagValue === true) {
                 updateData.isTrash = true;
+                updateData.isPinned = false;
+                updateData.isArchive = false;
+              }else{
+                updateData.isTrash = false;
                 updateData.isPinned = false;
                 updateData.isArchive = false;
               }

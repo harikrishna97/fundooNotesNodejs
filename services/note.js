@@ -56,7 +56,7 @@ class ServiceClass {
             isArchive: false,
             isPinned: false
           },
-          { title: 1, description: 1, collaboratorId: 1 }
+          { title: 1, description: 1, color:1}
         )
         .then(data => {
           if (data !== null) {
@@ -157,7 +157,7 @@ class ServiceClass {
       modelClassObject
         .readNotes(
           { userId: getAllArchivesData.userId, isArchive: true },
-          { title: 1, description: 1 }
+           { title: 1, description: 1, color: 1}
         )
         .then(data => {
           if (data !== null) {

@@ -19,6 +19,7 @@
  *
  ******************************************************************************/
 const mongoose = require("mongoose");
+const logger = require("../../config/winston");
 const Schema = mongoose.Schema;
 
 var LabelSchema = new Schema(
@@ -38,7 +39,7 @@ var label = mongoose.model("Label", LabelSchema);
 class ModelClass {
   /**
    * @description: create to new Label and save to database
-   * @param {*} createData
+   * @param {object} createData
    */
   createLabel(createData) {
     let labelData = new label({
@@ -53,10 +54,10 @@ class ModelClass {
       labelData
         .save()
         .then(data => {
-          resolve(data);
+          return resolve(data);
         })
         .catch(err => {
-          reject(err);
+          return reject(err);
         });
     });
   }
@@ -69,77 +70,78 @@ class ModelClass {
       label
         .find()
         .then(data => {
-          console.log("in found DAta", JSON.stringify(data));
-          resolve(data);
+          logger.info("in found DAta", JSON.stringify(data));
+          return resolve(data);
         })
         .catch(err => {
-          console.log("error in read label :: ", err);
+          logger.info("error in read label :: ", err);
 
-          reject(err);
+          return reject(err);
         });
     });
   }
 
   /**
    * @descriptioon : update Function to update label to database
-   * @param {*} updateData
-   * @param {*} dataToBeUpadted
+   * @param {object} updateData
+   * @param {object} dataToBeUpadted
    */
   updateLabel(updateData, dataToBeUpadted) {
-    console.log("===>", updateData);
+    logger.info("===>", updateData);
     return new Promise((resolve, reject) => {
-      console.log("In Promise");
+      logger.info("In Promise");
 
       label
         .findByIdAndUpdate(updateData, dataToBeUpadted, { new: true })
         .then(data => {
-          console.log("in data");
-          resolve(data);
+          logger.info("in data");
+          return resolve(data);
         })
         .catch(err => {
-          console.log("in err", err);
-          reject(err);
+          logger.info("in err", err);
+          return reject(err);
         });
     });
   }
 
   /**
    * @description: Function to delete label from database
-   * @param {*} deleteData
+   * @param {object} deleteData
    */
   deleteLabel(deleteData) {
     return new Promise((resolve, reject) => {
       label
         .findOneAndRemove(deleteData)
         .then(data => {
-          console.log("Data in delete label", data);
+          logger.info("Data in delete label", data);
 
           if (data != null) {
-            resolve(data);
+            return resolve(data);
           } else if (data == null) {
-            reject(data);
+            return reject(data);
           }
         })
         .catch(err => {
-          reject(err);
+          return reject(err);
         });
     });
   }
+
   /**
    * @description : find function to find label from database
-   * @param {*} findData
+   * @param {object} findData
    */
   findOne(findData) {
     return new Promise((resolve, reject) => {
       label
         .findOne(findData)
         .then(data => {
-          console.log("DAta in find One :: ", data);
-          resolve(data);
+          logger.info("DAta in find One :: ", data);
+          return resolve(data);
         })
         .catch(err => {
-          reject(err);
-          console.log("err in find One :: ", err);
+          return reject(err);
+          logger.info("err in find One :: ", err);
         });
     });
   }

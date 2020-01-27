@@ -36,7 +36,7 @@ class ServiceClass {
         console.log("Data In ServiceClass :: " + data);
         if (data) {
           console.log("Error in Service :: " + data);
-          return callback("Email Already Registered", null);
+          return callback("Email Already Registered..", null);
         } else if (data === null) {
           console.log("Data in Service :: " + data);
           modelClassObject.createUser(registrationData, (err, data) => {
@@ -76,7 +76,7 @@ class ServiceClass {
         } else {
           console.log("Data in Services is :: " + data);
           if (data.isVerified == false) {
-            return callback("Please Verify Your Email Before Login", null);
+            return callback (null,"not verified");
           } else {
             bcrypt.compare(loginData.password, data.password, (err, res) => {
               if (res) {

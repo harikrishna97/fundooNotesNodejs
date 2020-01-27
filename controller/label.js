@@ -57,7 +57,7 @@ class ControllerClass {
             return res.status(200).send(response);
           })
           .catch(err => {
-            logger.info("In Create Label data " + err);
+            logger.error("In Create Label data " + err);
 
             // reject(err);
             response.success = true;
@@ -68,7 +68,7 @@ class ControllerClass {
         // })
       }
     } catch (err) {
-      logger.info(err);
+      logger.error(err);
       return res.status(500).send(response);
     }
   }
@@ -80,10 +80,12 @@ class ControllerClass {
   getAllLabels(req, res) {
     // req.checkBody('email', 'UserId should not be empty.').notEmpty();
     // req.checkBody('email', 'UserId is invalid..').isEmail();
-    // const getAllNoteData={}
+    const getAllNoteData = {};
     // getAllNoteData.email=req.body.email;
+    getAllNoteData.userId = req.decoded._id;
+
     serviceClassObject
-      .getAllLabels()
+      .getAllLabels(getAllNoteData)
       .then(data => {
         const response = {};
         response.success = true;
