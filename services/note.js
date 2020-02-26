@@ -21,6 +21,7 @@ const modelClassObject = require("../app.js/model/note"),
   // cron = require("node-cron"),
   nodeMailer = require("../utility/sendMail"),
   // nodeMailerObject=new nodeMailer.NodeMailerClass,
+  logger = require("../config/winston"),
   mongoose = require("mongoose");
 
 class ServiceClass {
@@ -33,12 +34,12 @@ class ServiceClass {
       modelClassObject
         .createNote(createData)
         .then(data => {
-          console.log("in service");
+          console.log("in service" + data);
 
           return resolve(data);
         })
         .catch(err => {
-          return reject(data);
+          return reject(err);
         });
     });
   }
@@ -56,7 +57,63 @@ class ServiceClass {
             isArchive: false,
             isPinned: false
           },
-          { title: 1, description: 1, color:1}
+          {
+            title: 1,
+            description: 1,
+            color: 1,
+            label: 1,
+            remainder: 1,
+            collaborator: 1
+          }
+        )
+        .then(data => {
+          if (data !== null) {
+            return resolve(data);
+          } else {
+            return reject(data);
+          }
+        })
+        .catch(err => {
+          return reject(err);
+        });
+    });
+  }
+
+  /**
+   * @description API to get all Labeled  Notes
+   * @param {object} getAllNotesData
+   */
+  getAllLabeledNotes(getAllLabeledNotesData) {
+    return new Promise((resolve, reject) => {
+      const id = new mongoose.Schema.Types.ObjectId(getAllLabeledNotesData.labelId);
+      logger.info("Id is------> " + id);
+      // db.collection.find({
+      //   unusual: {
+      //     $elemMatch: { defindex: 363, _particleEffect: { $in: [6, 19] } }
+      //   }
+      // });$all:[{"defindex":{"$in":[361,378]}}
+    //   "unusual":  { 
+    //     $all:[{
+    //         $elemMatch:{"defindex":313},
+    //         $elemMatch:{"_particleEffect":6}
+    //     }]
+    // }
+
+      modelClassObject
+        .readNotes({},
+          {
+            userId: getAllLabeledNotesData.userId,
+            label:{$elemMatch:{$eq:ObjectId("5e3d5cfd1054a66fefb1248d")}}
+          },
+          
+          // {
+          //   title: 1,
+          //   description: 1,
+          //   color: 1,
+          //   label: 1,
+          //   remainder: 1,
+          //   collaborator: 1
+          // }
         )
         .then(data => {
           if (data !== null) {
@@ -150,6 +207,35 @@ class ServiceClass {
 
   /**
    * @description API to get all Archive Notes
+   * @param {object} getAllRemaindersData
+   */
+  getAllRemainders(getAllRemaindersData) {
+    return new Promise((resolve, reject) => {
+      // const data={}
+      // data.remainder= null;
+      modelClassObject
+        .readNotes(
+          {
+            userId: getAllRemaindersData.userId,
+            remainder: { $nin: [null, ""] }
+          },
+          { title: 1, description: 1, color: 1, remainder: 1 }
+        )
+        .then(data => {
+          if (data !== null) {
+            return resolve(data);
+          } else {
+            return reject(data);
+          }
+        })
+        .catch(err => {
+          return reject(err);
+        });
+    });
+  }
+
+  /**
+   * @description API to get all Archive Notes
    * @param {object} getAllArchivesData
    */
   getAllArchives(getAllArchivesData) {
@@ -157,7 +243,7 @@ class ServiceClass {
       modelClassObject
         .readNotes(
           { userId: getAllArchivesData.userId, isArchive: true },
-           { title: 1, description: 1, color: 1}
+          { title: 1, description: 1, color: 1, label: 1, remainder: 1 }
         )
         .then(data => {
           if (data !== null) {
@@ -181,7 +267,7 @@ class ServiceClass {
       modelClassObject
         .readNotes(
           { userId: getAllTrashData.userId, isTrash: true },
-          { title: 1, description: 1 }
+          { title: 1, description: 1, color: 1, label: 1, remainder: 1 }
         )
         .then(data => {
           if (data !== null) {
@@ -227,6 +313,7 @@ class ServiceClass {
    */
   updateFlag(idData, flagData) {
     return new Promise((resolve, reject) => {
+      logger.info("colordfdf");
       modelClassObject
         .updateNote({ _id: idData.noteId }, flagData)
         .then(data => {
@@ -260,7 +347,13 @@ class ServiceClass {
   search(searchData) {
     return new Promise((resolve, reject) => {
       modelClassObject
-        .search(searchData)
+        .search(searchData, {
+          title: 1,
+          description: 1,
+          color: 1,
+          label: 1,
+          remainder: 1
+        })
         .then(data => {
           if (data !== null) {
             return resolve(data);

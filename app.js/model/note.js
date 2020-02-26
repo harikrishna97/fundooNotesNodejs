@@ -74,13 +74,11 @@ var NoteSchema = new Schema(
     // label: {
     //   type: String
     // },
-    collaboratorId: [
+    collaborator: [
       {
-        type: Schema.Types.ObjectId,
-        ref: "Collaborator",
-        unique: true        
-      }
-    ]
+      type: Schema.Types.ObjectId,
+      ref: "User"    
+        }]
   },
   { timestamps: true }
 );
@@ -98,7 +96,11 @@ class ModelClass {
     let noteData = new note({
       userId: createData.userId,
       title: createData.title,
-      description: createData.description
+      description: createData.description,
+      color:createData.color,
+      remainder:createData.remainder,
+      isArchive:createData.isArchive,
+      isTrash:createData.isTrash
     });
     /** @description save() methods are used to update document into a collection.
                             save() method replaces the existing document with the document
@@ -124,17 +126,19 @@ class ModelClass {
     return new Promise((resolve, reject) => {
       note
         .find(findData, filterData)
+        .populate("label")
+        .populate("collaborator")
         .then(data => {
-          // logger.info("in found DAta"+JSON.stringify(data));
+          logger.info("in found DAta"+JSON.stringify(data));
           if (data !== null) {
-            resolve(data.reverse());
+            return resolve(data.reverse());
           } else {
-            // logger.info(' readnotes null '+data);
+            logger.info(' readnotes null '+data);
             return reject(data);
           }
         })
         .catch(err => {
-          // logger.info('error in read notes :: 134'+err);
+          logger.info('error in read notes :: 134'+err);
           return reject(err);
         });
     });
@@ -146,14 +150,14 @@ class ModelClass {
    * @param {object} dataToBeUpadted
    */
   updateNote(updateData, dataToBeUpadted) {
-    logger.info("===>" + updateData);
+    logger.info("updateData===>" + JSON.stringify(updateData));
     return new Promise((resolve, reject) => {
       logger.info("In Promise");
       //useFind both Id's
       note
-        .findByIdAndUpdate(updateData,dataToBeUpadted,{ new: true })
+        .findOneAndUpdate(updateData,dataToBeUpadted,{ new: true })
         .then(data => {
-          // logger.info('in data'+data);
+          logger.info('in data'+data);
           if (data != null) {
             return resolve(data);
           } else {
@@ -211,7 +215,7 @@ class ModelClass {
    * @description : read All notes From database
    * @param {object} query
    */
-  search(query) {
+  search(query,filerData) {
     // logger.info("hkhk");
 
     return new Promise((resolve, reject) => {
@@ -226,15 +230,16 @@ class ModelClass {
                 // { label: { $regex: query.searchKey, $options: "i" } }
               ]
             },
-            { userId: query.userId }
+            { userId: query.userId,isTrash:false }
           ]
-        })
+        },filerData)
         .populate("label")
+        .populate("collaborator")
         .limit(10)
         .then(data => {
           logger.info("in found DAta", JSON.stringify(data));
           if (data !== null) {
-            resolve(data.reverse());
+            return resolve(data.reverse());
           } else {
             logger.info(" readnotes null ", data);
             return reject(data);

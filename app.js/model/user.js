@@ -61,9 +61,10 @@ var UserSchema = new mongoose.Schema(
       default: null
     },
     imageUrl: {
-      type: String
+      type: String,
+      default: null
     },
-    collaborator: {
+    collaboratorId: {
       type: String,
       default: null
     },
@@ -96,9 +97,9 @@ class ModelClass {
    *               than one document, the method returns only one document according
    *               to natural ordering,which reflects the order in which the documents
    *               are stored in the database.
-   * @param {*} findData
-   * @param {*} callback
-   * @returns:{*} callback
+   * @param {object} findData
+   * @param {object} callback
+   * @returns:{object} callback
    */
   findOne(findData, callback) {
     user.findOne(findData, (err, data) => {
@@ -111,13 +112,14 @@ class ModelClass {
       }
     });
   }
+  
   /**
    * @description updateData contains mengodb's findOneAndUpdate() method,
    *              findOneAndUpdate() updates the first matching document in
    *              the collection that matches the filter . The sort parameter
    *              can be used to influence which document is updated.
-   * @param {*} updateData
-   * @param {*} dataToBeUpadted
+   * @param {object} updateData
+   * @param {object} dataToBeUpadted
    */
   updateData(updateData, dataToBeUpadted) {
     logger.info("===>", updateData);
@@ -127,20 +129,20 @@ class ModelClass {
         .then(data => {
           logger.info("in data");
 
-          resolve(data);
+          return resolve(data);
         })
         .catch(err => {
           logger.info("in err", err);
 
-          reject(err);
+          return reject(err);
         });
     });
   }
   /**
    * @description createUser method create new user in mongodb and save new user's
    *              data in database
-   * @param {*} createData
-   * @param {*} callback
+   * @param {object} createData
+   * @param {object} callback
    */
   createUser(createData, callback) {
     let userData = new user({
@@ -162,6 +164,22 @@ class ModelClass {
         logger.info("Data after save :: " + data);
         return callback(null, data);
       }
+    });
+  }
+
+  /**
+   * @description:API to get All Users
+   */
+  readUsers() {
+    return new Promise((resolve, reject) => {
+      user
+        .find({ isVerified: true },{imageUrl:1,firstName:1,lastName:1,email:1})
+        .then(data => {
+          return resolve(data);
+        })
+        .catch(err => {
+          return reject(err);
+        });
     });
   }
 }

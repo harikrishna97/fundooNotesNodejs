@@ -27,7 +27,7 @@ class ControllerClass {
 
   createLabel(req, res) {
     try {
-      req.checkBody("userId", "UserId should not be empty.").notEmpty();
+      // req.checkBody("userId", "UserId should not be empty.").notEmpty();
       req.checkBody("label", "Label should not be empty.").notEmpty();
       var errors = req.validationErrors();
       var response = {};
@@ -39,7 +39,7 @@ class ControllerClass {
         logger.info("REquest in Controller" + req.body);
 
         const createLabelData = {};
-        createLabelData.userId = req.body.userId;
+        createLabelData.userId = req.decoded._id;
         createLabelData.label = req.body.label;
         logger.info("In Create Label" + createLabelData);
 
@@ -156,7 +156,7 @@ class ControllerClass {
    * @param {object} res
    */
   removeLabel(req, res) {
-    req.checkBody("labelId", "LabelId  should not be empty.").notEmpty();
+    
     var errors = req.validationErrors();
     var response = {};
     if (errors) {
@@ -166,7 +166,7 @@ class ControllerClass {
     } else {
       // logger.info('REquest in Controller'+req.body);
       const removeData = {};
-      removeData.labelId = req.body.labelId;
+      removeData.labelId = req.params.labelId;
       new Promise((resolve, reject) => {
         serviceClassObject
           .removeLabel(removeData)

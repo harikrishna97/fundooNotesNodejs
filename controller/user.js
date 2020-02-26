@@ -88,7 +88,7 @@ class ControllerClass {
               logger.info("RESDATA_ID", "registrationToken" + resData._id);
 
               // var longUrl='http://localhost:4000/userVerification/'+token;
-              var longUrl = `${process.env.USER_VERIFICATION_URL}`+token;
+              var longUrl = `${process.env.USER_VERIFICATION_URL}` + token;
               client.set("registrationToken" + resData._id, token); //,
               // "EX",
               // 60 * 60 * 24
@@ -103,7 +103,7 @@ class ControllerClass {
                     response.message = err;
                     logger.info("--->" + response);
                     return res.status(200).send(response);
-                  } else if(data){
+                  } else if (data) {
                     logger.info("HI");
                     response.success = true;
                     response.data = {
@@ -182,7 +182,7 @@ class ControllerClass {
           (loginData.password = req.body.password);
 
         serviceClassObject.userLogin(loginData, (err, data) => {
-          logger.info("Data In COntroller while send"+data);
+          logger.info("Data In COntroller while send" + data);
           if (err) {
             logger.error("Error :: Controller :: " + err);
             let response = {};
@@ -190,14 +190,14 @@ class ControllerClass {
             response.error = err;
 
             return res.status(400).send(response);
-          } else if(data){
-            if(data=="not verified"){
+          } else if (data) {
+            if (data == "not verified") {
               let response = {};
               response.success = false;
               response.message = "Please Verify before Login";
               return res.status(200).send(response);
-            }else{
-              logger.info("data in controller :: " +JSON.stringify(data._id));
+            } else {
+              logger.info("data in controller :: " + JSON.stringify(data._id));
               var payload = {
                 _id: data._id,
                 email: data.email
@@ -210,12 +210,13 @@ class ControllerClass {
               let response = {};
               response.success = true;
               response.message = "Login Successful...";
-              response.data=data;
+              response.data = data;
               response.token = token;
-              console.log('response is :: ',response);
-              
+              console.log("response is :: ", response);
+
               return res.status(200).send(response);
-            }}
+            }
+          }
         });
       }
     } catch (err) {
@@ -338,8 +339,7 @@ class ControllerClass {
             })
             .catch(err => {
               logger.info("ERRRR in comntroller ", err);
-              response.success = false,
-               response.error = err;
+              (response.success = false), (response.error = err);
               reject(err);
               return res.status(400).send(response);
             });
@@ -363,14 +363,14 @@ class ControllerClass {
     //   response.error="invalid Image type, only png and jpeg allow"
     //   return res.status(400).send(response);
     // }else{
-
+    logger.info("image.................#########");
     singleUpload(req, res, function(err) {
       if (err) {
         return res.status(422).send({
           errors: [{ title: "File Upload Error", detail: err.message }]
         });
       }
-      logger.info("FileUrl :::", req.file.location);
+      logger.info("FileUrl :::" + req.file.location);
 
       const imageData = {};
       //   imageData.email='adhokshaj108@gmail.com'
@@ -386,7 +386,7 @@ class ControllerClass {
           logger.info("DATA in controller response :: ", data);
           (response.success = true),
             (response.message = "Image Url saved SuccessFully..");
-          // response.ImageUrl=data.imageUrl;
+          response.imageUrl = data.imageUrl;
           return res.status(200).send(response);
         })
         .catch(err => {
@@ -395,6 +395,35 @@ class ControllerClass {
         });
     });
     // }
+  }
+
+  /**
+   * @description:API to Get All Users
+   * @param {object} req
+   * @param {object} res
+   */
+  getAllUsers(req, res) {
+    try {
+      const response = {};
+      serviceClassObject
+        .getAllUsers()
+        .then(data => {
+          logger.info("getALlUsers:controller:data 403 ", data);
+          (response.success = true),
+            (response.message = "SuccessFully get all users..");
+          response.data = data;
+          return res.status(200).send(response);
+        })
+        .catch(err => {
+          (response.success = false), (response.error = err);
+          return res.status(400).send(response);
+        });
+    } catch (err) {
+      logger.error(err);
+      response.success = false;
+      response.error = err;
+      return res.status(500).send(response);
+    }
   }
 }
 module.exports = new ControllerClass();

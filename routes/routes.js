@@ -17,7 +17,7 @@
  *
  ******************************************************************************/
 const express = require("express");
-require("dotenv/config")
+require("dotenv/config");
 const controllerClassObject = require("../controller/user");
 const tokenObject = require("../utility/tokenVerification");
 const model = require("../app.js/model/user");
@@ -28,6 +28,8 @@ const collaboratorController = require("../controller/collaborator");
 const routes = express.Router();
 
 routes.post("/user", controllerClassObject.registration);
+routes.get("/user", controllerClassObject.getAllUsers);
+
 routes.post("/login", controllerClassObject.login);
 routes.post(
   "/forgetPassword",
@@ -46,7 +48,7 @@ routes.get("/userVerify/:url", (req, res) => {
       return res.status(404).send("Invalid Url");
     } else if (data == null) {
       return res.status(400).send("Invalid Url");
-    } else if(data){
+    } else if (data) {
       return res.redirect(data.longUrl);
     }
   });
@@ -65,6 +67,12 @@ routes.delete(
   tokenObject.tokenVerification,
   noteController.removeNote
 );
+routes.get(
+  "/labeledNote/:labelId",
+  tokenObject.tokenVerification,
+  noteController.getAllLabeledNotes
+);
+
 routes.put(
   "/imageUpload",
   tokenObject.tokenVerification,
@@ -80,6 +88,12 @@ routes.delete(
   "/remainder/:noteId",
   tokenObject.tokenVerification,
   noteController.removeRemainder
+);
+
+routes.get(
+  "/remainder",
+  tokenObject.tokenVerification,
+  noteController.getAllRemainders
 );
 
 routes.get(
@@ -108,6 +122,7 @@ routes.post(
   tokenObject.tokenVerification,
   collaboratorController.addCollaborator
 );
+
 routes.delete(
   "/collaborator/:collaboratorId",
   tokenObject.tokenVerification,
@@ -135,7 +150,7 @@ routes.put(
   labelControllerClassObject.editLabel
 );
 routes.delete(
-  "/label:labelId",
+  "/label/:labelId",
   tokenObject.tokenVerification,
   labelControllerClassObject.removeLabel
 );

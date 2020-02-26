@@ -19,7 +19,7 @@ class ServiceClass {
           noteService
             .updateNote(
               { _id: data.noteId },
-              { $push: { collaboratorId: data.collaboratorId } }
+              { $push: { collaborator: data.collaboratorId } }
             )
             .then(data1 => {
               logger.info("data from note " + data1);
@@ -39,40 +39,18 @@ class ServiceClass {
    */
   removeCollaborator(removeData) {
     return new Promise((resolve, reject) => {
-      // collaboratormodel.findOne({'noteId':removeData.noteId})
-      // .then(data=>{
-      //     if(data!==null){
+      logger.info('2*****************')
       collaboratormodel
-        .delete({ _id: removeData.collaboratorId })
+        .delete({collaboratorId: removeData.collaboratorId })
         .then(data => {
+          logger.info('3*****************',JSON.stringify(data))
+
           if (data !== null) {
             const idData = {};
             idData._id = data.noteId;
-            noteService
-              .findOne(idData)
-              .then(findData => {
-                logger.info('findData :: '+findData.collaboratorId)
-                // "--"+findData.collaboratorId.length+'--'+data.collaboratorId)
-                const array = [];
-                const collaboratorId = findData.collaboratorId;
-                // for(let i=0;i<collaboratorId.length;i++){
-                //   array.push(collaboratorId[i])
+            // const updateData = { collaboratorId: findData.collaboratorId };
 
-                // }
-                logger.info("Array before splice :: " + findData.collaboratorId);
-                const index = findData.collaboratorId.indexOf(
-                  data.collaboratorId
-                );
-                logger.info("index 63: "+ index);
-
-                if (index > -1) {
-                  logger.info("index 64: "+ index);
-
-                  array.splice(index, 1);
-                }
-                logger.info("array after splice  1 " + findData.collaboratorId);
-
-                const updateData = { collaboratorId: findData.collaboratorId };
+            const updateData = { $pull: { collaborator: { $in: [data.collaboratorId] } } };
                 noteService
                   .updateNote(idData, updateData)
                   .then(data1 => {
@@ -84,14 +62,11 @@ class ServiceClass {
                   .catch(err => {
                     logger.info("..err from note1 ::" + err);
                   });
-              })
-              .catch(err => {
-                logger.info("..err from note2 ::" + err);
-              });
+            
 
             return resolve(data);
           } else {
-            logger.info("data"+data);
+            logger.info("data" + data);
 
             return reject(data);
           }
@@ -124,6 +99,8 @@ class ServiceClass {
 
     return valid;
   }
+
+  
 }
 
 module.exports = new ServiceClass();

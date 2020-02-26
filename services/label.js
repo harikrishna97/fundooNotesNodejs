@@ -26,16 +26,30 @@ class ServiceClass {
    */
   createLabel(createData) {
     return new Promise((resolve, reject) => {
-      modelClassObject
-        .createLabel(createData)
-        .then(data => {
-          logger.info("in service");
 
-          return resolve(data);
-        })
-        .catch(err => {
-          return reject(err);
-        });
+      modelClassObject.findOne()
+      .then(data=>{
+        if(data !== null){
+          modelClassObject
+          .createLabel(createData)
+          .then(data => {
+            logger.info("in service");
+  
+            return resolve(data);
+          })
+          .catch(err => {
+            return reject(err);
+          });
+        }
+        else{
+          return reject('label allready exist..');
+        }
+      })
+      .catch(err=>{
+        return reject(err)
+      })
+
+      
     });
   }
 

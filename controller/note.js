@@ -50,7 +50,6 @@ class ControllerClass {
           response.error = errors;
           return res.status(400).send(response);
         } else {
-
           const createNoteData = {};
 
           createNoteData.userId = req.decoded._id;
@@ -58,27 +57,33 @@ class ControllerClass {
           // createNoteData.email=req.body.email;
           createNoteData.title = req.body.title;
           createNoteData.description = req.body.description;
-          // logger.info('In Create Note',createNoteData);
-          // logger.info('req.decoded.id :: ',req.decoded._id);
+          createNoteData.color = req.body.color;
+          createNoteData.remainder = req.body.remainder;
+          createNoteData.isArchive = req.body.isArchive;
+          createNoteData.isTrash = req.body.isTrash;
+
+          logger.info("In Create Note", createNoteData);
+          logger.info("req.decoded.id :: ", req.decoded._id);
 
           const response = {};
           serviceClassObject
             .createNote(createNoteData)
             .then(data => {
-              // logger.info('In Create Note data ',data);
+              logger.info("In Create Note data1" + data);
 
               // resolve(data);
               response.success = true;
               response.message = "Note Successfully created";
+              response.data=data;
               // response.data=data;
               return res.status(200).send(response);
             })
             .catch(err => {
-              // logger.info('In Create Note data ',err);
+              logger.info("In Create Note data " + err);
               // reject(err);
               response.success = false;
               response.message = " Error while creating Note";
-              // response.data = data;
+              response.error = err;
               return res.status(400).send(response);
             });
         }
@@ -134,7 +139,66 @@ class ControllerClass {
     }
   }
 
-  
+
+
+  /**
+   * @description API to getall Labeled Notes from database
+   * @param {object} req
+   * @param {object} res
+   */
+  getAllLabeledNotes(req, res) {
+    try {
+
+      if (serviceClassObject.checkMongooseId(req.decoded._id) == false||
+      serviceClassObject.checkMongooseId(req.params.labelId) == false
+      ) {
+        const response = {};
+        response.success = false;
+        response.error = "Invalid UserId";
+        return res.status(400).send(response);
+      } else {
+      const getAllLabeledNotesData = {};
+      getAllLabeledNotesData.userId = req.decoded._id;
+      getAllLabeledNotesData.labelId = req.params.labelId;
+      serviceClassObject
+        .getAllLabeledNotes(getAllLabeledNotesData)
+        .then(data => {
+          logger.info("Labeled ");
+          const response = {};
+          if (data == null) {
+            response.success = false;
+            response.error = "Invalid UserId";
+            // response.data=err;
+            return res.status(400).send(response);
+          } else {
+            response.success = true;
+            // response.message='';
+            response.data = data;
+            return res.status(200).send(response);
+          }
+        })
+        .catch(err => {
+          const response = {};
+          response.success = false;
+          response.error = err;
+          // response.data=err;
+          return res.status(400).send(response);
+        });
+      }
+    } catch (err) {
+      logger.error(err);
+      const response = {};
+      response.success = false;
+      response.message = "Something went Bad..",err;
+      return res.status(500).send(response);
+    }
+  }
+
+
+
+
+
+
   /**
    * @description API to remove note
    * @param {object} req
@@ -155,7 +219,6 @@ class ControllerClass {
         response.error = "invalid NoteId";
         return res.status(400).send(response);
       } else {
-
         const removeData = {};
         // removeData._id=req.body._id;
         removeData.userId = req.decoded._id;
@@ -257,7 +320,6 @@ class ControllerClass {
    */
   removeRemainder(req, res) {
     try {
-      // let isValid = mongoose.Types.ObjectId.isValid(req.params.noteId);
       if (
         serviceClassObject.checkMongooseId(req.params.noteId) == false ||
         serviceClassObject.checkMongooseId(req.decoded._id) == false
@@ -276,7 +338,8 @@ class ControllerClass {
           .then(data => {
             response.success = true;
             response.message = "remainder Deleted successfully";
-            // response.data=data;
+            response.data = data;
+            console.log("Reminder Delete", response);
             return res.status(200).send(response);
           })
           .catch(err => {
@@ -295,7 +358,59 @@ class ControllerClass {
       return res.status(500).send(response);
     }
   }
-  
+
+  /**
+   * @description API to get All remainders notes from database
+   * @param {object} req
+   * @param {object} res
+   */
+  getAllRemainders(req, res) {
+    try {
+      // logger.info(req.decoded);
+
+      if (serviceClassObject.checkMongooseId(req.decoded._id) == false) {
+        const response = {};
+        response.success = false;
+        response.error = "Invalid UserId";
+        return res.status(400).send(response);
+      } else {
+        // return res.status(500).send('error');
+
+        const getAllRemaindersData = {};
+        getAllRemaindersData.userId = req.decoded._id;
+        serviceClassObject
+          .getAllRemainders(getAllRemaindersData)
+          .then(data => {
+            const response = {};
+            if (data == null) {
+              response.success = false;
+              response.error = "Invalid UserId";
+              // response.data=err;
+              return res.status(400).send(response);
+            } else {
+              response.success = true;
+              // response.message='';
+              response.data = data;
+              return res.status(200).send(response);
+            }
+          })
+          .catch(err => {
+            const response = {};
+            response.success = false;
+            response.error = err;
+            // response.data=err;
+            return res.status(400).send(response);
+          });
+      }
+    } catch (err) {
+      logger.info(err);
+      const response = {};
+      response.success = false;
+      response.message = "Something went Bad..";
+      return res.status(500).send(response);
+    }
+  }
+
   /**
    * @description API to get All Archive notes from database
    * @param {object} req
@@ -448,9 +563,14 @@ class ControllerClass {
    * @param {object} res
    */
   search(req, res) {
+    logger.info(".....Im in search........");
     try {
-      if(req.params.searchKey===undefined){
-        throw "Search Key is required.."
+      if (
+        req.params.searchKey === undefined ||
+        req.params.searchKey === null ||
+        req.params.searchKey === ""
+      ) {
+        throw "Search Key is required..";
       }
 
       if (serviceClassObject.checkMongooseId(req.decoded._id) == false) {
@@ -465,7 +585,7 @@ class ControllerClass {
         noteService
           .search(searchData)
           .then(data => {
-            logger.info("1111111111111111");
+            logger.info("1111111111111111", data);
             const response = {};
             if (data == null) {
               response.success = false;
@@ -509,8 +629,8 @@ class ControllerClass {
 
     req.checkBody("flagValue", "Data  should not be empty.").notEmpty();
     if (serviceClassObject.checkMongooseId(req.decoded._id) == false) {
-      // console.log("restore2");
-      
+      console.log("restore2");
+
       const response = {};
       response.success = false;
       response.error = "Invalid NoteId";
@@ -518,10 +638,10 @@ class ControllerClass {
     } else {
       // console.log("restore");
 
-      const updateData = {};
+      var updateData = {};
       const idObjectData = {};
       idObjectData.noteId = req.params.noteId;
-      idObjectData.userId = req.decoded._id;
+      // idObjectData.userId = req.decoded._id;
 
       switch (req.params.flag) {
         case "pin":
@@ -545,7 +665,7 @@ class ControllerClass {
                 updateData.isTrash = true;
                 updateData.isPinned = false;
                 updateData.isArchive = false;
-              }else{
+              } else {
                 updateData.isTrash = false;
                 updateData.isPinned = false;
                 updateData.isArchive = false;
@@ -569,8 +689,19 @@ class ControllerClass {
           // code block
           break;
         case "color":
+          logger.info("color is " + req.body.flagValue);
           updateData.color = req.body.flagValue;
           // code block
+          break;
+
+        case "label":
+          logger.info("label is " + req.body.flagValue);
+          updateData = { $push: { label: req.body.flagValue } };
+          break;
+
+        case "del_label":
+          logger.info("delete label is " + req.body.flagValue);
+          updateData = { $pull: { label: { $in: [req.body.flagValue] } } };
           break;
       }
 
@@ -607,13 +738,26 @@ class ControllerClass {
         const idData = {};
         const updateData = {};
         idData._id = req.params.noteId;
-        
+
         if (req.body.title !== undefined) {
           updateData.title = req.body.title;
         }
 
         if (req.body.description !== undefined) {
           updateData.description = req.body.description;
+        }
+
+        if (req.body.color !== undefined) {
+          updateData.color = req.body.color;
+        }
+        if (req.body.remainder !== undefined) {
+          updateData.remainder = req.body.remainder;
+        }
+        if (req.body.isTrash !== undefined) {
+          updateData.isTrash = req.body.isTrash;
+        }
+        if (req.body.isArchive !== undefined) {
+          updateData.isArchive = req.body.isArchive;
         }
 
         serviceClassObject

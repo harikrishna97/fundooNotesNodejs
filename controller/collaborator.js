@@ -31,7 +31,6 @@ class ControllerClass {
     // logger.info('controll goes here1')
     try {
       // logger.info('controll goes here2 '+req.params.noteId+" "+req.params.collaboratorId)
-      const a = true;
       if (
         collaboratorService.checkMongooseId(req.params.noteId) == false ||
         collaboratorService.checkMongooseId(req.params.collaboratorId) ==
@@ -76,10 +75,10 @@ class ControllerClass {
   }
 
   /**
-     * @description API to remove collaborated note
-     * @param {object} req
-     * @param {object} res
-    **/
+   * @description API to remove collaborated note
+   * @param {object} req
+   * @param {object} res
+   **/
   removeCollaborator(req, res) {
     try {
       if (
@@ -90,6 +89,7 @@ class ControllerClass {
         response.error = "Invalid NoteId";
         return res.status(400).send(response);
       } else {
+        logger.info('1*****************'+req.params.collaboratorId)
         const collaboratorData = {};
         collaboratorData.collaboratorId = req.params.collaboratorId;
         // collaboratorData.userId = req.decoded._id;
@@ -99,7 +99,7 @@ class ControllerClass {
           .then(data => {
             response.success = true;
             response.message = "collaborator removed successfully";
-            response.data=data;
+            response.data = data;
             return res.status(200).send(response);
           })
           .catch(err => {
@@ -118,5 +118,7 @@ class ControllerClass {
       return res.status(500).send(response);
     }
   }
+
+  
 }
 module.exports = new ControllerClass();

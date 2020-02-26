@@ -25,8 +25,8 @@ const utilityClassObject = require("../utility/commonUtility");
 class ServiceClass {
   /**
    * @description:registration API to create new User or register user
-   * @param {*} registrationData
-   * @param {*} callback
+   * @param {object} registrationData
+   * @param {object} callback
    */
   userRegistration(registrationData, callback) {
     try {
@@ -59,8 +59,8 @@ class ServiceClass {
 
   /**
    * @description:login API to login user
-   * @param {*} loginData
-   * @param {*} callback
+   * @param {object} loginData
+   * @param {object} callback
    */
   userLogin(loginData, callback) {
     try {
@@ -76,7 +76,7 @@ class ServiceClass {
         } else {
           console.log("Data in Services is :: " + data);
           if (data.isVerified == false) {
-            return callback (null,"not verified");
+            return callback(null, "not verified");
           } else {
             bcrypt.compare(loginData.password, data.password, (err, res) => {
               if (res) {
@@ -100,8 +100,8 @@ class ServiceClass {
 
   /**
    * @description:API to for forget password
-   * @param {*} forgetPasswordData
-   * @param {*} callback
+   * @param {object} forgetPasswordData
+   * @param {object} callback
    */
   forgetPasswordInService(forgetPasswordData, callback) {
     try {
@@ -135,7 +135,7 @@ class ServiceClass {
 
   /**
    * @description:API for users reset password
-   * @param {*} resetPasswordData
+   * @param {object} resetPasswordData
    */
   resetPasswordInService(resetPasswordData) {
     try {
@@ -170,9 +170,9 @@ class ServiceClass {
 
   /**
    * @description:function to save longUrl,shortUrl,urlCode in databse
-   * @param {*} resData
-   * @param {*} verifyObject
-   * @param {*} callback
+   * @param {object} resData
+   * @param {object} verifyObject
+   * @param {object} callback
    */
   urlShortnerService(resData, verifyObject, callback) {
     console.log(" urlshortner Data", resData);
@@ -203,7 +203,7 @@ class ServiceClass {
   }
   /**
    * @description:API to verify user
-   * @param {*} userVerificationData
+   * @param {object} userVerificationData
    */
   userVerificationInService(userVerificationData) {
     return new Promise((resolve, reject) => {
@@ -226,7 +226,7 @@ class ServiceClass {
 
   /**
    * description : It saves aws generator image in database for user Profile
-   * @param {*} imageData
+   * @param {object} imageData
    */
   imageUpload(imageData) {
     return new Promise((resolve, reject) => {
@@ -234,13 +234,28 @@ class ServiceClass {
         .updateData({ _id: imageData.userId }, { imageUrl: imageData.imageUrl })
         .then(data => {
           if (data !== null) {
-            resolve(data);
+            return resolve(data);
           } else {
             reject("Invalid Id");
           }
         })
         .catch(err => {
-          reject(err);
+          return reject(err);
+        });
+    });
+  }
+  /**
+   * @description:API to get All Users
+   */
+  getAllUsers() {
+    return new Promise((resolve, reject) => {
+      modelClassObject
+        .readUsers()
+        .then(data => {
+          return resolve(data);
+        })
+        .catch(err => {
+          return reject(err);
         });
     });
   }

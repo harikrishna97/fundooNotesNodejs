@@ -36,11 +36,11 @@ class SchedularClass {
             data.forEach(remainder => console.log("remainder :: ", remainder));
             // resolve(data)
           } else {
-            reject(data);
+            return reject(data);
           }
         })
         .catch(err => {
-          reject(err);
+          return reject(err);
         });
     });
   }

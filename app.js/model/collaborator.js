@@ -26,11 +26,13 @@ var CollaboratorSchema = new Schema(
   {
     userId: {
       type: Schema.Types.ObjectId,
-      ref: "User"
+      ref: "User",
+      default: null
     },
     noteId: {
       type: Schema.Types.ObjectId,
-      ref: "Note"
+      ref: "Note",
+      default: null
     },
     collaboratorId: {
       type: Schema.Types.ObjectId,
@@ -46,7 +48,7 @@ class CollaboratorClass {
   constructor() {}
 
   create(queryData) {
-    logger.info('controll1')
+    logger.info("controll1");
     let collaboratorData = new collaborator({
       userId: queryData.userId,
       noteId: queryData.noteId,
@@ -73,48 +75,52 @@ class CollaboratorClass {
   }
   /**
    * @description : API to delete Note forever
-   * @param {object} queryData 
+   * @param {object} queryData
    */
   delete(queryData) {
     return new Promise((resolve, reject) => {
       collaborator
-        .findOneAndDelete(queryData)
+        .findOneAndRemove(queryData)
         .then(data => {
+          logger.info('4*****************'+JSON.stringify(data))
           if (data !== null) {
             return resolve(data);
-          
           } else {
             return reject(data);
           }
         })
         .catch(err => {
+          logger.info('5ERRRR*****************',err)
+
           return reject(err);
         });
     });
   }
 
-  /**
-   * @description : find function to find note from database
-   * @param {object} findData
-   */
-  findOne(queryData) {
-    return new Promise((resolve, reject) => {
-      note
-        .findOne(queryData)
-        .then(data => {
-          if (data !== null) {
-            logger.info("DAta in find One :: ", data);
-            return resolve(data);
-          } else {
-            return reject(data);
-          }
-        })
-        .catch(err => {
-          return reject(err);
-          // logger.info("err in find One :: ", err);
-        });
-    });
-  }
+  // /**
+  //  * @description : find function to find note from database
+  //  * @param {object} findData
+  //  */
+  // findOne(queryData) {
+  //   return new Promise((resolve, reject) => {
+  //     collaborator
+  //       .findOne(queryData)
+  //       .then(data => {
+  //         if (data !== null) {
+  //           logger.info("DAta in find One :: ", data);
+  //           return resolve(data);
+  //         } else {
+  //           return reject(data);
+  //         }
+  //       })
+  //       .catch(err => {
+  //         return reject(err);
+  //         // logger.info("err in find One :: ", err);
+  //       });
+  //   });
+  // }
+
+ 
 }
 
 module.exports = new CollaboratorClass();

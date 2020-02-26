@@ -30,7 +30,10 @@ const schedularClassObject = require("./services/schedular");
 //create express app
 
 const app = express();
-
+const swaggerUi = require('swagger-ui-express');
+const swaggerDocument = require('./json/swagger.json');
+ 
+app.use('/swagger', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 app.use(cors());
 
 //parse request of content-type -application

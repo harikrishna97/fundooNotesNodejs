@@ -1,0 +1,112 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "Fundoo aplication",
+    "version": "1.0.0",
+    "title": "Fundoo",
+
+    "contact": { "email": "myfundooapp@gmail.com" },
+    "license": {
+      "name": "fundoo 2.0",
+      "url": "http://www.fundoo.org/licenses/LICENSE-2.0.html"
+    }
+  },
+  "host": "localhost:4000",
+  "basePath": "/",
+  "tags": [
+    {
+      "name": "login"
+    },
+    { "name": "registration" }
+  ],
+  "schemes": ["http", "https"],
+  "consumes": ["application/json"],
+  "produces": ["application/json"],
+  "paths": {
+    "/login": {
+      "post": {
+        "tags": ["login"],
+        "summary": "login user",
+
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "type": "string",
+            "schema": {
+              "$ref": "#/definitions/login"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Login Succesfull.."
+          },
+          "400": { "description": "Please Verify before Login" },
+          "404": { "description": "page not found" }
+        }
+      }
+    },
+    "/user": {
+        "post": {
+          "tags": ["registration"],
+          "summary": "user registration",
+  
+          "produces": ["application/json"],
+          "parameters": [
+            {
+              "name": "body",
+              "in": "body",
+              "required": true,
+              "type": "string",
+              "schema": {
+                "$ref": "#/definitions/registration"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Registration Successfull.."
+            },
+            "400": { "description": "Email Allready Register" },
+            "404": { "description": "page not found" }
+          }
+        }
+      }
+  },
+
+  "securityDefinitions": {
+    "api_key": { "type": "apiKey", "name": "token", "in": "header" }
+  },
+  "definitions": {
+    "login": {
+      "type": "object",
+      "properties": {
+        "email": { "type": "string" },
+        "password": { "type": "string" }
+      },
+      "example": {
+        "email": "adhokshaj108@gmail.com",
+        "password": "adhokshaj123"
+        }
+    },  
+
+    "registration": {
+        "type": "object",
+        "properties": {
+            "firstName": { "type": "string" },
+            "lastName": { "type": "string" },
+          "email": { "type": "string" },
+          "password": { "type": "string" }
+        },
+        "example": {
+            "firstName": "Adhokshaj",
+            "lastName": "Boarase",
+          "email": "adhokshaj108@gmail.com",
+          "password": "adhokshaj123"
+          }
+      }
+  }
+}
